@@ -32,7 +32,9 @@ class Governor:
         self.registry = Registry()
         self.log = AuditLog(log_path)
         self.stop_switch = StopSwitch(self.registry)
-        # The four lights, in order. Each comes on the first time its question is answered.
+        # The four lights, in order, as the run starts. Registered on the first registration; Permitted and
+        # Logged on the first governed action; Stoppable once a live token exists to revoke, i.e. Stop is armed.
+        # All four stay on. A Stop press turns the agent's row red and logs it; light 4 stays on.
         self.lights: Dict[str, bool] = {"registered": False, "permitted": False, "logged": False, "stoppable": False}
 
     # Question 1
@@ -88,6 +90,7 @@ class Governor:
         detail = detail_of(result) if detail_of else ""
         self.log.record(record.name, phrase, on_what, "ok", detail)   # Logged
         self.lights["logged"] = True
+        self.lights["stoppable"] = True                                 # armed: a live token exists to revoke
         return result
 
     # Rule zero. The desk is not an agent and has no token, so it asks here. The answer is always no.

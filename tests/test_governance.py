@@ -27,7 +27,7 @@ def test_permitted_action_runs_and_is_logged():
     g, r, _ = make()
     out = g.act("agent-1", r.token, "read_book", "Harrowgate Lumen", lambda: "signals")
     assert out == "signals"
-    assert g.lights["permitted"] and g.lights["logged"]
+    assert g.lights["permitted"] and g.lights["logged"] and g.lights["stoppable"]   # armed
     assert g.log.entries[-1].outcome == "ok"
     assert "Researcher  read book  Harrowgate Lumen  ok" in g.log.lines()[-1]
 
@@ -53,7 +53,7 @@ def test_stop_revokes_token_mid_run():
     g, r, _ = make()
     g.act("agent-1", r.token, "read_book", "Veldstone Marine", lambda: 1)
     g.stop("agent-1")
-    assert g.lights["stoppable"] and g.registry.get("agent-1").status == "stopped"
+    assert g.lights["stoppable"] and g.registry.get("agent-1").status == "stopped"   # light stays on; the row goes red
     with pytest.raises(Stopped):
         g.act("agent-1", r.token, "read_signals", "Veldstone Marine", lambda: 1)
     assert g.log.entries[-1].outcome == "stopped"

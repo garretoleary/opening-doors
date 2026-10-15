@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Opening Doors</title>
+<meta name="description" content="Six AI Agents that hunt a named-account book, on the AE's behalf, under governance. All data invented.">
+<style>
+  :root {
+    --ink: #111; --muted: #5c5c5c; --paper: #f4f4f4; --card: #fff; --line: #d9d9d9;
+    --blue: #0072B2; --black: #111; --green: #009E73; --amber: #E69F00; --red: #D32F2F;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.45 Inter, -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 24px 16px 40px; }
+  h1 { font-size: 34px; line-height: 1.1; margin: 0 0 12px; letter-spacing: -0.01em; }
+  .desc { margin: 0 0 6px; color: var(--muted); }
+  .notice { margin: 0 0 20px; color: var(--muted); font-size: 15px; }
+  button.run { display: block; width: 100%; min-height: 56px; border: 0; border-radius: 10px; background: var(--blue); color: #fff;
+    font: 600 21px/1 Inter, -apple-system, sans-serif; cursor: pointer; }
+  button.run:disabled { opacity: .55; cursor: default; }
+  .runline { min-height: 24px; margin: 8px 0 20px; color: var(--muted); font-size: 15px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin: 0 0 16px; }
+  .card h2 { font-size: 15px; letter-spacing: .02em; margin: 0 0 14px; color: var(--ink); }
+  .card h2 span { font-weight: 400; color: var(--muted); }
+  .lights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .light { text-align: center; }
+  .light .dot { width: 56px; height: 56px; margin: 0 auto 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 19px; color: var(--muted); background: #fff; border: 2px solid var(--line); }
+  .light.on .dot { color: #fff; border-color: transparent; }
+  .light.on.black .dot { background: var(--black); }
+  .light.on.green .dot { background: var(--green); }
+  .light.on.amber .dot { background: var(--amber); }
+  .light.on.red .dot { background: var(--red); }
+  .light .label { font-size: 15px; }
+  .log { list-style: none; margin: 0; padding: 0; }
+  .log li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.4; word-break: break-word; }
+  .log li:first-child { border-top: 0; }
+  .log li.red { color: var(--red); }
+  .log .t { color: var(--muted); margin-right: 8px; font-variant-numeric: tabular-nums; }
+  .log li.red .t { color: var(--red); }
+  .empty { color: var(--muted); font-size: 15px; margin: 0; }
+  .expand { display: block; width: 100%; min-height: 44px; margin-top: 8px; border: 0; background: none; color: var(--blue); font: 600 15px Inter, -apple-system, sans-serif; text-align: right; cursor: pointer; }
+  .limit { background: #fff4f4; border-color: var(--red); color: var(--red); }
+  footer { color: var(--muted); font-size: 13px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Opening Doors</h1>
+  <p class="desc">Six AI Agents hunting 25 named accounts, on the AE's behalf, under governance.</p>
+  <p class="notice">All data invented.</p>
+
+  <button class="run" id="run" type="button">&#9654;&nbsp; Run the hunt</button>
+  <div class="runline" id="runline"></div>
+
+  <section class="card" id="limitcard" hidden></section>
+
+  <section class="card" aria-label="Governance">
+    <h2>GOVERNANCE <span>&middot; in order</span></h2>
+    <div class="lights">
+      <div class="light black" id="l-registered"><div class="dot">1</div><div class="label">Registered</div></div>
+      <div class="light green" id="l-permitted"><div class="dot">2</div><div class="label">Permitted</div></div>
+      <div class="light amber" id="l-logged"><div class="dot">3</div><div class="label">Logged</div></div>
+      <div class="light red" id="l-stoppable"><div class="dot">4</div><div class="label">Stoppable</div></div>
+    </div>
+  </section>
+
+  <section class="card" aria-label="Live log">
+    <h2>LIVE LOG <span>&middot; who, what, on which account, outcome</span></h2>
+    <p class="empty" id="logempty">Nothing yet. Press Run the hunt.</p>
+    <ul class="log" id="log"></ul>
+    <button class="expand" id="expand" type="button" hidden>see all</button>
+  </section>
+
+  <footer>Every agent acts on the AE's behalf. No agent is permitted to send. Times are UK.</footer>
+</main>
+<script>
+(function () {
+  var expanded = false, lastCount = 0, state = null, lit = {}, queue = [], ticking = false, first = true;
+  var ORDER = ["registered", "permitted", "logged", "stoppable"];
+  function tick() {
+    if (!queue.length) { ticking = false; return; }
+    ticking = true;
+    var k = queue.shift(); lit[k] = true; $("l-" + k).classList.add("on");
+    setTimeout(tick, 350);
+  }
+  function lights(s) {
+    ORDER.forEach(function (k) {
+      if (s.lights[k] && !lit[k] && queue.indexOf(k) < 0) queue.push(k);
+      if (!s.lights[k] && lit[k]) { lit[k] = false; $("l-" + k).classList.remove("on"); }
+    });
+    if (first) {                       // opening the page mid-run or after: show what is already on, at once
+      first = false;
+      while (queue.length) { var k = queue.shift(); lit[k] = true; $("l-" + k).classList.add("on"); }
+      return;
+    }
+    if (!ticking) tick();              // lights that come on while you watch switch on one after another
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function render(s) {
+    state = s;
+    $("run").disabled = s.running;
+    var mm = pad(Math.floor(s.elapsed / 60)) + ":" + pad(s.elapsed % 60), replay = s.mode === "replay" ? "  (replay of a saved run)" : "";
+    $("runline").textContent = s.running ? "Run " + mm + replay
+      : (s.log.length ? "Finished in " + mm + replay + (s.spend_gbp ? "  ·  spend " + (s.mode === "replay" ? "of that run" : "this run") + " £" + s.spend_gbp.toFixed(2) : "") : "");
+    lights(s);
+    var lines = s.log, show = expanded ? lines : lines.slice(-3);
+    $("logempty").hidden = lines.length > 0;
+    if (lines.length !== lastCount || expanded) {
+      $("log").innerHTML = show.map(function (e) {
+        return '<li class="' + (e.red ? "red" : "") + '"><span class="t">' + e.time + "</span>" + e.line.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</li>";
+      }).join("");
+      lastCount = lines.length;
+    }
+    $("expand").hidden = lines.length <= 3;
+    $("expand").textContent = expanded ? "show last three" : "see all " + lines.length + " lines";
+    if (s.limit) { $("limitcard").hidden = false; $("limitcard").className = "card limit"; $("limitcard").textContent = s.limit; }
+  }
+  function poll() {
+    fetch("/state", { cache: "no-store" }).then(function (r) { return r.json(); }).then(render).catch(function () {}).then(function () { setTimeout(poll, 700); });
+  }
+  $("run").addEventListener("click", function () { fetch("/run", { method: "POST" }); });
+  $("expand").addEventListener("click", function () { expanded = !expanded; if (state) render(state); });
+  poll();
+})();
+</script>
+</body>
+</html>
