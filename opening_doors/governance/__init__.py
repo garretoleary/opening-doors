@@ -13,11 +13,12 @@ from typing import Any, Callable, Dict, Optional
 from .audit import AuditLog, Entry
 from .permissions import PermissionDenied, check as check_permission, permissions_for
 from .registry import AgentRecord, NotRegistered, Registry
+from .runfiles import RunFileLocked, is_locked, write_once
 from .stop import StopSwitch, Stopped
 
 __all__ = [
     "Governor", "Registry", "AgentRecord", "AuditLog", "Entry", "StopSwitch",
-    "NotRegistered", "PermissionDenied", "Stopped", "permissions_for",
+    "NotRegistered", "PermissionDenied", "Stopped", "RunFileLocked", "permissions_for",
 ]
 
 
@@ -76,6 +77,16 @@ class Governor:
         self.log.record(record.name, phrase, on_what, "ok", detail)   # Logged
         self.lights["logged"] = True
         return result
+
+    # Rule zero. The desk is not an agent and has no token, so it asks here. The answer is always no.
+    def request_run_file_change(self, who: str, path: Path, change: str) -> None:
+        """Any request to rewrite, edit or delete a file under runs/ is denied and logged."""
+        self.log.record(who, f"{change} run file", path.name, "denied", "rule zero: run files are never changed")
+        raise PermissionDenied(f"{who} may not {change} {path.name}")
+
+    def write_run_file(self, path: Path, text: str) -> None:
+        """The one way a run file is written: once, then locked."""
+        write_once(path, text)
 
     def set_status(self, agent_id: str, status: str) -> None:
         self.registry.get(agent_id).status = status

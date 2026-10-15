@@ -10,6 +10,6 @@ def test_desk_runs_one_account_end_to_end(tmp_path, monkeypatch):
     assert out["ranked"][0]["name"] == "Harrowgate Lumen" and len(out["plans"]) == 1
     assert all(out["lights"].values()) is False            # stoppable light stays off until Stop is pressed
     assert out["lights"]["registered"] and out["lights"]["permitted"] and out["lights"]["logged"]
-    assert any("Planner  send email  Harrowgate Lumen  DENIED  not permitted" in l for l in out["log"])
+    assert any("Writer  send email  Harrowgate Lumen  DENIED  not permitted" in l for l in out["log"])
     assert (tmp_path / "run" / "out.json").exists() and (tmp_path / "run" / "audit.jsonl").exists()
-    assert out["state"]["acc-01"]["stop"] == "planned"
+    assert out["state"]["acc-01"]["stop"] == "drafted" and len(out["drafts"]["acc-01"]) == 5

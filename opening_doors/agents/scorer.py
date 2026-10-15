@@ -45,7 +45,7 @@ class Scorer(Agent):
 
     def run(self, notes: List[Dict], icp: dict) -> List[Dict]:
         self.set_status("running")
-        research = self.act("read_research", "25 notes", lambda: notes, what="read research")
+        research = self.act("read_research", f"{len(notes)} notes", lambda: notes, what="read research")
         user = ("Ideal client profile:\n" + json.dumps(icp, ensure_ascii=False)
                 + "\n\nResearch notes, as JSON:\n" + json.dumps(research, ensure_ascii=False))
 
@@ -59,7 +59,7 @@ class Scorer(Agent):
                 s["rank"] = rank
             return scored
 
-        ranked = self.act("write_scores", "", score, what="ranked 25",
+        ranked = self.act("write_scores", "", score, what=f"ranked {len(notes)}",
                           detail_of=lambda r: f"top: {r[0]['name']}" if r else "")
         self.set_status("done")
         return ranked

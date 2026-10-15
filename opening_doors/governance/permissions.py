@@ -13,7 +13,10 @@ class PermissionDenied(Exception):
 
 
 # Actions that no agent may ever take. Listed so the denial is explicit, not an accident.
-NEVER_PERMITTED: FrozenSet[str] = frozenset({"send_email", "send_linkedin", "send", "place_call"})
+NEVER_PERMITTED: FrozenSet[str] = frozenset({
+    "send_email", "send_linkedin", "send", "place_call",            # no agent may send
+    "rewrite_log", "edit_run_file", "delete_run_file",              # rule zero: run files are never changed
+})
 
 PERMISSIONS: Dict[str, FrozenSet[str]] = {
     "agent-1": frozenset({"read_book", "read_signals"}),                       # Researcher

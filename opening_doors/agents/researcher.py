@@ -47,9 +47,10 @@ class Researcher(Agent):
 
     def run(self, book: dict) -> List[Dict]:
         self.set_status("running")
-        accounts = self.act("read_book", "25 accounts", lambda: book["accounts"], what="read book")
+        n = f"{len(book['accounts'])} accounts"
+        accounts = self.act("read_book", n, lambda: book["accounts"], what="read book")
         signals = self.act(
-            "read_signals", "25 accounts",
+            "read_signals", n,
             lambda: [{"id": a["id"], "name": a["name"], "sector": a["sector"], "employees": a["employees"],
                       "people": a["people"], "signals": a["signals"], "access_setup_today": a["access_setup_today"]}
                      for a in accounts],

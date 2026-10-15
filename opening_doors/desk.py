@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from . import config
-from .agents import Planner, Researcher, Scorer
+from .agents import Planner, Researcher, Scorer, Writer
 from .book import load_book
 from .claude import AskFn, Spend, SpendCapReached, make_ask
 from .governance import Governor, PermissionDenied
@@ -26,13 +26,14 @@ class Desk:
     def __init__(self, ask: Optional[AskFn] = None, run_dir: Optional[Path] = None):
         self.run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         self.run_dir = run_dir or (config.RUNS_DIR / self.run_id)
-        self.spend = Spend(ledger_path=config.RUNS_DIR / "spend.json")
+        self.spend = Spend(ledger_path=config.STATE_DIR / "spend.json")
         self.gov = Governor(owner=config.AE["id"], log_path=self.run_dir / "audit.jsonl")
         self.ask = ask or make_ask(self.spend)
         self.researcher = Researcher(self.gov, self.ask)
         self.scorer = Scorer(self.gov, self.ask)
         self.planner = Planner(self.gov, self.ask)
-        self.agents = [self.researcher, self.scorer, self.planner]
+        self.writer = Writer(self.gov, self.ask)
+        self.agents = [self.researcher, self.scorer, self.planner, self.writer]
         self.state: Dict[str, Dict] = {}     # account id -> zone, stop
         self.out: Dict = {}
 
@@ -54,10 +55,13 @@ class Desk:
         plans = self.planner.run(ranked, notes, book)
         for pid in plans:
             self.state[pid]["stop"] = "planned"
+        drafts = self.writer.run(plans)
+        for pid in drafts:
+            self.state[pid]["stop"] = "drafted"
 
         # The governance check every run makes: no agent may send. Refused and logged, never skipped.
         try:
-            self.planner.act("send_email", ranked[0]["name"], lambda: None, what="send email")
+            self.writer.act("send_email", ranked[0]["name"], lambda: None, what="send email")
         except PermissionDenied:
             pass
 
@@ -65,14 +69,13 @@ class Desk:
                             f"£{self.spend.gbp_this_run:.2f} this run, {self.spend.calls} model calls")
         self.out = {
             "run_id": self.run_id, "notice": config.INVENTED_DATA_NOTICE,
-            "notes": notes, "ranked": ranked, "plans": plans, "state": self.state,
+            "notes": notes, "ranked": ranked, "plans": plans, "drafts": drafts, "state": self.state,
             "lights": self.gov.lights, "agents": self.gov.registry.as_rows(),
             "spend": {"gbp": round(self.spend.gbp_this_run, 4), "calls": self.spend.calls,
                       "input_tokens": self.spend.input_tokens, "output_tokens": self.spend.output_tokens},
             "log": [e.line() for e in self.gov.log.entries],
         }
-        self.run_dir.mkdir(parents=True, exist_ok=True)
-        (self.run_dir / "out.json").write_text(json.dumps(self.out, indent=2, ensure_ascii=False))
+        self.gov.write_run_file(self.run_dir / "out.json", json.dumps(self.out, indent=2, ensure_ascii=False))
         return self.out
 
 
@@ -100,6 +103,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"\nPLAN  {plan['name']}")
         for k in ("business_problem", "economic_buyer", "first_meeting_point_of_view", "one_metric_to_agree"):
             print(f"  {k.replace('_', ' ')}: {plan[k]}")
+    for pid, touches in out["drafts"].items():
+        print(f"\nTOUCHES  {out['plans'][pid]['name']}")
+        for t in touches:
+            head = f"T{t['touch']} {t['kind']}"
+            if t["subject"]:
+                head += f"  subject: {t['subject']}"
+            print(f"  {head}  [{t['matched_to']}]")
+            print("     " + t["body"].replace("\n", "\n     "))
     print(f"\nsaved to {desk.run_dir}")
     return 0
 

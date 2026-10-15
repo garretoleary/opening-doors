@@ -39,7 +39,7 @@ class Planner(Agent):
 
     def run(self, ranked: List[Dict], notes: List[Dict], book: dict) -> Dict[str, Dict]:
         self.set_status("running")
-        top = self.act("read_scores", f"top {TOP_N}", lambda: ranked[:TOP_N], what="read scores")
+        top = self.act("read_scores", f"top {min(TOP_N, len(ranked))}", lambda: ranked[:TOP_N], what="read scores")
         note_by_id = {n["id"]: n for n in notes}
         acct_by_id = {a["id"]: a for a in book["accounts"]}
         plans: Dict[str, Dict] = {}
@@ -51,6 +51,7 @@ class Planner(Agent):
             plan = self.act("write_plans", acct["name"],
                             lambda u=user: self.ask(self.system_prompt, u, PLAN_SCHEMA, 2000),
                             what="account plan")
-            plans[s["id"]] = dict(plan, id=s["id"], name=acct["name"], rank=s["rank"])
+            plans[s["id"]] = dict(plan, id=s["id"], name=acct["name"], rank=s["rank"],
+                                  signal=s["how_found"], why=s["why_selected"])
         self.set_status("done")
         return plans

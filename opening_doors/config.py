@@ -6,7 +6,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BOOK_PATH = ROOT / "opening_doors" / "book" / "accounts.json"
-RUNS_DIR = ROOT / "runs"            # per-run audit logs and outputs, git-ignored
+RUNS_DIR = ROOT / "runs"            # per-run audit logs and outputs, git-ignored, never edited after a run
+STATE_DIR = ROOT / "state"          # the spend ledger, git-ignored, updated on every call
 
 # The Claude model every agent uses. One model, one cache namespace.
 MODEL = os.environ.get("OPENING_DOORS_MODEL", "claude-opus-5-5")

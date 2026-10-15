@@ -12,6 +12,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, List, Optional
 
+from .runfiles import protect_append_only
+
+
+class LogTampered(Exception):
+    """The log file on disk is shorter than what was written. Someone rewrote it."""
+
 
 @dataclass
 class Entry:
@@ -44,8 +50,11 @@ class AuditLog:
         self.entries: List[Entry] = []
         self.path = path
         self.listeners: List[Callable[[Entry], None]] = []
+        self._bytes_written = 0
         if self.path:
             self.path.parent.mkdir(parents=True, exist_ok=True)
+            if self.path.exists():
+                raise LogTampered(f"{self.path.name} already exists; a run never reuses a log file")
 
     def record(self, who: str, what: str, on_what: str = "", outcome: str = "ok", detail: str = "") -> Entry:
         entry = Entry(
@@ -54,8 +63,15 @@ class AuditLog:
         )
         self.entries.append(entry)
         if self.path:
-            with self.path.open("a", encoding="utf-8") as f:
-                f.write(json.dumps(asdict(entry)) + "\n")
+            if self.path.exists() and self.path.stat().st_size < self._bytes_written:
+                raise LogTampered(f"{self.path.name} is shorter than what was written")
+            line = json.dumps(asdict(entry)) + "\n"
+            first = not self.path.exists()
+            with self.path.open("a", encoding="utf-8") as f:   # append is the only mode ever used
+                f.write(line)
+            self._bytes_written += len(line.encode("utf-8"))
+            if first:
+                protect_append_only(self.path)
         for listener in self.listeners:
             listener(entry)
         return entry
