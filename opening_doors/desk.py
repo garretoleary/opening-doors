@@ -39,6 +39,7 @@ class Desk:
         self.state: Dict[str, Dict] = {}     # account id -> zone, stop
         self.out: Dict = {}
         self.stopped: List[str] = []         # agents the AE stopped this run
+        self.results: Dict = {"ranked": [], "plans": {}, "drafts": {}, "schedule": {}, "qualified": {}}   # filled stage by stage
 
     # ---- Question 4. The Stop button. Callable from the page, a thread, or a test, at any moment. ----
     def stop(self, agent_id: str) -> None:
@@ -83,13 +84,17 @@ class Desk:
 
         notes = self._stage(self.researcher, lambda: self.researcher.run(book), [])
         ranked = self._stage(self.scorer, lambda: self.scorer.run(notes, book["icp"]), []) if notes else []
+        self.results["ranked"] = ranked
         plans = self._stage(self.planner, lambda: self.planner.run(ranked, notes, book), {}) if ranked else {}
+        self.results["plans"] = plans
         for pid in plans:
             self.state[pid]["stop"] = "planned"
         drafts = self._stage(self.writer, lambda: self.writer.run(plans), {}) if plans else {}
+        self.results["drafts"] = drafts
         for pid in drafts:
             self.state[pid]["stop"] = "drafted"
         schedule = self._stage(self.cadence, lambda: self.cadence.run(drafts, {pid: p["name"] for pid, p in plans.items()}), {}) if drafts else {}
+        self.results["schedule"] = schedule
         for pid in schedule:
             self.state[pid]["stop"] = "T1 scheduled"
 
@@ -107,6 +112,7 @@ class Desk:
             self._stage(self.cadence, play, None)
         qualified = (self._stage(self.qualifier, lambda: self.qualifier.run(self.cadence.handoffs, call_notes()), {})
                      if self.cadence.handoffs else {})
+        self.results["qualified"] = qualified
         for pid in qualified:
             self.state[pid]["stop"] = "Problem identified, value defined"
 

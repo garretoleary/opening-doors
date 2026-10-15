@@ -47,13 +47,47 @@ class App:
         self.limit: Optional[str] = None
         self.desk = None
         self.replay_stopped: set = set()     # agents stopped by the AE during a replay
+        self.data: Dict = {}                 # the run's results: ranked, plans, drafts, schedule, qualified
+        self.revealed: set = set()           # (kind, account name) pairs the log has announced
 
     # ---- what the page reads ---------------------------------------------------------------
+    def _out(self) -> List[Dict]:
+        """The ten targets, once the Scorer has ranked. Each with its reason and what is ready to tap."""
+        if ("ranked", "") not in self.revealed:
+            return []
+        rows = []
+        for s_ in self.data.get("ranked", [])[:10]:
+            n = s_["name"]
+            rows.append({"id": s_["id"], "rank": s_["rank"], "name": n, "score": s_["score"],
+                         "why": s_["why_selected"], "how_found": s_["how_found"],
+                         "ready": {"plan": ("plan", n) in self.revealed, "touches": ("touches", n) in self.revealed,
+                                   "schedule": ("schedule", n) in self.revealed, "qualified": ("qualified", n) in self.revealed}})
+        return rows
+
+    def target(self, pid: str) -> Optional[Dict]:
+        """One target's plan, five touches with dates, MEDDPICC-lite and mutual plan, as far as the run has got."""
+        with self.lock:
+            row = next((r for r in self._out() if r["id"] == pid), None)
+            if not row:
+                return None
+            n, ready = row["name"], row["ready"]
+            plan = self.data.get("plans", {}).get(pid) if ready["plan"] else None
+            touches = self.data.get("drafts", {}).get(pid) if ready["touches"] else None
+            sched = self.data.get("schedule", {}).get(pid) if ready["schedule"] else None
+            qual = self.data.get("qualified", {}).get(pid) if ready["qualified"] else None
+            if touches and sched:
+                due = {t["touch"]: t["due"] for t in sched["touches"]}
+                touches = [dict(t, due=due.get(t["touch"], "")) for t in touches]
+            return {"id": pid, "name": n, "rank": row["rank"], "why": row["why"], "how_found": row["how_found"],
+                    "plan": {k: plan[k] for k in ("business_problem", "economic_buyer", "first_meeting_point_of_view", "one_metric_to_agree")} if plan else None,
+                    "touches": touches, "qualified": qual}
+
     def snapshot(self) -> Dict:
         with self.lock:
             now = time.time()
             elapsed = int(((self.finished or now) - self.started)) if self.started else 0
             return {
+                "out": self._out(),
                 "notice": config.INVENTED_DATA_NOTICE,
                 "running": self.running, "mode": self.mode, "elapsed": elapsed,
                 "lights": dict(self.lights),
@@ -87,6 +121,17 @@ class App:
                 for name, status in self.agents.items():
                     if status == "running":
                         self.agents[name] = "done"
+            if outcome == "ok":                                   # what OUT may now show
+                if who == "Scorer" and what.startswith("ranked"):
+                    self.revealed.add(("ranked", ""))
+                elif who == "Planner" and what == "account plan":
+                    self.revealed.add(("plan", on_what))
+                elif who == "Writer" and what == "drafted T1 to T5":
+                    self.revealed.add(("touches", on_what))
+                elif who == "Cadence" and what == "scheduled T1 to T5":
+                    self.revealed.add(("schedule", on_what))
+                elif who == "Qualifier" and what == "mutual plan drafted":
+                    self.revealed.add(("qualified", on_what))
 
     def _reset(self, mode: str) -> None:
         with self.lock:
@@ -95,6 +140,7 @@ class App:
             self.lights = {k: False for k in self.lights}
             self.log, self.agents, self.spend_gbp, self.limit = [], {n: "waiting" for n in AGENT_NAMES}, 0.0, None
             self.replay_stopped = set()
+            self.data, self.revealed = {}, set()
 
     # ---- a real run ----------------------------------------------------------------------------
     def start_run(self) -> bool:
@@ -110,6 +156,8 @@ class App:
         try:
             desk = Desk()
             self.desk = desk
+            with self.lock:
+                self.data = desk.results                  # fills stage by stage as the desk works
             desk.gov.log.subscribe(lambda e: self._entry(e.time, e.who, e.what, e.on_what, e.outcome, e.detail))
             desk.run()
             with self.lock:
@@ -163,6 +211,11 @@ class App:
 
     def _replay(self, path: Path) -> None:
         entries = [json.loads(l) for l in (path / "audit.jsonl").read_text().splitlines() if l.strip()]
+        out = path / "out.json"
+        if out.exists():
+            saved = json.load(out.open())
+            with self.lock:
+                self.data = {k: saved.get(k, {} if k != "ranked" else []) for k in ("ranked", "plans", "drafts", "schedule", "qualified")}
         try:
             prev = None
             for e in entries:
@@ -199,6 +252,9 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, (HERE / "index.html").read_bytes(), "text/html; charset=utf-8")
         elif self.path == "/state":
             self._send(200, json.dumps(APP.snapshot()).encode(), "application/json")
+        elif self.path.startswith("/target/"):
+            t = APP.target(self.path.split("/target/", 1)[1])
+            self._send(200 if t else 404, json.dumps(t or {"error": "not ready"}).encode(), "application/json")
         else:
             self._send(404, b"not found", "text/plain")
 

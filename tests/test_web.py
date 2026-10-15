@@ -84,3 +84,46 @@ def test_stop_pressed_during_replay_reddens_row_logs_it_and_refuses_later_lines(
     assert [e["red"] for e in snap["log"]].count(True) == 2
     assert next(a for a in snap["agents"] if a["name"] == "Cadence")["status"] == "waiting"   # nothing downstream ran
     assert ("Cadence", "scheduled T1 to T5", "ok") not in whats
+
+
+def test_out_appears_after_the_scorer_and_target_detail_fills_as_the_log_announces_it(tmp_path, monkeypatch):
+    from opening_doors import config
+    from opening_doors.desk import Desk
+    from tests.test_agents import fake_ask
+    desk = Desk(ask=fake_ask)
+    out = desk.run()
+    run = tmp_path / "runs" / "r1"; run.mkdir(parents=True)
+    (run / "out.json").write_text(json.dumps(out))
+    entries = [json.loads(l) for l in (desk.run_dir / "audit.jsonl").read_text().splitlines()]
+    app = App()
+    app._reset("replay")
+    app.data = {k: out[k] for k in ("ranked", "plans", "drafts", "schedule", "qualified")}
+    assert app.snapshot()["out"] == []
+    first = out["ranked"][0]
+    for e in entries:
+        app._entry(e["time"], e["who"], e["what"], e["on_what"], e["outcome"], e["detail"])
+        if e["who"] == "Scorer" and e["what"].startswith("ranked"):
+            rows = app.snapshot()["out"]
+            assert len(rows) == 10 and rows[0]["name"] == first["name"] and rows[0]["why"]
+            assert rows[0]["ready"] == {"plan": False, "touches": False, "schedule": False, "qualified": False}
+            t = app.target(first["id"])
+            assert t["plan"] is None and t["touches"] is None and t["qualified"] is None
+    rows = app.snapshot()["out"]
+    assert all(r["ready"]["plan"] and r["ready"]["touches"] and r["ready"]["schedule"] for r in rows)
+    t = app.target(first["id"])
+    assert set(t["plan"]) == {"business_problem", "economic_buyer", "first_meeting_point_of_view", "one_metric_to_agree"}
+    assert [x["touch"] for x in t["touches"]] == [1, 2, 3, 4, 5] and all(x["due"] for x in t["touches"])
+    assert t["qualified"] is None                               # no reply was played, so no first call
+    assert app.target("acc-99") is None
+
+
+def test_desk_results_fill_stage_by_stage():
+    from opening_doors.desk import Desk
+    from tests.test_agents import fake_ask
+    desk = Desk(ask=fake_ask)
+    seen = []
+    desk.gov.log.subscribe(lambda e: seen.append((e.what, len(desk.results["ranked"]), len(desk.results["plans"]), len(desk.results["drafts"]))))
+    desk.run(["acc-01", "acc-02", "acc-03"])
+    at_read_plans = next(x for x in seen if x[0] == "read plans")
+    assert at_read_plans[1] == 3 and at_read_plans[2] == 3 and at_read_plans[3] == 0   # ranked and planned, not yet drafted
+    assert len(desk.results["drafts"]) == 3 and len(desk.results["schedule"]) == 3

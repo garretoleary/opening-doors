@@ -52,6 +52,29 @@
   .stop { min-width: 64px; min-height: 44px; border: 1.5px solid var(--red); border-radius: 22px; background: #fff; color: var(--red);
     font: 600 15px Inter, -apple-system, sans-serif; cursor: pointer; }
   .stop:disabled { opacity: .4; cursor: default; }
+  .out { list-style: none; margin: 0; padding: 0; }
+  .out li { border-top: 1px solid var(--line); }
+  .out li:first-child { border-top: 0; }
+  .target { display: grid; grid-template-columns: 28px 1fr; gap: 6px 8px; width: 100%; min-height: 56px; padding: 10px 0; border: 0; background: none; text-align: left; cursor: pointer; font: inherit; color: inherit; }
+  .target .rank { color: var(--blue); font-weight: 600; font-size: 16px; }
+  .target .tn { font-weight: 600; font-size: 16px; }
+  .target .why { grid-column: 2; color: var(--muted); font-size: 15px; }
+  .target .how { grid-column: 2; color: var(--muted); font-size: 14px; }
+  .detail { padding: 0 0 14px 36px; font-size: 15px; }
+  .detail h3 { font-size: 14px; letter-spacing: .02em; margin: 14px 0 6px; color: var(--muted); text-transform: uppercase; }
+  .detail h3:first-child { margin-top: 4px; }
+  .detail p { margin: 0 0 6px; }
+  .detail .k { color: var(--muted); }
+  .touch { padding: 8px 0; border-top: 1px solid var(--line); }
+  .touch .th { display: flex; justify-content: space-between; gap: 8px; }
+  .touch .th b { font-weight: 600; }
+  .touch .due { color: var(--muted); white-space: nowrap; }
+  .touch .subj { margin-top: 2px; }
+  .touch .body { white-space: pre-wrap; margin-top: 6px; color: #333; }
+  .touch button { min-height: 44px; border: 0; background: none; color: var(--blue); font: 600 15px Inter, -apple-system, sans-serif; padding: 0; cursor: pointer; }
+  .steps { margin: 0; padding-left: 18px; }
+  .steps li { margin-bottom: 4px; }
+  .notyet { color: var(--muted); }
   .log { list-style: none; margin: 0; padding: 0; }
   .log li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.4; word-break: break-word; }
   .log li:first-child { border-top: 0; }
@@ -90,6 +113,13 @@
     <ul class="agents" id="agents"></ul>
   </section>
 
+  <section class="card" aria-label="OUT">
+    <h2>OUT <span>&middot; top targets, tap for the plan</span></h2>
+    <p class="empty" id="outempty">Ten targets, ranked, each with its reason, once the Scorer has run.</p>
+    <ul class="out" id="out"></ul>
+    <button class="expand" id="outexpand" type="button" hidden>see all 10</button>
+  </section>
+
   <section class="card" aria-label="Live log">
     <h2>LIVE LOG <span>&middot; who, what, on which account, outcome</span></h2>
     <p class="empty" id="logempty">Nothing yet. Press Run the hunt.</p>
@@ -102,6 +132,66 @@
 <script>
 (function () {
   var expanded = false, lastCount = 0, state = null, lit = {}, queue = [], ticking = false, first = true;
+  var outAll = false, openId = (location.hash || "").replace("#", "") || null, detail = {}, outKey = "";
+  function esc(t) { return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  function ukDate(iso) { if (!iso) return ""; var d = new Date(iso + "T12:00:00"); return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }); }
+  function renderDetail(t) {
+    if (!t) return '<div class="detail notyet">Loading…</div>';
+    var h = '<div class="detail">';
+    h += "<h3>Account plan</h3>";
+    if (t.plan) {
+      h += '<p><span class="k">Business problem.</span> ' + esc(t.plan.business_problem) + "</p>";
+      h += '<p><span class="k">Economic buyer.</span> ' + esc(t.plan.economic_buyer) + "</p>";
+      h += '<p><span class="k">First-meeting point of view.</span> ' + esc(t.plan.first_meeting_point_of_view) + "</p>";
+      h += '<p><span class="k">One metric to agree.</span> ' + esc(t.plan.one_metric_to_agree) + "</p>";
+    } else h += '<p class="notyet">The Planner has not reached this account yet.</p>';
+    h += "<h3>Five touches</h3>";
+    if (t.touches) {
+      t.touches.forEach(function (x) {
+        h += '<div class="touch"><div class="th"><b>T' + x.touch + " · " + esc(x.kind) + '</b><span class="due">' + esc(ukDate(x.due) || "date to follow") + "</span></div>";
+        if (x.subject) h += '<div class="subj">' + esc(x.subject) + "</div>";
+        h += '<button type="button" data-show="' + t.id + "-" + x.touch + '">show the draft</button><div class="body" id="body-' + t.id + "-" + x.touch + '" hidden>' + esc(x.body) + "</div></div>";
+      });
+    } else h += '<p class="notyet">The Writer has not drafted this account yet.</p>';
+    h += "<h3>MEDDPICC-lite</h3>";
+    if (t.qualified) {
+      var q = t.qualified.qualification;
+      ["metrics", "economic_buyer", "decision_criteria", "decision_process", "paper_process", "identified_pain", "champion", "competition", "gaps"].forEach(function (k) {
+        h += '<p><span class="k">' + esc(k.replace(/_/g, " ")) + ".</span> " + esc(q[k]) + "</p>";
+      });
+      var v = t.qualified.value_frame;
+      h += "<h3>Value, framed</h3>";
+      h += '<p><span class="k">Problem identified.</span> ' + esc(v.problem_identified) + "</p><p><span class=\"k\">Value defined.</span> " + esc(v.value_defined) + "</p><p><span class=\"k\">Value sized.</span> " + esc(v.value_sized) + "</p><p><span class=\"k\">How it is realised.</span> " + esc(v.how_value_is_realised) + "</p>";
+      var m = t.qualified.mutual_plan;
+      h += "<h3>Mutual plan</h3><p>" + esc(m.goal) + '</p><ol class="steps">';
+      m.steps.forEach(function (st) { h += "<li>" + esc(st.who) + " will " + esc(st.what) + " by " + esc(ukDate(st.by) || st.by) + "</li>"; });
+      h += '</ol><p><span class="k">The ask.</span> ' + esc(m.the_ask) + "</p>";
+    } else h += '<p class="notyet">After the first call. A reply at any touch brings the Qualifier in.</p>';
+    return h + "</div>";
+  }
+  function renderOut(s) {
+    var rows = s.out || [], show = outAll ? rows : rows.slice(0, 3);
+    $("outempty").hidden = rows.length > 0;
+    $("outexpand").hidden = rows.length <= 3;
+    $("outexpand").textContent = outAll ? "show top three" : "see all 10";
+    if (openId && rows.length && show.map(function (r) { return r.id; }).indexOf(openId) < 0) { outAll = true; show = rows; }
+    var key = JSON.stringify([show.map(function (r) { return [r.id, r.ready]; }), openId, outAll, detail[openId] ? 1 : 0]);
+    if (key === outKey) return;
+    outKey = key;
+    $("out").innerHTML = show.map(function (r) {
+      var open = r.id === openId;
+      return '<li><button class="target" type="button" data-id="' + r.id + '" aria-expanded="' + open + '">'
+        + '<span class="rank">' + r.rank + '</span><span class="tn">' + esc(r.name) + "</span>"
+        + '<span class="why">' + esc(r.why) + "</span>"
+        + '<span class="how">signal: ' + esc(r.how_found) + "</span></button>"
+        + (open ? renderDetail(detail[r.id]) : "") + "</li>";
+    }).join("");
+    if (openId && !detail[openId]) {
+      fetch("/target/" + encodeURIComponent(openId)).then(function (r) { return r.ok ? r.json() : null; }).then(function (t) {
+        if (t) { detail[t.id] = t; outKey = ""; if (state) renderOut(state); }
+      });
+    }
+  }
   var ORDER = ["registered", "permitted", "logged", "stoppable"];
   function tick() {
     if (!queue.length) { ticking = false; return; }
@@ -136,6 +226,7 @@
         + '<span class="status ' + a.status + '"><span class="sd"></span>' + a.status + "</span>"
         + '<button class="stop" type="button" data-agent="' + a.name + '"' + (s.running && a.status !== "stopped" && a.status !== "done" ? "" : " disabled") + ">Stop</button></li>";
     }).join("");
+    renderOut(s);
     var lines = s.log, show = expanded ? lines : lines.slice(-3);
     $("logempty").hidden = lines.length > 0;
     if (lines.length !== lastCount || expanded) {
@@ -153,6 +244,13 @@
   }
   $("run").addEventListener("click", function () { fetch("/run", { method: "POST" }); });
   $("expand").addEventListener("click", function () { expanded = !expanded; if (state) render(state); });
+  $("outexpand").addEventListener("click", function () { outAll = !outAll; outKey = ""; if (state) renderOut(state); });
+  $("out").addEventListener("click", function (ev) {
+    var sb = ev.target.closest("button[data-show]");
+    if (sb) { ev.stopPropagation(); var b = $("body-" + sb.getAttribute("data-show")); b.hidden = !b.hidden; sb.textContent = b.hidden ? "show the draft" : "hide the draft"; return; }
+    var t = ev.target.closest("button.target");
+    if (t) { var id = t.getAttribute("data-id"); openId = openId === id ? null : id; delete detail[id]; outKey = ""; history.replaceState(null, "", openId ? "#" + openId : location.pathname); if (state) renderOut(state); }
+  });
   $("agents").addEventListener("click", function (ev) {
     var b = ev.target.closest("button.stop");
     if (b && !b.disabled) { b.disabled = true; fetch("/stop/" + encodeURIComponent(b.getAttribute("data-agent")), { method: "POST" }); }
