@@ -25,4 +25,14 @@ PRICE_USD_PER_MTOK = {"input": 4.00, "output": 20.00}
 # The human every agent acts for. Invented, like everything else.
 AE = {"id": "ae-001", "name": "The AE", "role": "Strategic Account Executive"}
 
+# Garret's five-touch sequence. His method, set 15 October 2026, not an estimate.
+# Day 1 is the day the sequence starts. After touch 5 the account rests; no sixth touch.
+CADENCE_DAY = {
+    1: 1,    # email, insight
+    2: 5,    # email, second insight
+    3: 8,    # LinkedIn connection request
+    4: 11,   # call, no voicemail if unanswered, then email: the one small ask
+    5: 18,   # break-up email
+}
+
 INVENTED_DATA_NOTICE = "All data invented. Every company, person, signal and number is made up."

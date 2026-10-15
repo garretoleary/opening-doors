@@ -18,8 +18,12 @@ from .stop import StopSwitch, Stopped
 
 __all__ = [
     "Governor", "Registry", "AgentRecord", "AuditLog", "Entry", "StopSwitch",
-    "NotRegistered", "PermissionDenied", "Stopped", "RunFileLocked", "permissions_for",
+    "NotRegistered", "PermissionDenied", "Stopped", "RunFileLocked", "RuleDenied", "permissions_for",
 ]
+
+
+class RuleDenied(Exception):
+    """An agent's own rule said no, e.g. the rest rule or the no-repeat rule. Logged as denied."""
 
 
 class Governor:
@@ -70,6 +74,9 @@ class Governor:
             raise
         try:
             result = fn()
+        except RuleDenied as exc:                           # the agent's own rule said no
+            self.log.record(record.name, phrase, on_what, "denied", str(exc))
+            raise
         except Exception as exc:                            # Logged, even when it fails
             self.log.record(record.name, phrase, on_what, "error", type(exc).__name__)
             raise

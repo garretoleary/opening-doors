@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from . import config
-from .agents import Planner, Researcher, Scorer, Writer
+from .agents import Cadence, Planner, Researcher, Scorer, Writer
 from .book import load_book
 from .claude import AskFn, Spend, SpendCapReached, make_ask
 from .governance import Governor, PermissionDenied
@@ -33,7 +33,8 @@ class Desk:
         self.scorer = Scorer(self.gov, self.ask)
         self.planner = Planner(self.gov, self.ask)
         self.writer = Writer(self.gov, self.ask)
-        self.agents = [self.researcher, self.scorer, self.planner, self.writer]
+        self.cadence = Cadence(self.gov, self.ask)
+        self.agents = [self.researcher, self.scorer, self.planner, self.writer, self.cadence]
         self.state: Dict[str, Dict] = {}     # account id -> zone, stop
         self.out: Dict = {}
 
@@ -58,6 +59,9 @@ class Desk:
         drafts = self.writer.run(plans)
         for pid in drafts:
             self.state[pid]["stop"] = "drafted"
+        schedule = self.cadence.run(drafts, {pid: p["name"] for pid, p in plans.items()})
+        for pid in schedule:
+            self.state[pid]["stop"] = "T1 scheduled"
 
         # The governance check every run makes: no agent may send. Refused and logged, never skipped.
         try:
@@ -69,7 +73,7 @@ class Desk:
                             f"£{self.spend.gbp_this_run:.2f} this run, {self.spend.calls} model calls")
         self.out = {
             "run_id": self.run_id, "notice": config.INVENTED_DATA_NOTICE,
-            "notes": notes, "ranked": ranked, "plans": plans, "drafts": drafts, "state": self.state,
+            "notes": notes, "ranked": ranked, "plans": plans, "drafts": drafts, "schedule": schedule, "state": self.state,
             "lights": self.gov.lights, "agents": self.gov.registry.as_rows(),
             "spend": {"gbp": round(self.spend.gbp_this_run, 4), "calls": self.spend.calls,
                       "input_tokens": self.spend.input_tokens, "output_tokens": self.spend.output_tokens},
@@ -111,6 +115,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                 head += f"  subject: {t['subject']}"
             print(f"  {head}  [{t['matched_to']}]")
             print("     " + t["body"].replace("\n", "\n     "))
+    for pid, sch in out["schedule"].items():
+        print(f"\nSCHEDULE  {sch['name']}  " + "  ".join(f"T{t['touch']} {t['due']}" for t in sch["touches"]))
     print(f"\nsaved to {desk.run_dir}")
     return 0
 

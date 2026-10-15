@@ -22,7 +22,7 @@ def test_writer_drafts_five_touches_for_each_of_the_top_ten():
     gov, w, plans = desk_with_plans()
     drafts = w.run(plans)
     assert len(drafts) == 10
-    kinds = ["insight email", "insight email", "LinkedIn connection note", "email or call script", "break-up email"]
+    kinds = ["insight email", "insight email", "LinkedIn connection request", "call, no voicemail, then email", "break-up email"]
     for pid, touches in drafts.items():
         assert [t["touch"] for t in touches] == [1, 2, 3, 4, 5]
         assert [t["kind"] for t in touches] == kinds

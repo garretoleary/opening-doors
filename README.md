@@ -41,7 +41,7 @@ Modelled on the Blueprint Alliance's four questions, asked in this order:
 
 Four zones, drawn as a Tube map. Zone 4 Open the door. Zone 3 Earn the call. Zone 2 Frame the value. Zone 1 Commit, ending at a £ roundel: Value Realization Plan signed.
 
-Zones 4 and 3 carry the five-touch sequence: two insights a week apart, a LinkedIn connection, one small ask, a break-up. After touch five the account rests. No sixth touch.
+Zones 4 and 3 carry Garret's five-touch sequence. Touch 1, day 1, insight email. Touch 2, day 5, insight email. Touch 3, day 8, LinkedIn connection request. Touch 4, day 11, a call with no voicemail if unanswered, then an email with one small ask. Touch 5, day 18, break-up email. After touch five the account rests. No sixth touch.
 
 ## Run it
 
