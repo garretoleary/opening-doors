@@ -52,6 +52,12 @@
   .stop { min-width: 64px; min-height: 44px; border: 1.5px solid var(--red); border-radius: 22px; background: #fff; color: var(--red);
     font: 600 15px Inter, -apple-system, sans-serif; cursor: pointer; }
   .stop:disabled { opacity: .4; cursor: default; }
+  .zones { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .zone { border-radius: 8px; padding: 10px 4px 8px; text-align: center; border: 1px solid var(--line); min-height: 44px; }
+  .zone.z4 { background: #c9c9c9; } .zone.z3 { background: #dedede; } .zone.z2 { background: #efefef; } .zone.z1 { background: #fff; }
+  .zone .zn { font-size: 15px; font-weight: 600; }
+  .zone .zc { font-size: 26px; font-weight: 600; line-height: 1.2; margin: 2px 0; font-variant-numeric: tabular-nums; }
+  .zone .zl { font-size: 15px; color: var(--muted); line-height: 1.2; }
   .out { list-style: none; margin: 0; padding: 0; }
   .out li { border-top: 1px solid var(--line); }
   .out li:first-child { border-top: 0; }
@@ -59,9 +65,9 @@
   .target .rank { color: var(--blue); font-weight: 600; font-size: 16px; }
   .target .tn { font-weight: 600; font-size: 16px; }
   .target .why { grid-column: 2; color: var(--muted); font-size: 15px; }
-  .target .how { grid-column: 2; color: var(--muted); font-size: 14px; }
+  .target .how { grid-column: 2; color: var(--muted); font-size: 15px; }
   .detail { padding: 0 0 14px 36px; font-size: 15px; }
-  .detail h3 { font-size: 14px; letter-spacing: .02em; margin: 14px 0 6px; color: var(--muted); text-transform: uppercase; }
+  .detail h3 { font-size: 15px; letter-spacing: .02em; margin: 14px 0 6px; color: var(--muted); text-transform: uppercase; }
   .detail h3:first-child { margin-top: 4px; }
   .detail p { margin: 0 0 6px; }
   .detail .k { color: var(--muted); }
@@ -111,6 +117,11 @@
   <section class="card" aria-label="Agents">
     <h2>AGENTS <span>&middot; every one acts on the AE's behalf</span></h2>
     <ul class="agents" id="agents"></ul>
+  </section>
+
+  <section class="card" aria-label="The book">
+    <h2>THE BOOK <span>&middot; where the 25 sit</span></h2>
+    <div class="zones" id="zones"></div>
   </section>
 
   <section class="card" aria-label="OUT">
@@ -225,6 +236,9 @@
         + '<span class="name"><b>' + a.n + "</b>" + a.name + "</span>"
         + '<span class="status ' + a.status + '"><span class="sd"></span>' + a.status + "</span>"
         + '<button class="stop" type="button" data-agent="' + a.name + '"' + (s.running && a.status !== "stopped" && a.status !== "done" ? "" : " disabled") + ">Stop</button></li>";
+    }).join("");
+    $("zones").innerHTML = (s.zones || []).map(function (z) {
+      return '<div class="zone z' + z.zone + '"><div class="zn">Zone ' + z.zone + '</div><div class="zc">' + z.count + '</div><div class="zl">' + esc(z.name) + "</div></div>";
     }).join("");
     renderOut(s);
     var lines = s.log, show = expanded ? lines : lines.slice(-3);

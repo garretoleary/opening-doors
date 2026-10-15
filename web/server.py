@@ -48,6 +48,8 @@ class App:
         self.desk = None
         self.replay_stopped: set = set()     # agents stopped by the AE during a replay
         self.data: Dict = {}                 # the run's results: ranked, plans, drafts, schedule, qualified
+        self.zones: Dict[str, int] = {}      # account name -> zone 4..1, moved by the log as the run goes
+        self.book_size = 0
         self.revealed: set = set()           # (kind, account name) pairs the log has announced
 
     # ---- what the page reads ---------------------------------------------------------------
@@ -82,11 +84,20 @@ class App:
                     "plan": {k: plan[k] for k in ("business_problem", "economic_buyer", "first_meeting_point_of_view", "one_metric_to_agree")} if plan else None,
                     "touches": touches, "qualified": qual}
 
+    def _zone_counts(self) -> List[Dict]:
+        """Four tiles, Zone 4 to Zone 1. Accounts not yet moved by the log sit in Zone 4."""
+        moved = {z: sum(1 for v in self.zones.values() if v == z) for z in (3, 2, 1)}
+        z4 = max(0, self.book_size - sum(moved.values()))
+        names = {4: "Open the door", 3: "Earn the call", 2: "Frame the value", 1: "Commit"}
+        counts = {4: z4, 3: moved[3], 2: moved[2], 1: moved[1]}
+        return [{"zone": z, "name": names[z], "count": counts[z] if self.book_size else 0} for z in (4, 3, 2, 1)]
+
     def snapshot(self) -> Dict:
         with self.lock:
             now = time.time()
             elapsed = int(((self.finished or now) - self.started)) if self.started else 0
             return {
+                "zones": self._zone_counts(),
                 "out": self._out(),
                 "notice": config.INVENTED_DATA_NOTICE,
                 "running": self.running, "mode": self.mode, "elapsed": elapsed,
@@ -121,6 +132,18 @@ class App:
                 for name, status in self.agents.items():
                     if status == "running":
                         self.agents[name] = "done"
+            if what == "run started":                             # every account starts in Zone 4, Open the door
+                try:
+                    self.book_size = int(on_what.split()[0])
+                except (ValueError, IndexError):
+                    self.book_size = 0
+            if outcome == "ok" and on_what:                       # the journey: where each account sits
+                if who == "Cadence" and what == "T3 given":
+                    self.zones[on_what] = 3                       # Zone 3, Earn the call
+                elif who == "Cadence" and what.startswith("reply at"):
+                    self.zones[on_what] = 3                       # First call, still Zone 3
+                elif who == "Qualifier" and what == "mutual plan drafted":
+                    self.zones[on_what] = 2                       # Zone 2, Frame the value
             if outcome == "ok":                                   # what OUT may now show
                 if who == "Scorer" and what.startswith("ranked"):
                     self.revealed.add(("ranked", ""))
@@ -141,6 +164,7 @@ class App:
             self.log, self.agents, self.spend_gbp, self.limit = [], {n: "waiting" for n in AGENT_NAMES}, 0.0, None
             self.replay_stopped = set()
             self.data, self.revealed = {}, set()
+            self.zones, self.book_size = {}, 0
 
     # ---- a real run ----------------------------------------------------------------------------
     def start_run(self) -> bool:

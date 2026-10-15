@@ -127,3 +127,23 @@ def test_desk_results_fill_stage_by_stage():
     at_read_plans = next(x for x in seen if x[0] == "read plans")
     assert at_read_plans[1] == 3 and at_read_plans[2] == 3 and at_read_plans[3] == 0   # ranked and planned, not yet drafted
     assert len(desk.results["drafts"]) == 3 and len(desk.results["schedule"]) == 3
+
+
+def test_zone_tiles_count_the_book_and_move_with_the_log():
+    app = App()
+    app._reset("replay")
+    assert [z["count"] for z in app.snapshot()["zones"]] == [0, 0, 0, 0]
+    app._entry("2026-10-15T16:47:57+00:00", "desk", "run started", "25 accounts", "ok", "")
+    zones = app.snapshot()["zones"]
+    assert [z["zone"] for z in zones] == [4, 3, 2, 1] and [z["count"] for z in zones] == [25, 0, 0, 0]
+    assert [z["name"] for z in zones] == ["Open the door", "Earn the call", "Frame the value", "Commit"]
+    app._entry("2026-10-15T16:48:00+00:00", "Cadence", "T1 given", "Harrowgate Lumen", "ok", "")
+    assert [z["count"] for z in app.snapshot()["zones"]] == [25, 0, 0, 0]          # T1 and T2 are Zone 4
+    app._entry("2026-10-15T16:48:01+00:00", "Cadence", "T3 given", "Harrowgate Lumen", "ok", "")
+    assert [z["count"] for z in app.snapshot()["zones"]] == [24, 1, 0, 0]          # T3 is Zone 3
+    app._entry("2026-10-15T16:48:02+00:00", "Cadence", "reply at T3", "Harrowgate Lumen", "ok", "to Qualifier, First call")
+    assert [z["count"] for z in app.snapshot()["zones"]] == [24, 1, 0, 0]          # First call ends Zone 3
+    app._entry("2026-10-15T16:48:03+00:00", "Qualifier", "mutual plan drafted", "Harrowgate Lumen", "ok", "")
+    assert [z["count"] for z in app.snapshot()["zones"]] == [24, 0, 1, 0]          # Zone 2
+    app._entry("2026-10-15T16:48:04+00:00", "Cadence", "T3 given", "Quillon Health", "stopped", "token revoked")
+    assert [z["count"] for z in app.snapshot()["zones"]] == [24, 0, 1, 0]          # a refused move is no move
