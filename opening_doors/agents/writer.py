@@ -72,12 +72,11 @@ class Writer(Agent):
         seen = self.act("read_plans", f"{len(plans)} plans",
                         lambda: {pid: {k: p[k] for k in PLAN_KEYS if k in p} for pid, p in plans.items()},
                         what="read plans")
-        drafts: Dict[str, List[Dict]] = {}
-        for pid, plan in seen.items():
+        def work(plan: Dict):
             user = "Account plan, as JSON:\n" + json.dumps(plan, ensure_ascii=False)
 
-            def draft(u: str = user) -> List[Dict]:
-                result = self.ask(self.system_prompt, u, TOUCH_SCHEMA, 4000)
+            def draft() -> List[Dict]:
+                result = self.ask(self.system_prompt, user, TOUCH_SCHEMA, 4000)
                 touches = sorted(result["touches"], key=lambda t: t["touch"])
                 if [t["touch"] for t in touches] != [1, 2, 3, 4, 5]:
                     raise ValueError("the Writer must return touches 1 to 5")
@@ -85,6 +84,9 @@ class Writer(Agent):
                     t["kind"] = kind
                 return touches
 
-            drafts[pid] = self.act("write_drafts", plan["name"], draft, what="drafted T1 to T5")
+            return lambda: self.act("write_drafts", plan["name"], draft, what="drafted T1 to T5")
+
+        raw = self.each_in_parallel((pid, work(plan)) for pid, plan in seen.items())
+        drafts: Dict[str, List[Dict]] = {pid: raw[pid] for pid in seen}      # plan order
         self.set_status("done")
         return drafts

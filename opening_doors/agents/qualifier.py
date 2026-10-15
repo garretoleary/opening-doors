@@ -98,8 +98,16 @@ class Qualifier(Agent):
     def run(self, handoffs: List[Dict], call_notes: Dict[str, str], today: Optional[date] = None) -> Dict[str, Dict]:
         self.set_status("running")
         today = today or date.today()
-        out: Dict[str, Dict] = {}
-        for h in handoffs:
+        def work(h: Dict):
+            return lambda: self._one(h, call_notes, today)
+
+        raw = self.each_in_parallel((h["account_id"], work(h)) for h in handoffs)
+        out = {h["account_id"]: raw[h["account_id"]] for h in handoffs}
+        self.set_status("done")
+        return out
+
+    def _one(self, h: Dict, call_notes: Dict[str, str], today: date) -> Dict:
+        if True:
             pid, name = h["account_id"], h["name"]
             note = self.act("read_call_notes", name, lambda p=pid: call_notes[p], what="read call notes")
             user = (f"Today: {today.isoformat()}. Account: {name}. Replied at {h['replied_at']}; first call done.\n"
@@ -119,7 +127,5 @@ class Qualifier(Agent):
                              detail_of=lambda v: v["value_sized"][:60])
             plan = self.act("write_mutual_plan", name, lambda r=result: r["mutual_plan"], what="mutual plan drafted",
                             detail_of=lambda p: f"{len(p['steps'])} steps, ask to bring the committee in")
-            out[pid] = {"id": pid, "name": name, "replied_at": h["replied_at"],
-                        "qualification": result["qualification"], "value_frame": value, "mutual_plan": plan}
-        self.set_status("done")
-        return out
+            return {"id": pid, "name": name, "replied_at": h["replied_at"],
+                    "qualification": result["qualification"], "value_frame": value, "mutual_plan": plan}

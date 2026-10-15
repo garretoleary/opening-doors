@@ -10,8 +10,10 @@ def test_stop_on_writer_mid_run():
     lines = out["log"]
     i = next(k for k, l in enumerate(lines) if "Writer  read plans" in l)
     assert "Writer  STOPPED by AE  STOPPED  token revoked" in lines[i + 1]
-    assert "Writer  drafted T1 to T5  Harrowgate Lumen  STOPPED  token revoked" in lines[i + 2]   # the next call, refused
-    assert "desk  stage ended early  Writer  ok  stopped by AE, run continues" in lines[i + 3]
+    after = "\n".join(lines[i + 2:])
+    assert "Writer  drafted T1 to T5  Harrowgate Lumen  STOPPED  token revoked" in after    # the next call, refused
+    assert "Writer  drafted T1 to T5  Veldstone Marine  STOPPED  token revoked" in after
+    assert "desk  stage ended early  Writer  ok  stopped by AE, run continues" in after
     assert out["lights"]["stoppable"] is True
     assert out["stopped"] == ["agent-4"]
     assert next(a for a in out["agents"] if a["agent_id"] == "agent-4")["status"] == "stopped"

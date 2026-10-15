@@ -7,6 +7,7 @@ the page can replay it.
 from __future__ import annotations
 
 import json
+import threading
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -30,7 +31,7 @@ class Entry:
 
     def line(self) -> str:
         """One plain-English line in the order who, what, on which account, outcome."""
-        parts = [self.time[11:19], self.who, self.what]
+        parts = [self.time[11:23], self.who, self.what]
         if self.on_what:
             parts.append(self.on_what)
         outcome = self.outcome.upper() if self.outcome != "ok" else "ok"
@@ -51,14 +52,20 @@ class AuditLog:
         self.path = path
         self.listeners: List[Callable[[Entry], None]] = []
         self._bytes_written = 0
+        self._lock = threading.RLock()       # several agents may act at once; the log stays one ordered line at a time.
+        # Re-entrant, because a listener (the Stop button on the page) may itself write a log line.
         if self.path:
             self.path.parent.mkdir(parents=True, exist_ok=True)
             if self.path.exists():
                 raise LogTampered(f"{self.path.name} already exists; a run never reuses a log file")
 
     def record(self, who: str, what: str, on_what: str = "", outcome: str = "ok", detail: str = "") -> Entry:
+        with self._lock:
+            return self._record(who, what, on_what, outcome, detail)
+
+    def _record(self, who: str, what: str, on_what: str, outcome: str, detail: str) -> Entry:
         entry = Entry(
-            time=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            time=datetime.now(timezone.utc).isoformat(timespec="milliseconds"),
             who=who, what=what, on_what=on_what, outcome=outcome, detail=detail,
         )
         self.entries.append(entry)

@@ -14,6 +14,7 @@ STATE_DIR = ROOT / "state"          # the spend ledger, git-ignored, updated on 
 MODEL = os.environ.get("OPENING_DOORS_MODEL", "claude-opus-5-5")
 EFFORT = os.environ.get("OPENING_DOORS_EFFORT", "low")   # demo runs must finish in under 3 minutes
 MAX_TOKENS = 4096
+PARALLEL_CALLS = int(os.environ.get("OPENING_DOORS_PARALLEL_CALLS", "5"))   # per-account calls at once; estimate
 
 # Caps. Garret's API key pays. Both are estimates until measured.
 SPEND_CAP_GBP = float(os.environ.get("OPENING_DOORS_SPEND_CAP_GBP", "20"))

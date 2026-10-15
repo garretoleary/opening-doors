@@ -42,16 +42,20 @@ class Planner(Agent):
         top = self.act("read_scores", f"top {min(TOP_N, len(ranked))}", lambda: ranked[:TOP_N], what="read scores")
         note_by_id = {n["id"]: n for n in notes}
         acct_by_id = {a["id"]: a for a in book["accounts"]}
-        plans: Dict[str, Dict] = {}
-        for s in top:
+        def work(s: Dict):
             acct = acct_by_id[s["id"]]
             user = ("Account:\n" + json.dumps({k: acct[k] for k in ("name", "sector", "hq", "employees", "people", "signals", "access_setup_today")}, ensure_ascii=False)
                     + "\n\nResearch note:\n" + json.dumps(note_by_id.get(s["id"], {}), ensure_ascii=False)
                     + "\n\nScore and reason:\n" + json.dumps({k: s[k] for k in ("score", "why_selected", "how_found")}, ensure_ascii=False))
-            plan = self.act("write_plans", acct["name"],
-                            lambda u=user: self.ask(self.system_prompt, u, PLAN_SCHEMA, 2000),
-                            what="account plan")
-            plans[s["id"]] = dict(plan, id=s["id"], name=acct["name"], rank=s["rank"],
+            return lambda: self.act("write_plans", acct["name"],
+                                    lambda: self.ask(self.system_prompt, user, PLAN_SCHEMA, 2000),
+                                    what="account plan")
+
+        raw = self.each_in_parallel((s["id"], work(s)) for s in top)
+        plans: Dict[str, Dict] = {}
+        for s in top:                                   # back in rank order
+            acct = acct_by_id[s["id"]]
+            plans[s["id"]] = dict(raw[s["id"]], id=s["id"], name=acct["name"], rank=s["rank"],
                                   signal=s["how_found"], why=s["why_selected"])
         self.set_status("done")
         return plans

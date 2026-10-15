@@ -74,6 +74,11 @@ class Governor:
             raise
         try:
             result = fn()
+            if self.stop_switch.is_stopped(agent_id):       # Stop pressed while the work ran: the result is discarded
+                self.log.record(record.name, phrase, on_what, "stopped", "token revoked during the call, result discarded")
+                raise Stopped(f"{agent_id} stopped during {action}")
+        except Stopped:                                     # already logged above
+            raise
         except RuleDenied as exc:                           # the agent's own rule said no
             self.log.record(record.name, phrase, on_what, "denied", str(exc))
             raise

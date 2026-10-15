@@ -6,6 +6,7 @@ against the spend cap. Agents never hold a client of their own.
 from __future__ import annotations
 
 import json
+import threading
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -28,6 +29,7 @@ class Spend:
     output_tokens: int = 0
     calls: int = 0
     ledger: Dict[str, Any] = field(default_factory=dict)
+    _lock: threading.Lock = field(default_factory=threading.Lock, repr=False)
 
     def __post_init__(self) -> None:
         if self.ledger_path and self.ledger_path.exists():
@@ -55,13 +57,15 @@ class Spend:
         self._save()
 
     def add(self, input_tokens: int, output_tokens: int) -> None:
-        before = self.gbp_this_run
-        self.input_tokens += input_tokens
-        self.output_tokens += output_tokens
-        self.calls += 1
-        self.ledger["gbp_this_month"] += self.gbp_this_run - before
-        self._save()
-        if self.ledger["gbp_this_month"] >= config.SPEND_CAP_GBP:
+        with self._lock:
+            before = self.gbp_this_run
+            self.input_tokens += input_tokens
+            self.output_tokens += output_tokens
+            self.calls += 1
+            self.ledger["gbp_this_month"] += self.gbp_this_run - before
+            self._save()
+            over = self.ledger["gbp_this_month"] >= config.SPEND_CAP_GBP
+        if over:
             raise SpendCapReached(f"limit reached: £{self.ledger['gbp_this_month']:.2f} this month")
 
     def _save(self) -> None:
