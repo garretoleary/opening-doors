@@ -17,6 +17,14 @@ def fake_ask(system, user, schema, max_tokens=0):
     if "scores" in props:
         ids = [n["id"] for n in json.loads(user.split("as JSON:\n", 1)[1])]
         return {"scores": [{"id": i, "score": 100 - k, "why_selected": "why", "how_found": "how"} for k, i in enumerate(ids)]}
+    if "mutual_plan" in props:
+        name = user.split("Account: ", 1)[1].split(".", 1)[0]
+        q = {k: f"{k} for {name}" for k in ("metrics", "economic_buyer", "decision_criteria", "decision_process",
+                                           "paper_process", "identified_pain", "champion", "competition", "gaps")}
+        return {"qualification": q,
+                "value_frame": {"problem_identified": "p", "value_defined": "v", "value_sized": "£1 estimate", "how_value_is_realised": "h"},
+                "mutual_plan": {"goal": "g", "steps": [{"who": "You", "what": "w", "by": "2026-11-01"}, {"who": "I", "what": "x", "by": "2026-11-02"}],
+                                "the_ask": f"Bring the boss and the buying committee at {name}."}}
     if "touches" in props:
         plan = json.loads(user.split("as JSON:\n", 1)[1])
         return {"touches": [{"touch": n, "kind": "", "subject": "" if n == 3 else f"T{n} for {plan['name']}",

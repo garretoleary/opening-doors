@@ -14,8 +14,8 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from . import config
-from .agents import Cadence, Planner, Researcher, Scorer, Writer
-from .book import load_book
+from .agents import Cadence, Planner, Qualifier, Researcher, Scorer, Writer
+from .book import call_notes, load_book
 from .claude import AskFn, Spend, SpendCapReached, make_ask
 from .governance import Governor, PermissionDenied
 
@@ -34,12 +34,17 @@ class Desk:
         self.planner = Planner(self.gov, self.ask)
         self.writer = Writer(self.gov, self.ask)
         self.cadence = Cadence(self.gov, self.ask)
-        self.agents = [self.researcher, self.scorer, self.planner, self.writer, self.cadence]
+        self.qualifier = Qualifier(self.gov, self.ask)
+        self.agents = [self.researcher, self.scorer, self.planner, self.writer, self.cadence, self.qualifier]
         self.state: Dict[str, Dict] = {}     # account id -> zone, stop
         self.out: Dict = {}
 
-    def run(self, only_ids: Optional[List[str]] = None) -> Dict:
-        """Take the book, or a chosen few accounts, through Agents 1 to 3."""
+    def run(self, only_ids: Optional[List[str]] = None, simulate_reply: Optional[Dict[str, int]] = None) -> Dict:
+        """Take the book, or a chosen few accounts, through the six agents.
+
+        simulate_reply: {account id: touch} to play out, for the demo, the AE giving touches up to that
+        one and the buyer replying, so the account reaches First call and the Qualifier.
+        """
         self.spend.start_run()                                  # daily run limit, monthly cap
         book = load_book()
         if only_ids:
@@ -63,6 +68,20 @@ class Desk:
         for pid in schedule:
             self.state[pid]["stop"] = "T1 scheduled"
 
+        # The demo's simulated replies: the AE gives touches, the buyer answers, the account moves on.
+        for pid, touch in (simulate_reply or {}).items():
+            if pid not in schedule:
+                continue
+            for n in range(1, touch + 1):
+                self.cadence.given_by_ae(pid, n)
+                if n < touch:
+                    self.cadence.no_reply(pid)
+            self.cadence.reply(pid, touch)
+            self.state[pid].update(zone=2, stop="First call")
+        qualified = self.qualifier.run(self.cadence.handoffs, call_notes()) if self.cadence.handoffs else {}
+        for pid in qualified:
+            self.state[pid]["stop"] = "Problem identified, value defined"
+
         # The governance check every run makes: no agent may send. Refused and logged, never skipped.
         try:
             self.writer.act("send_email", ranked[0]["name"], lambda: None, what="send email")
@@ -73,7 +92,7 @@ class Desk:
                             f"£{self.spend.gbp_this_run:.2f} this run, {self.spend.calls} model calls")
         self.out = {
             "run_id": self.run_id, "notice": config.INVENTED_DATA_NOTICE,
-            "notes": notes, "ranked": ranked, "plans": plans, "drafts": drafts, "schedule": schedule, "state": self.state,
+            "notes": notes, "ranked": ranked, "plans": plans, "drafts": drafts, "schedule": schedule, "qualified": qualified, "state": self.state,
             "lights": self.gov.lights, "agents": self.gov.registry.as_rows(),
             "spend": {"gbp": round(self.spend.gbp_this_run, 4), "calls": self.spend.calls,
                       "input_tokens": self.spend.input_tokens, "output_tokens": self.spend.output_tokens},
@@ -86,10 +105,13 @@ class Desk:
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(description="Opening Doors desk")
     p.add_argument("--only", nargs="*", help="account ids, e.g. acc-01")
+    p.add_argument("--simulate-reply", nargs="*", default=[], metavar="ID:TOUCH",
+                   help="play a reply at that touch, e.g. acc-01:3, so the account reaches the Qualifier")
     args = p.parse_args(argv)
+    sim = {x.split(":")[0]: int(x.split(":")[1]) for x in args.simulate_reply}
     desk = Desk()
     try:
-        out = desk.run(args.only)
+        out = desk.run(args.only, sim)
     except SpendCapReached as e:
         print(f"{e}. Here is the video instead.")
         return 2
@@ -117,6 +139,19 @@ def main(argv: Optional[List[str]] = None) -> int:
             print("     " + t["body"].replace("\n", "\n     "))
     for pid, sch in out["schedule"].items():
         print(f"\nSCHEDULE  {sch['name']}  " + "  ".join(f"T{t['touch']} {t['due']}" for t in sch["touches"]))
+    for pid, q in out["qualified"].items():
+        print(f"\nQUALIFICATION  {q['name']}  (replied at {q['replied_at']})")
+        for k, v in q["qualification"].items():
+            print(f"  {k.replace('_', ' ')}: {v}")
+        print(f"\nVALUE FRAME  {q['name']}")
+        for k, v in q["value_frame"].items():
+            print(f"  {k.replace('_', ' ')}: {v}")
+        mp = q["mutual_plan"]
+        print(f"\nMUTUAL PLAN  {q['name']}")
+        print(f"  goal: {mp['goal']}")
+        for st in mp["steps"]:
+            print(f"  {st['who']} will {st['what']}  by {st['by']}")
+        print(f"  the ask: {mp['the_ask']}")
     print(f"\nsaved to {desk.run_dir}")
     return 0
 

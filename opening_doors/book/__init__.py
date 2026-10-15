@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from typing import Dict, List
 
-from ..config import BOOK_PATH
+from ..config import BOOK_PATH, CALL_NOTES_PATH
 
 NOTICE = "All data invented."
 
@@ -50,3 +50,14 @@ def accounts() -> List[Dict]:
 
 def icp() -> dict:
     return load_book()["icp"]
+
+
+def call_notes() -> dict:
+    """Invented first-call notes, one per account, keyed by account id. Separate from the book."""
+    data = json.loads(CALL_NOTES_PATH.read_text(encoding="utf-8"))
+    if "invented" not in data.get("notice", "").lower():
+        raise BookError("call notes must carry the invented-data notice")
+    notes = {n["id"]: n["note"] for n in data["notes"] if n.get("invented") is True}
+    if len(notes) != 25:
+        raise BookError(f"expected 25 invented call notes, found {len(notes)}")
+    return notes
