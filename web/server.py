@@ -23,6 +23,9 @@ from opening_doors.claude import SpendCapReached
 UK = ZoneInfo("Europe/London")
 HERE = Path(__file__).parent
 AGENT_NAMES = ["Researcher", "Scorer", "Planner", "Writer", "Cadence", "Qualifier"]
+# Colours from the visual (Okabe and Ito). Planner's yellow carries a black edge on the page.
+AGENT_COLOURS = {"Researcher": "#E69F00", "Scorer": "#56B4E9", "Planner": "#F0E442",
+                 "Writer": "#0072B2", "Cadence": "#D55E00", "Qualifier": "#CC79A7"}
 REPLAY_SPEED = 8.0          # saved runs play back this many times faster than they happened
 
 
@@ -43,6 +46,7 @@ class App:
         self.spend_gbp = 0.0
         self.limit: Optional[str] = None
         self.desk = None
+        self.replay_stopped: set = set()     # agents stopped by the AE during a replay
 
     # ---- what the page reads ---------------------------------------------------------------
     def snapshot(self) -> Dict:
@@ -52,11 +56,14 @@ class App:
             return {
                 "notice": config.INVENTED_DATA_NOTICE,
                 "running": self.running, "mode": self.mode, "elapsed": elapsed,
-                "lights": dict(self.lights), "agents": dict(self.agents),
+                "lights": dict(self.lights),
+                "agents": [{"n": i + 1, "name": n, "status": self.agents[n], "colour": AGENT_COLOURS[n]} for i, n in enumerate(AGENT_NAMES)],
                 "log": list(self.log), "spend_gbp": round(self.spend_gbp, 2), "limit": self.limit,
             }
 
     def _entry(self, time_iso: str, who: str, what: str, on_what: str, outcome: str, detail: str) -> None:
+        if who in self.replay_stopped and outcome == "ok":      # in a replay, the gate's refusal is played for them
+            outcome, detail = "stopped", "token revoked"
         parts = [who, what] + ([on_what] if on_what else []) + [outcome.upper() if outcome != "ok" else "ok"] + ([detail] if detail else [])
         with self.lock:
             self.log.append({"time": uk_time(time_iso), "who": who, "what": what, "on_what": on_what,
@@ -87,6 +94,7 @@ class App:
             self.started, self.finished = time.time(), None
             self.lights = {k: False for k in self.lights}
             self.log, self.agents, self.spend_gbp, self.limit = [], {n: "waiting" for n in AGENT_NAMES}, 0.0, None
+            self.replay_stopped = set()
 
     # ---- a real run ----------------------------------------------------------------------------
     def start_run(self) -> bool:
@@ -116,12 +124,21 @@ class App:
                 self.running, self.finished = False, time.time()
 
     def stop_agent(self, name: str) -> bool:
+        """The Stop button on the page. A real run: the desk's Stop, token revoked, next call refused.
+        A replay: the press is logged, the row goes red, and that agent's later lines play as refused."""
+        if name not in AGENT_NAMES or not self.running:
+            return False
+        if self.mode == "replay":
+            with self.lock:
+                already = name in self.replay_stopped
+                self.replay_stopped.add(name)
+            if not already:
+                self._entry(datetime.now(timezone.utc).isoformat(), name, "STOPPED by AE", "", "stopped", "token revoked (replay)")
+            return True
         desk = self.desk
-        if not desk or not self.running:
+        if not desk:
             return False
         ids = {a.name: a.agent_id for a in desk.agents}
-        if name not in ids:
-            return False
         desk.stop(ids[name])
         return True
 
@@ -138,6 +155,12 @@ class App:
         threading.Thread(target=self._replay, args=(path,), daemon=True).start()
         return True
 
+    def _downstream_of_a_stop(self, who: str) -> bool:
+        with self.lock:
+            if who not in AGENT_NAMES or not self.replay_stopped:
+                return False
+            return AGENT_NAMES.index(who) > min(AGENT_NAMES.index(n) for n in self.replay_stopped)
+
     def _replay(self, path: Path) -> None:
         entries = [json.loads(l) for l in (path / "audit.jsonl").read_text().splitlines() if l.strip()]
         try:
@@ -147,6 +170,8 @@ class App:
                 if prev is not None:
                     time.sleep(max(0.0, (t - prev) / REPLAY_SPEED))
                 prev = t
+                if self._downstream_of_a_stop(e["who"]):       # as in a real run, nothing after a stopped agent runs
+                    continue
                 self._entry(e["time"], e["who"], e["what"], e["on_what"], e["outcome"], e["detail"])
             out = path / "out.json"
             if out.exists():

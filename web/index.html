@@ -35,6 +35,23 @@
   .light.on.amber .dot { background: var(--amber); }
   .light.on.red .dot { background: var(--red); }
   .light .label { font-size: 15px; }
+  .agents { list-style: none; margin: 0; padding: 0; }
+  .agents li { display: grid; grid-template-columns: 34px 1fr auto auto; align-items: center; gap: 10px; min-height: 52px; border-top: 1px solid var(--line); }
+  .agents li:first-child { border-top: 0; }
+  .tag { width: 28px; height: 7px; border-radius: 4px; }
+  .tag.edge { box-shadow: 0 0 0 1.5px #111; height: 6px; }
+  .agents .name { font-size: 16px; }
+  .agents .name b { font-weight: 600; margin-right: 6px; color: var(--muted); }
+  .agents .status { font-size: 15px; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+  .status .sd { width: 12px; height: 12px; border-radius: 50%; background: #bdbdbd; }
+  .status.running .sd { background: var(--amber); }
+  .status.done .sd { background: var(--green); }
+  .status.stopped .sd { background: var(--red); }
+  .status.stopped { color: var(--red); }
+  .agents li.stopped .name { color: var(--red); }
+  .stop { min-width: 64px; min-height: 44px; border: 1.5px solid var(--red); border-radius: 22px; background: #fff; color: var(--red);
+    font: 600 15px Inter, -apple-system, sans-serif; cursor: pointer; }
+  .stop:disabled { opacity: .4; cursor: default; }
   .log { list-style: none; margin: 0; padding: 0; }
   .log li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.4; word-break: break-word; }
   .log li:first-child { border-top: 0; }
@@ -66,6 +83,11 @@
       <div class="light amber" id="l-logged"><div class="dot">3</div><div class="label">Logged</div></div>
       <div class="light red" id="l-stoppable"><div class="dot">4</div><div class="label">Stoppable</div></div>
     </div>
+  </section>
+
+  <section class="card" aria-label="Agents">
+    <h2>AGENTS <span>&middot; every one acts on the AE's behalf</span></h2>
+    <ul class="agents" id="agents"></ul>
   </section>
 
   <section class="card" aria-label="Live log">
@@ -108,6 +130,12 @@
     $("runline").textContent = s.running ? "Run " + mm + replay
       : (s.log.length ? "Finished in " + mm + replay + (s.spend_gbp ? "  ·  spend " + (s.mode === "replay" ? "of that run" : "this run") + " £" + s.spend_gbp.toFixed(2) : "") : "");
     lights(s);
+    $("agents").innerHTML = s.agents.map(function (a) {
+      return '<li class="' + a.status + '"><span class="tag' + (a.name === "Planner" ? " edge" : "") + '" style="background:' + a.colour + '"></span>'
+        + '<span class="name"><b>' + a.n + "</b>" + a.name + "</span>"
+        + '<span class="status ' + a.status + '"><span class="sd"></span>' + a.status + "</span>"
+        + '<button class="stop" type="button" data-agent="' + a.name + '"' + (s.running && a.status !== "stopped" && a.status !== "done" ? "" : " disabled") + ">Stop</button></li>";
+    }).join("");
     var lines = s.log, show = expanded ? lines : lines.slice(-3);
     $("logempty").hidden = lines.length > 0;
     if (lines.length !== lastCount || expanded) {
@@ -125,6 +153,10 @@
   }
   $("run").addEventListener("click", function () { fetch("/run", { method: "POST" }); });
   $("expand").addEventListener("click", function () { expanded = !expanded; if (state) render(state); });
+  $("agents").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button.stop");
+    if (b && !b.disabled) { b.disabled = true; fetch("/stop/" + encodeURIComponent(b.getAttribute("data-agent")), { method: "POST" }); }
+  });
   poll();
 })();
 </script>
