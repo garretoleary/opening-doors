@@ -11,7 +11,7 @@ OUT = Path(__file__).with_name("accounts.json")
 # name, sector, hq, employees, people [(name, role)], signals [(kind, text, date)], how staff access systems today (invented, no sign-in details)
 RAW = [
     ("Harrowgate Lumen", "Commercial lighting and building controls", "Leeds, UK", 8200,
-     [("Priya Oduya-Marsh", "COO, joined September 2026"), ("Tomasz Reardon", "Head of IT")],
+     [("Priya Oduya-Marsh", "COO, joined September 2026"), ("Ruaridh Okafor-Lindley", "Head of IT")],
      [("new executive", "New COO started 1 September; first 100 days plan mentions 'one login for every site'", "2026-09-01"),
       ("hiring", "Two open roles: Identity Engineer, IAM Programme Lead", "2026-10-02")],
      "Mixed: on-prem directory plus three cloud apps each with their own logins"),
