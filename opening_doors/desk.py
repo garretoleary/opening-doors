@@ -17,7 +17,7 @@ from . import config
 from .agents import Cadence, Planner, Qualifier, Researcher, Scorer, Writer
 from .book import call_notes, load_book
 from .claude import AskFn, Spend, SpendCapReached, make_ask
-from .governance import Governor, PermissionDenied
+from .governance import Governor, PermissionDenied, Stopped
 
 ZONES = {4: "Open the door", 3: "Earn the call", 2: "Frame the value", 1: "Commit"}
 
@@ -38,6 +38,31 @@ class Desk:
         self.agents = [self.researcher, self.scorer, self.planner, self.writer, self.cadence, self.qualifier]
         self.state: Dict[str, Dict] = {}     # account id -> zone, stop
         self.out: Dict = {}
+        self.stopped: List[str] = []         # agents the AE stopped this run
+
+    # ---- Question 4. The Stop button. Callable from the page, a thread, or a test, at any moment. ----
+    def stop(self, agent_id: str) -> None:
+        """The AE presses Stop. The token is revoked now; the agent's next action is refused and logged."""
+        self.gov.stop(agent_id)
+        if agent_id not in self.stopped:
+            self.stopped.append(agent_id)
+
+    def press_stop_when(self, agent_id: str, log_phrase: str) -> None:
+        """Demo helper: press Stop on agent_id the moment a log line contains log_phrase.
+        This is the AE's finger on the button at a chosen point mid-run."""
+        def listener(entry):
+            if log_phrase in entry.line() and agent_id not in self.stopped:
+                self.stop(agent_id)
+        self.gov.log.subscribe(listener)
+
+    def _stage(self, agent, fn, empty):
+        """Run one agent's stage. If the AE has stopped that agent, the stage ends there,
+        the desk notes it, and the run carries on with whatever came before."""
+        try:
+            return fn()
+        except Stopped:
+            self.gov.log.record("desk", "stage ended early", agent.name, "ok", "stopped by AE, run continues")
+            return empty
 
     def run(self, only_ids: Optional[List[str]] = None, simulate_reply: Optional[Dict[str, int]] = None) -> Dict:
         """Take the book, or a chosen few accounts, through the six agents.
@@ -56,15 +81,15 @@ class Desk:
             agent.register()
         self.gov.log.record("desk", "run started", f"{len(book['accounts'])} accounts", "ok", config.INVENTED_DATA_NOTICE)
 
-        notes = self.researcher.run(book)
-        ranked = self.scorer.run(notes, book["icp"])
-        plans = self.planner.run(ranked, notes, book)
+        notes = self._stage(self.researcher, lambda: self.researcher.run(book), [])
+        ranked = self._stage(self.scorer, lambda: self.scorer.run(notes, book["icp"]), []) if notes else []
+        plans = self._stage(self.planner, lambda: self.planner.run(ranked, notes, book), {}) if ranked else {}
         for pid in plans:
             self.state[pid]["stop"] = "planned"
-        drafts = self.writer.run(plans)
+        drafts = self._stage(self.writer, lambda: self.writer.run(plans), {}) if plans else {}
         for pid in drafts:
             self.state[pid]["stop"] = "drafted"
-        schedule = self.cadence.run(drafts, {pid: p["name"] for pid, p in plans.items()})
+        schedule = self._stage(self.cadence, lambda: self.cadence.run(drafts, {pid: p["name"] for pid, p in plans.items()}), {}) if drafts else {}
         for pid in schedule:
             self.state[pid]["stop"] = "T1 scheduled"
 
@@ -72,27 +97,32 @@ class Desk:
         for pid, touch in (simulate_reply or {}).items():
             if pid not in schedule:
                 continue
-            for n in range(1, touch + 1):
-                self.cadence.given_by_ae(pid, n)
-                if n < touch:
-                    self.cadence.no_reply(pid)
-            self.cadence.reply(pid, touch)
-            self.state[pid].update(zone=2, stop="First call")
-        qualified = self.qualifier.run(self.cadence.handoffs, call_notes()) if self.cadence.handoffs else {}
+            def play(pid=pid, touch=touch):
+                for n in range(1, touch + 1):
+                    self.cadence.given_by_ae(pid, n)
+                    if n < touch:
+                        self.cadence.no_reply(pid)
+                self.cadence.reply(pid, touch)
+                self.state[pid].update(zone=2, stop="First call")
+            self._stage(self.cadence, play, None)
+        qualified = (self._stage(self.qualifier, lambda: self.qualifier.run(self.cadence.handoffs, call_notes()), {})
+                     if self.cadence.handoffs else {})
         for pid in qualified:
             self.state[pid]["stop"] = "Problem identified, value defined"
 
         # The governance check every run makes: no agent may send. Refused and logged, never skipped.
+        checker = self.writer if "agent-4" not in self.stopped else self.planner
+        target = ranked[0]["name"] if ranked else ""
         try:
-            self.writer.act("send_email", ranked[0]["name"], lambda: None, what="send email")
-        except PermissionDenied:
+            checker.act("send_email", target, lambda: None, what="send email")
+        except (PermissionDenied, Stopped):
             pass
 
         self.gov.log.record("desk", "run finished", "", "ok",
                             f"£{self.spend.gbp_this_run:.2f} this run, {self.spend.calls} model calls")
         self.out = {
             "run_id": self.run_id, "notice": config.INVENTED_DATA_NOTICE,
-            "notes": notes, "ranked": ranked, "plans": plans, "drafts": drafts, "schedule": schedule, "qualified": qualified, "state": self.state,
+            "notes": notes, "ranked": ranked, "plans": plans, "drafts": drafts, "schedule": schedule, "qualified": qualified, "stopped": self.stopped, "state": self.state,
             "lights": self.gov.lights, "agents": self.gov.registry.as_rows(),
             "spend": {"gbp": round(self.spend.gbp_this_run, 4), "calls": self.spend.calls,
                       "input_tokens": self.spend.input_tokens, "output_tokens": self.spend.output_tokens},
@@ -107,9 +137,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("--only", nargs="*", help="account ids, e.g. acc-01")
     p.add_argument("--simulate-reply", nargs="*", default=[], metavar="ID:TOUCH",
                    help="play a reply at that touch, e.g. acc-01:3, so the account reaches the Qualifier")
+    p.add_argument("--stop", nargs=2, metavar=("AGENT", "WHEN"), default=None,
+                   help="press Stop on an agent when a log line contains WHEN, e.g. --stop agent-4 'read plans'")
     args = p.parse_args(argv)
     sim = {x.split(":")[0]: int(x.split(":")[1]) for x in args.simulate_reply}
     desk = Desk()
+    if args.stop:
+        desk.press_stop_when(args.stop[0], args.stop[1])
     try:
         out = desk.run(args.only, sim)
     except SpendCapReached as e:
@@ -120,6 +154,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     for line in out["log"]:
         print(" ", line)
     print("\nLIGHTS", {k: ("on" if v else "off") for k, v in out["lights"].items()})
+    print("AGENTS", "  ".join(f"{a['name']}: {a['status']}" for a in out["agents"]))
     print("\nSPEND", f"£{out['spend']['gbp']:.4f}", out["spend"]["calls"], "calls",
           out["spend"]["input_tokens"], "in,", out["spend"]["output_tokens"], "out")
     print("\nOUT")
