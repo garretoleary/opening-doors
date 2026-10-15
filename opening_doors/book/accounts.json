@@ -1,0 +1,721 @@
+{
+  "notice": "All data invented. Every company, person, signal and number is made up. No name is a real firm.",
+  "as_of": "2026-10-15",
+  "icp": {
+    "name": "Ideal client profile (invented, for the demo)",
+    "size": "4,000 to 20,000 employees",
+    "geography": "UK headquartered",
+    "fit": [
+      "many frontline, contractor or agency staff who share logins today",
+      "a live trigger in the last 90 days: new executive, merger or acquisition, regulation, incident, replatform or RFP",
+      "a named economic buyer at COO, CIO, CFO or CISO level",
+      "more than one directory or identity set-up after acquisitions"
+    ],
+    "avoid": [
+      "no trigger in the last 90 days",
+      "central single sign-on already covering frontline staff"
+    ]
+  },
+  "accounts": [
+    {
+      "id": "acc-01",
+      "name": "Harrowgate Lumen",
+      "sector": "Commercial lighting and building controls",
+      "hq": "Leeds, UK",
+      "employees": 8200,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Priya Oduya-Marsh",
+          "role": "COO, joined September 2026"
+        },
+        {
+          "name": "Tomasz Reardon",
+          "role": "Head of IT"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "new executive",
+          "text": "New COO started 1 September; first 100 days plan mentions 'one login for every site'",
+          "date": "2026-09-01"
+        },
+        {
+          "kind": "hiring",
+          "text": "Two open roles: Identity Engineer, IAM Programme Lead",
+          "date": "2026-10-02"
+        }
+      ],
+      "access_setup_today": "Mixed: on-prem directory plus three cloud apps each with their own logins",
+      "invented": true
+    },
+    {
+      "id": "acc-02",
+      "name": "Veldstone Marine",
+      "sector": "Port logistics and ship servicing",
+      "hq": "Southampton, UK",
+      "employees": 11400,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Ingrid Fallowmere",
+          "role": "CIO"
+        },
+        {
+          "name": "Dafydd Okonkwo-Price",
+          "role": "Finance Director"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "ERP replatform",
+          "text": "Board minutes: ERP replatform approved, go-live target Q3 2027",
+          "date": "2026-09-18"
+        },
+        {
+          "kind": "contractor surge",
+          "text": "Contractor headcount up 40% for the replatform",
+          "date": "2026-10-06"
+        }
+      ],
+      "access_setup_today": "Legacy directory; contractors onboarded by email and spreadsheet",
+      "invented": true
+    },
+    {
+      "id": "acc-03",
+      "name": "Quillon Health",
+      "sector": "Private diagnostics clinics",
+      "hq": "Manchester, UK",
+      "employees": 6300,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Dr Rosalind Achterberg",
+          "role": "Chief Medical Information Officer"
+        },
+        {
+          "name": "Marcus Vellacott",
+          "role": "CISO, appointed July 2026"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "hiring",
+          "text": "Three open identity roles posted in one week",
+          "date": "2026-10-08"
+        },
+        {
+          "kind": "regulation",
+          "text": "Clinical records audit due March 2027; access reviews flagged last year",
+          "date": "2026-08-20"
+        }
+      ],
+      "access_setup_today": "Shared ward logins; access reviews done by hand twice a year",
+      "invented": true
+    },
+    {
+      "id": "acc-04",
+      "name": "Brackwater Foods",
+      "sector": "Chilled food manufacturing",
+      "hq": "Norwich, UK",
+      "employees": 9700,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Helena Thorsby-Kane",
+          "role": "Group CFO"
+        },
+        {
+          "name": "Obi Lansdowne",
+          "role": "IT Director"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "acquisition",
+          "text": "Acquisition of a 1,800-person bakery group closed 30 September; integration starts now",
+          "date": "2026-09-30"
+        }
+      ],
+      "access_setup_today": "Two directories after the acquisition, no plan yet to merge them",
+      "invented": true
+    },
+    {
+      "id": "acc-05",
+      "name": "Orrin & Tave",
+      "sector": "Insurance broking",
+      "hq": "Bristol, UK",
+      "employees": 4800,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Celestine Marrow",
+          "role": "Chief Operating Officer"
+        },
+        {
+          "name": "Kwame Ashdown",
+          "role": "Head of Technology"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "RFP",
+          "text": "Cloud migration RFP issued; identity and access listed as workstream 2",
+          "date": "2026-10-05"
+        }
+      ],
+      "access_setup_today": "Data centre directory, VPN for everyone, no single sign-on",
+      "invented": true
+    },
+    {
+      "id": "acc-06",
+      "name": "Pellmoor Rail Services",
+      "sector": "Rail maintenance contractor",
+      "hq": "Derby, UK",
+      "employees": 7600,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Gareth Ilunga-Price",
+          "role": "Managing Director"
+        },
+        {
+          "name": "Sunita Fairweather",
+          "role": "CISO"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "incident",
+          "text": "Credential-stuffing incident disclosed to regulator; no data loss claimed",
+          "date": "2026-09-12"
+        }
+      ],
+      "access_setup_today": "Password-only logins for field staff on shared tablets",
+      "invented": true
+    },
+    {
+      "id": "acc-07",
+      "name": "Caskellon Energy",
+      "sector": "Regional gas and power retailer",
+      "hq": "Glasgow, UK",
+      "employees": 5900,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Fenwick Adebayo-Ross",
+          "role": "CEO"
+        },
+        {
+          "name": "Lorna Quist",
+          "role": "CIO"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "new executive",
+          "text": "New CIO, previously ran a cloud-first programme at a larger utility",
+          "date": "2026-08-15"
+        },
+        {
+          "kind": "expansion",
+          "text": "Entering the Irish market in 2027; 400 new hires planned",
+          "date": "2026-10-01"
+        }
+      ],
+      "access_setup_today": "Cloud directory for head office, legacy for call centres",
+      "invented": true
+    },
+    {
+      "id": "acc-08",
+      "name": "Tarnbeck Logistics",
+      "sector": "Parcel and pallet network",
+      "hq": "Warrington, UK",
+      "employees": 14200,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Ravi Blackwood-Nair",
+          "role": "COO"
+        },
+        {
+          "name": "Imogen Castellane",
+          "role": "Head of Security"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "SaaS sprawl",
+          "text": "Internal audit counted 212 SaaS apps, 140 outside IT control",
+          "date": "2026-09-25"
+        }
+      ],
+      "access_setup_today": "SSO for 30 apps; the rest are individual logins",
+      "invented": true
+    },
+    {
+      "id": "acc-09",
+      "name": "Mirrenhall Group",
+      "sector": "Student accommodation operator",
+      "hq": "Edinburgh, UK",
+      "employees": 4300,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Alasdair Penhaligon-Osei",
+          "role": "Finance Director"
+        },
+        {
+          "name": "Bea Trantham",
+          "role": "IT Manager"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "hiring",
+          "text": "First ever Head of Information Security role advertised",
+          "date": "2026-10-09"
+        }
+      ],
+      "access_setup_today": "One shared admin account per building",
+      "invented": true
+    },
+    {
+      "id": "acc-10",
+      "name": "Dunwold Civil",
+      "sector": "Civil engineering contractor",
+      "hq": "Birmingham, UK",
+      "employees": 12800,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Margarethe Olufemi-Stroud",
+          "role": "Group CIO"
+        },
+        {
+          "name": "Callum Reinholt",
+          "role": "Programme Director"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "merger",
+          "text": "Merger with a 5,000-person rival announced; completion expected January 2027",
+          "date": "2026-10-03"
+        }
+      ],
+      "access_setup_today": "Two of everything; identity named as a day-one integration risk",
+      "invented": true
+    },
+    {
+      "id": "acc-11",
+      "name": "Sablefern Pharma Services",
+      "sector": "Contract pharmaceutical manufacturing",
+      "hq": "Macclesfield, UK",
+      "employees": 6800,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Dr Yusuf Carrowmore",
+          "role": "VP Quality"
+        },
+        {
+          "name": "Nadia Ellsworth-Bai",
+          "role": "Head of IT"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "regulation",
+          "text": "Regulator inspection noted shared credentials on the shop floor",
+          "date": "2026-09-08"
+        }
+      ],
+      "access_setup_today": "Shared badge logins on production lines",
+      "invented": true
+    },
+    {
+      "id": "acc-12",
+      "name": "Lantergate Retail",
+      "sector": "Homeware chain, 190 stores",
+      "hq": "Nottingham, UK",
+      "employees": 15600,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Siobhan Marchetti-Oyelaran",
+          "role": "Chief Digital Officer"
+        },
+        {
+          "name": "Piers Haldane",
+          "role": "CISO"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "new executive",
+          "text": "New CDO, hired to 'join up online and store'",
+          "date": "2026-09-20"
+        },
+        {
+          "kind": "seasonal",
+          "text": "9,000 seasonal staff to onboard by mid-November",
+          "date": "2026-10-10"
+        }
+      ],
+      "access_setup_today": "Store staff share tills and logins; head office on cloud SSO",
+      "invented": true
+    },
+    {
+      "id": "acc-13",
+      "name": "Corvane Aerospace Components",
+      "sector": "Precision parts for aircraft",
+      "hq": "Preston, UK",
+      "employees": 5200,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Henrietta Ashby-Kalu",
+          "role": "Managing Director"
+        },
+        {
+          "name": "Declan Morrowfield",
+          "role": "Head of Compliance"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "regulation",
+          "text": "Defence supply-chain accreditation renewal due June 2027, identity controls in scope",
+          "date": "2026-08-28"
+        }
+      ],
+      "access_setup_today": "On-prem only, no multi-factor outside IT",
+      "invented": true
+    },
+    {
+      "id": "acc-14",
+      "name": "Whitlowe Water",
+      "sector": "Regional water utility",
+      "hq": "Exeter, UK",
+      "employees": 4600,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Oluwaseun Trevithick",
+          "role": "CIO"
+        },
+        {
+          "name": "Mairead Konstantin",
+          "role": "Head of OT Security"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "incident",
+          "text": "Phishing campaign reached operations staff; disclosed in annual report",
+          "date": "2026-09-30"
+        }
+      ],
+      "access_setup_today": "Separate identity for office and operations networks",
+      "invented": true
+    },
+    {
+      "id": "acc-15",
+      "name": "Greyhallow Media",
+      "sector": "Regional news and radio group",
+      "hq": "Cardiff, UK",
+      "employees": 4100,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Jonah Petrakis-Lowe",
+          "role": "CEO"
+        },
+        {
+          "name": "Freya Abernethy",
+          "role": "Head of Technology"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "restructure",
+          "text": "Three newsrooms merged into one hub; 600 roles changing",
+          "date": "2026-10-07"
+        }
+      ],
+      "access_setup_today": "Each title has its own systems and logins",
+      "invented": true
+    },
+    {
+      "id": "acc-16",
+      "name": "Ashcombe Dental Partners",
+      "sector": "Dental practice group, 310 sites",
+      "hq": "Reading, UK",
+      "employees": 7100,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Dr Amara Fitzwilliam-Sen",
+          "role": "Clinical Director"
+        },
+        {
+          "name": "Rupert Olawale",
+          "role": "COO"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "acquisition",
+          "text": "Buying 40 practices a year; each arrives with its own IT",
+          "date": "2026-09-15"
+        }
+      ],
+      "access_setup_today": "Practice-level logins; no central directory",
+      "invented": true
+    },
+    {
+      "id": "acc-17",
+      "name": "Stornbridge Capital Partners",
+      "sector": "Asset management",
+      "hq": "London, UK",
+      "employees": 4400,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Theodora Nkemelu-Vance",
+          "role": "Chief Risk Officer"
+        },
+        {
+          "name": "Hamish Delacroix",
+          "role": "CISO"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "regulation",
+          "text": "Operational resilience deadline March 2027; access control a named gap",
+          "date": "2026-09-22"
+        }
+      ],
+      "access_setup_today": "Cloud SSO in place; privileged access still manual",
+      "invented": true
+    },
+    {
+      "id": "acc-18",
+      "name": "Fellbrook Automotive Retail",
+      "sector": "Car dealership group",
+      "hq": "Leicester, UK",
+      "employees": 8900,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Benedict Oyelowo-Hart",
+          "role": "Group IT Director"
+        },
+        {
+          "name": "Carys Lindqvist",
+          "role": "Finance Director"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "cost",
+          "text": "Board asked for 15% IT cost cut; 60 overlapping tools identified",
+          "date": "2026-10-04"
+        }
+      ],
+      "access_setup_today": "Four directories after four acquisitions",
+      "invented": true
+    },
+    {
+      "id": "acc-19",
+      "name": "Morrowick Care Homes",
+      "sector": "Residential care operator",
+      "hq": "Sheffield, UK",
+      "employees": 13500,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Grace Adeyemi-Thorne",
+          "role": "Chief Operating Officer"
+        },
+        {
+          "name": "Leon Starkadder",
+          "role": "Head of Digital"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "hiring",
+          "text": "Agency staff now 30% of shifts; onboarding takes four days",
+          "date": "2026-09-27"
+        }
+      ],
+      "access_setup_today": "Paper sign-in sheets for agency staff systems access",
+      "invented": true
+    },
+    {
+      "id": "acc-20",
+      "name": "Kestrelmoor Construction",
+      "sector": "Housebuilder",
+      "hq": "Milton Keynes, UK",
+      "employees": 6200,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Vikram Ashdown-Reilly",
+          "role": "CFO"
+        },
+        {
+          "name": "Elspeth Nwachukwu",
+          "role": "IT Director"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "new executive",
+          "text": "New CFO from a listed competitor; known for digital spend reviews",
+          "date": "2026-09-05"
+        }
+      ],
+      "access_setup_today": "Site offices on local accounts",
+      "invented": true
+    },
+    {
+      "id": "acc-21",
+      "name": "Haverlane Education Trust",
+      "sector": "Multi-academy trust, 48 schools",
+      "hq": "Leeds, UK",
+      "employees": 5100,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Dr Ngozi Bramblecote",
+          "role": "Chief Executive"
+        },
+        {
+          "name": "Oliver Sandqvist",
+          "role": "Head of IT"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "regulation",
+          "text": "Safeguarding review called for named-user access in every school",
+          "date": "2026-10-01"
+        }
+      ],
+      "access_setup_today": "Shared staff-room logins at most schools",
+      "invented": true
+    },
+    {
+      "id": "acc-22",
+      "name": "Tollwick Chemicals",
+      "sector": "Specialty chemicals",
+      "hq": "Middlesbrough, UK",
+      "employees": 4900,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Annika Berglund-Oyo",
+          "role": "Site Director"
+        },
+        {
+          "name": "Fergus Mallinder",
+          "role": "Head of IT"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "expansion",
+          "text": "New plant in Teesside; 700 hires over 18 months",
+          "date": "2026-09-10"
+        }
+      ],
+      "access_setup_today": "On-prem directory, multi-factor for remote only",
+      "invented": true
+    },
+    {
+      "id": "acc-23",
+      "name": "Brindlemere Hospitality",
+      "sector": "Hotels and pubs, 220 sites",
+      "hq": "York, UK",
+      "employees": 16800,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Cassius Ferreira-Blythe",
+          "role": "Chief Operating Officer"
+        },
+        {
+          "name": "Tamsin Oyelaran",
+          "role": "IT Director"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "SaaS sprawl",
+          "text": "Rota, till, and booking systems all have separate staff logins; 40% turnover",
+          "date": "2026-09-29"
+        }
+      ],
+      "access_setup_today": "No central identity; general managers create accounts",
+      "invented": true
+    },
+    {
+      "id": "acc-24",
+      "name": "Ravensholt Engineering Group",
+      "sector": "Industrial pumps and valves",
+      "hq": "Huddersfield, UK",
+      "employees": 19200,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Katarzyna Umeh-Fairfax",
+          "role": "Group CIO"
+        },
+        {
+          "name": "Dominic Alderley",
+          "role": "CISO"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "cloud",
+          "text": "Board approved 'cloud by 2028'; identity programme to start Q1 2027",
+          "date": "2026-10-02"
+        }
+      ],
+      "access_setup_today": "Large on-prem estate; cloud pilot in one division",
+      "invented": true
+    },
+    {
+      "id": "acc-25",
+      "name": "Pennywhistle Logistics",
+      "sector": "Food distribution to restaurants",
+      "hq": "Bradford, UK",
+      "employees": 7300,
+      "relationship": "none",
+      "people": [
+        {
+          "name": "Jude Harrowell-Mensah",
+          "role": "Managing Director"
+        },
+        {
+          "name": "Sally Varndean",
+          "role": "Head of IT"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "incident",
+          "text": "Ransomware at a competitor prompted a board question on access",
+          "date": "2026-10-11"
+        }
+      ],
+      "access_setup_today": "Warehouse PCs on shared logins",
+      "invented": true
+    }
+  ]
+}
