@@ -36,6 +36,7 @@
   .light.on.amber .dot { background: var(--amber); }
   .light.on.red .dot { background: var(--red); }
   .govline { margin: 10px 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; font-family: inherit; }
+  .credit b, footer b, .govline b { font-weight: 600; font-size: inherit; }
   .light .label { font-size: 12px; line-height: 1.2; white-space: nowrap; overflow: visible; letter-spacing: -0.01em; }
   .agents { list-style: none; margin: 0; padding: 0; }
   .agents li { display: grid; grid-template-columns: 34px minmax(0, 1fr) 84px 72px; align-items: center; gap: 6px; min-height: 52px; border-top: 1px solid var(--line); }
@@ -168,7 +169,7 @@
       <h1>Opening Doors</h1>
       <p class="desc">Six AI Agents hunting 25 named accounts, on the AE's behalf, under governance.</p>
       <p class="notice">All data invented.</p>
-      <p class="credit">Built by Garret O'Leary with Claude Code on the Claude API.</p>
+      <p class="credit">Built by <b>Garret O'Leary</b> with <b>Claude Code</b> on the Claude API.</p>
     </div>
     <div class="runbox">
       <button class="run" id="run" type="button">&#9654;&nbsp; Run the hunt</button>
@@ -188,7 +189,7 @@
         <div class="light amber" id="l-logged"><div class="dot">3</div><div class="label">Logged</div></div>
         <div class="light red" id="l-stoppable"><div class="dot">4</div><div class="label">Stoppable</div></div>
       </div>
-      <p class="govline">Modelled on the Blueprint Alliance&rsquo;s four questions for governing AI agents, in this order: registered, permitted, logged, stoppable.</p>
+      <p class="govline">Modelled on the <b>Blueprint Alliance</b>&rsquo;s four questions for governing AI agents, in this order: registered, permitted, logged, stoppable.</p>
     </div>
     <div class="stripinfo desktop-only" id="stripinfo"></div>
   </section>
@@ -233,7 +234,7 @@
     <button class="expand" id="expand" type="button" hidden>see all</button>
   </section>
 
-  <footer>Every agent acts on the AE's behalf. No agent is permitted to send. Times are UK. Built by Garret O'Leary with Claude Code on the Claude API.</footer>
+  <footer>Every agent acts on the AE's behalf. No agent is permitted to send. Times are UK. Built by <b>Garret O'Leary</b> with <b>Claude Code</b> on the Claude API.</footer>
 </main>
 <script>
 (function () {
