@@ -1,0 +1,128 @@
+{"time": "2026-10-16T09:04:29.101+00:00", "who": "desk", "what": "registered", "on_what": "Researcher", "outcome": "ok", "detail": "owner ae-001"}
+{"time": "2026-10-16T09:04:29.102+00:00", "who": "desk", "what": "registered", "on_what": "Scorer", "outcome": "ok", "detail": "owner ae-001"}
+{"time": "2026-10-16T09:04:29.102+00:00", "who": "desk", "what": "registered", "on_what": "Planner", "outcome": "ok", "detail": "owner ae-001"}
+{"time": "2026-10-16T09:04:29.102+00:00", "who": "desk", "what": "registered", "on_what": "Writer", "outcome": "ok", "detail": "owner ae-001"}
+{"time": "2026-10-16T09:04:29.102+00:00", "who": "desk", "what": "registered", "on_what": "Cadence", "outcome": "ok", "detail": "owner ae-001"}
+{"time": "2026-10-16T09:04:29.102+00:00", "who": "desk", "what": "registered", "on_what": "Qualifier", "outcome": "ok", "detail": "owner ae-001"}
+{"time": "2026-10-16T09:04:29.102+00:00", "who": "desk", "what": "run started", "on_what": "25 accounts", "outcome": "ok", "detail": "All data invented. Every company, person, signal and number is made up."}
+{"time": "2026-10-16T09:04:29.102+00:00", "who": "Researcher", "what": "read book", "on_what": "25 accounts", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:04:29.102+00:00", "who": "Researcher", "what": "read signals", "on_what": "25 accounts", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:04:55.921+00:00", "who": "Scorer", "what": "read research", "on_what": "25 notes", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:14.207+00:00", "who": "Scorer", "what": "ranked 25", "on_what": "", "outcome": "ok", "detail": "top: Harrowgate Lumen"}
+{"time": "2026-10-16T09:05:14.208+00:00", "who": "Planner", "what": "read scores", "on_what": "top 10", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:17.987+00:00", "who": "Planner", "what": "account plan", "on_what": "Quillon Health", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:18.739+00:00", "who": "Planner", "what": "account plan", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:18.835+00:00", "who": "Planner", "what": "account plan", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:18.854+00:00", "who": "Planner", "what": "account plan", "on_what": "Lantergate Retail", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:19.452+00:00", "who": "Planner", "what": "account plan", "on_what": "Dunwold Civil", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:22.687+00:00", "who": "Planner", "what": "account plan", "on_what": "Veldstone Marine", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:24.509+00:00", "who": "Planner", "what": "account plan", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:25.296+00:00", "who": "Planner", "what": "account plan", "on_what": "Caskellon Energy", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:25.756+00:00", "who": "Planner", "what": "account plan", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:26.571+00:00", "who": "Planner", "what": "account plan", "on_what": "Orrin & Tave", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:26.572+00:00", "who": "Writer", "what": "read plans", "on_what": "10 plans", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:38.852+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Dunwold Civil", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:39.838+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Quillon Health", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:39.998+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:43.000+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:45.789+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Lantergate Retail", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:51.624+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Veldstone Marine", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:52.389+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:53.273+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.431+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Orrin & Tave", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.797+00:00", "who": "Writer", "what": "drafted T1 to T5", "on_what": "Caskellon Energy", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.799+00:00", "who": "Cadence", "what": "read drafts", "on_what": "10 accounts", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.800+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.800+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Dunwold Civil", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.800+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Quillon Health", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.800+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.801+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Lantergate Retail", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.801+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Veldstone Marine", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.801+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.802+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.802+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Caskellon Energy", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.802+00:00", "who": "Cadence", "what": "scheduled T1 to T5", "on_what": "Orrin & Tave", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.803+00:00", "who": "Cadence", "what": "T1 given", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.803+00:00", "who": "Cadence", "what": "no reply", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": "next T2"}
+{"time": "2026-10-16T09:05:59.803+00:00", "who": "Cadence", "what": "T2 given", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.803+00:00", "who": "Cadence", "what": "no reply", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": "next T3"}
+{"time": "2026-10-16T09:05:59.803+00:00", "who": "Cadence", "what": "T3 given", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.804+00:00", "who": "Cadence", "what": "reply received, invented", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": "at T3, to Qualifier, First call"}
+{"time": "2026-10-16T09:05:59.804+00:00", "who": "Cadence", "what": "T1 given", "on_what": "Dunwold Civil", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.804+00:00", "who": "Cadence", "what": "reply received, invented", "on_what": "Dunwold Civil", "outcome": "ok", "detail": "at T1, to Qualifier, First call"}
+{"time": "2026-10-16T09:05:59.804+00:00", "who": "Cadence", "what": "T1 given", "on_what": "Quillon Health", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.804+00:00", "who": "Cadence", "what": "no reply", "on_what": "Quillon Health", "outcome": "ok", "detail": "next T2"}
+{"time": "2026-10-16T09:05:59.804+00:00", "who": "Cadence", "what": "T2 given", "on_what": "Quillon Health", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.805+00:00", "who": "Cadence", "what": "reply received, invented", "on_what": "Quillon Health", "outcome": "ok", "detail": "at T2, to Qualifier, First call"}
+{"time": "2026-10-16T09:05:59.805+00:00", "who": "Cadence", "what": "T1 given", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.805+00:00", "who": "Cadence", "what": "no reply", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": "next T2"}
+{"time": "2026-10-16T09:05:59.805+00:00", "who": "Cadence", "what": "T2 given", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.805+00:00", "who": "Cadence", "what": "reply received, invented", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": "at T2, to Qualifier, First call"}
+{"time": "2026-10-16T09:05:59.805+00:00", "who": "Cadence", "what": "T1 given", "on_what": "Lantergate Retail", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.806+00:00", "who": "Cadence", "what": "no reply", "on_what": "Lantergate Retail", "outcome": "ok", "detail": "next T2"}
+{"time": "2026-10-16T09:05:59.806+00:00", "who": "Cadence", "what": "T2 given", "on_what": "Lantergate Retail", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.806+00:00", "who": "Cadence", "what": "no reply", "on_what": "Lantergate Retail", "outcome": "ok", "detail": "next T3"}
+{"time": "2026-10-16T09:05:59.806+00:00", "who": "Cadence", "what": "T3 given", "on_what": "Lantergate Retail", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.806+00:00", "who": "Cadence", "what": "awaiting reply", "on_what": "Lantergate Retail", "outcome": "ok", "detail": "T2 given, day 9 of the sequence"}
+{"time": "2026-10-16T09:05:59.807+00:00", "who": "Cadence", "what": "T1 given", "on_what": "Veldstone Marine", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.807+00:00", "who": "Cadence", "what": "no reply", "on_what": "Veldstone Marine", "outcome": "ok", "detail": "next T2"}
+{"time": "2026-10-16T09:05:59.807+00:00", "who": "Cadence", "what": "T2 given", "on_what": "Veldstone Marine", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.808+00:00", "who": "Cadence", "what": "no reply", "on_what": "Veldstone Marine", "outcome": "ok", "detail": "next T3"}
+{"time": "2026-10-16T09:05:59.808+00:00", "who": "Cadence", "what": "T3 given", "on_what": "Veldstone Marine", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.808+00:00", "who": "Cadence", "what": "no reply", "on_what": "Veldstone Marine", "outcome": "ok", "detail": "next T4"}
+{"time": "2026-10-16T09:05:59.808+00:00", "who": "Cadence", "what": "T4 given", "on_what": "Veldstone Marine", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.808+00:00", "who": "Cadence", "what": "reply received, invented", "on_what": "Veldstone Marine", "outcome": "ok", "detail": "at T4, to Qualifier, First call"}
+{"time": "2026-10-16T09:05:59.809+00:00", "who": "Cadence", "what": "T1 given", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.809+00:00", "who": "Cadence", "what": "no reply", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": "next T2"}
+{"time": "2026-10-16T09:05:59.809+00:00", "who": "Cadence", "what": "T2 given", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.810+00:00", "who": "Cadence", "what": "no reply", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": "next T3"}
+{"time": "2026-10-16T09:05:59.810+00:00", "who": "Cadence", "what": "T3 given", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.810+00:00", "who": "Cadence", "what": "reply received, invented", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": "at T3, to Qualifier, First call"}
+{"time": "2026-10-16T09:05:59.810+00:00", "who": "Cadence", "what": "T1 given", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.810+00:00", "who": "Cadence", "what": "no reply", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": "next T2"}
+{"time": "2026-10-16T09:05:59.811+00:00", "who": "Cadence", "what": "T2 given", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.812+00:00", "who": "Cadence", "what": "no reply", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": "next T3"}
+{"time": "2026-10-16T09:05:59.812+00:00", "who": "Cadence", "what": "T3 given", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.812+00:00", "who": "Cadence", "what": "no reply", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": "next T4"}
+{"time": "2026-10-16T09:05:59.813+00:00", "who": "Cadence", "what": "T4 given", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.813+00:00", "who": "Cadence", "what": "awaiting reply", "on_what": "Ashcombe Dental Partners", "outcome": "ok", "detail": "T3 given, day 12 of the sequence"}
+{"time": "2026-10-16T09:05:59.813+00:00", "who": "Cadence", "what": "T1 given", "on_what": "Caskellon Energy", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.813+00:00", "who": "Cadence", "what": "reply received, invented", "on_what": "Caskellon Energy", "outcome": "ok", "detail": "at T1, to Qualifier, First call"}
+{"time": "2026-10-16T09:05:59.814+00:00", "who": "desk", "what": "book position, invented", "on_what": "Ravensholt Engineering Group", "outcome": "ok", "detail": "resting after T5"}
+{"time": "2026-10-16T09:05:59.814+00:00", "who": "desk", "what": "book position, invented", "on_what": "Sablefern Pharma Services", "outcome": "ok", "detail": "T3 given, awaiting reply"}
+{"time": "2026-10-16T09:05:59.814+00:00", "who": "desk", "what": "book position, invented", "on_what": "Stornbridge Capital Partners", "outcome": "ok", "detail": "T4 given, awaiting reply"}
+{"time": "2026-10-16T09:05:59.814+00:00", "who": "desk", "what": "book position, invented", "on_what": "Brackwater Foods", "outcome": "ok", "detail": "resting after T5"}
+{"time": "2026-10-16T09:05:59.815+00:00", "who": "desk", "what": "book position, invented", "on_what": "Tarnbeck Logistics", "outcome": "ok", "detail": "resting after T5"}
+{"time": "2026-10-16T09:05:59.816+00:00", "who": "Qualifier", "what": "read call notes", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.818+00:00", "who": "Qualifier", "what": "read call notes", "on_what": "Dunwold Civil", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.821+00:00", "who": "Qualifier", "what": "read call notes", "on_what": "Quillon Health", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.823+00:00", "who": "Qualifier", "what": "read call notes", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:05:59.825+00:00", "who": "Qualifier", "what": "read call notes", "on_what": "Veldstone Marine", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:06:11.499+00:00", "who": "Qualifier", "what": "qualified, MEDDPICC-lite", "on_what": "Veldstone Marine", "outcome": "ok", "detail": "champion: Possibly Ingrid Fallowmere, CIO. She rai"}
+{"time": "2026-10-16T09:06:11.499+00:00", "who": "Qualifier", "what": "value framed", "on_what": "Veldstone Marine", "outcome": "ok", "detail": "Not yet sized. The only number from the call is a 40% rise i"}
+{"time": "2026-10-16T09:06:11.500+00:00", "who": "Qualifier", "what": "mutual plan drafted", "on_what": "Veldstone Marine", "outcome": "ok", "detail": "6 steps, ask to bring the committee in"}
+{"time": "2026-10-16T09:06:11.500+00:00", "who": "Qualifier", "what": "read call notes", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:06:13.142+00:00", "who": "Qualifier", "what": "qualified, MEDDPICC-lite", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": "champion: Possibly Sunita Fairweather, CISO. She o"}
+{"time": "2026-10-16T09:06:13.142+00:00", "who": "Qualifier", "what": "value framed", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": "Estimate from the call: the risk on the table is a regulator"}
+{"time": "2026-10-16T09:06:13.143+00:00", "who": "Qualifier", "what": "mutual plan drafted", "on_what": "Pellmoor Rail Services", "outcome": "ok", "detail": "7 steps, ask to bring the committee in"}
+{"time": "2026-10-16T09:06:13.143+00:00", "who": "Qualifier", "what": "read call notes", "on_what": "Caskellon Energy", "outcome": "ok", "detail": ""}
+{"time": "2026-10-16T09:06:13.244+00:00", "who": "Qualifier", "what": "qualified, MEDDPICC-lite", "on_what": "Quillon Health", "outcome": "ok", "detail": "champion: Possible champion: Marcus Vellacott, the"}
+{"time": "2026-10-16T09:06:13.245+00:00", "who": "Qualifier", "what": "value framed", "on_what": "Quillon Health", "outcome": "ok", "detail": "Estimate from the call, not confirmed: three unfilled roles'"}
+{"time": "2026-10-16T09:06:13.245+00:00", "who": "Qualifier", "what": "mutual plan drafted", "on_what": "Quillon Health", "outcome": "ok", "detail": "7 steps, ask to bring the committee in"}
+{"time": "2026-10-16T09:06:13.702+00:00", "who": "Qualifier", "what": "qualified, MEDDPICC-lite", "on_what": "Dunwold Civil", "outcome": "ok", "detail": "champion: Possible champion: Margarethe Olufemi-St"}
+{"time": "2026-10-16T09:06:13.702+00:00", "who": "Qualifier", "what": "value framed", "on_what": "Dunwold Civil", "outcome": "ok", "detail": "Not yet known. No number was given on the call. An estimate "}
+{"time": "2026-10-16T09:06:13.702+00:00", "who": "Qualifier", "what": "mutual plan drafted", "on_what": "Dunwold Civil", "outcome": "ok", "detail": "6 steps, ask to bring the committee in"}
+{"time": "2026-10-16T09:06:14.406+00:00", "who": "Qualifier", "what": "qualified, MEDDPICC-lite", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": "champion: Ruaridh Okafor-Lindley (Head of IT) will"}
+{"time": "2026-10-16T09:06:14.407+00:00", "who": "Qualifier", "what": "value framed", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": "Estimate from the call: move from 0% of sites and apps on on"}
+{"time": "2026-10-16T09:06:14.407+00:00", "who": "Qualifier", "what": "mutual plan drafted", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": "6 steps, ask to bring the committee in"}
+{"time": "2026-10-16T09:06:27.511+00:00", "who": "Qualifier", "what": "qualified, MEDDPICC-lite", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": "champion: Possibly Leon Starkadder, Head of Digita"}
+{"time": "2026-10-16T09:06:27.511+00:00", "who": "Qualifier", "what": "value framed", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": "Estimate from the call: onboarding time drops from four days"}
+{"time": "2026-10-16T09:06:27.511+00:00", "who": "Qualifier", "what": "mutual plan drafted", "on_what": "Morrowick Care Homes", "outcome": "ok", "detail": "6 steps, ask to bring the committee in"}
+{"time": "2026-10-16T09:06:28.269+00:00", "who": "Qualifier", "what": "qualified, MEDDPICC-lite", "on_what": "Caskellon Energy", "outcome": "ok", "detail": "champion: Lorna Quist, CIO, is the likely champion"}
+{"time": "2026-10-16T09:06:28.270+00:00", "who": "Qualifier", "what": "value framed", "on_what": "Caskellon Energy", "outcome": "ok", "detail": "Estimate from the call: 400 hires. Each day a hire waits for"}
+{"time": "2026-10-16T09:06:28.270+00:00", "who": "Qualifier", "what": "mutual plan drafted", "on_what": "Caskellon Energy", "outcome": "ok", "detail": "6 steps, ask to bring the committee in"}
+{"time": "2026-10-16T09:06:28.271+00:00", "who": "desk", "what": "buying committee accepted the ask, invented", "on_what": "Harrowgate Lumen", "outcome": "ok", "detail": "boss and committee booked, Zone 1"}
+{"time": "2026-10-16T09:06:28.271+00:00", "who": "desk", "what": "buying committee accepted the ask, invented", "on_what": "Dunwold Civil", "outcome": "ok", "detail": "boss and committee booked, Zone 1"}
+{"time": "2026-10-16T09:06:28.271+00:00", "who": "desk", "what": "buying committee accepted the ask, invented", "on_what": "Quillon Health", "outcome": "ok", "detail": "boss and committee booked, Zone 1"}
+{"time": "2026-10-16T09:06:28.272+00:00", "who": "Writer", "what": "send email", "on_what": "Harrowgate Lumen", "outcome": "denied", "detail": "not permitted"}
+{"time": "2026-10-16T09:06:28.272+00:00", "who": "desk", "what": "run finished", "on_what": "", "outcome": "ok", "detail": "\u00a30.49 this run, 29 model calls"}

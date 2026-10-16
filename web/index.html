@@ -362,7 +362,8 @@
     }
     $("expand").hidden = lines.length <= 3;
     $("expand").textContent = expanded ? "show last three" : "see all " + lines.length + " lines";
-    if (s.limit) { $("limitcard").hidden = false; $("limitcard").className = "card limit"; $("limitcard").textContent = s.limit; }
+    $("limitcard").hidden = !s.limit;
+    if (s.limit) { $("limitcard").className = "card limit"; $("limitcard").textContent = s.limit; }
   }
   function poll() {
     fetch("/state", { cache: "no-store" }).then(function (r) { return r.json(); }).then(render).catch(function () {}).then(function () { setTimeout(poll, 700); });

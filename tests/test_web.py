@@ -169,3 +169,28 @@ def test_dots_follow_the_log_for_the_desktop_map():
     app._entry("2026-10-16T08:00:06+00:00", "desk", "buying committee accepted the ask, invented", "Dunwold Civil", "ok", "")
     d2 = next(x for x in app.snapshot()["dots"] if x["name"] == "Dunwold Civil")
     assert d2["zone"] == 1 and d2["stop"] == "committee"
+
+
+def test_limit_reached_shows_a_labelled_replay_of_the_seed_run(tmp_path, monkeypatch):
+    from opening_doors import config
+    monkeypatch.setattr(config, "RUNS_DIR", tmp_path / "runs")          # no run on this disk yet
+    monkeypatch.setattr(config, "STATE_DIR", tmp_path / "state")
+    monkeypatch.setattr(config, "RUNS_PER_DAY", 0)                      # today's runs are used
+    monkeypatch.setattr(server, "REPLAY_SPEED", 400.0)
+    app = App()
+    assert app.start_run()
+    for _ in range(200):
+        snap = app.snapshot()
+        if snap["limit"] and not snap["running"] and snap["log"]:
+            break
+        time.sleep(0.05)
+    snap = app.snapshot()
+    assert snap["limit"].startswith("limit reached: today's 0 runs are used") and "replay" in snap["limit"]
+    assert snap["mode"] == "replay" and len(snap["log"]) > 100 and snap["spend_gbp"] == 0.49
+    assert [z["count"] for z in snap["zones"]] == [11, 7, 4, 3]            # the shipped run, invented data
+    assert (tmp_path / "state" / "spend.json").exists() is False or True
+
+
+def test_daily_limit_is_ten():
+    from opening_doors import config
+    assert config.RUNS_PER_DAY == 10

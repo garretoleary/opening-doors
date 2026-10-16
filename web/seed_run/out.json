@@ -1,0 +1,2126 @@
+{
+  "run_id": "20261016T090428527Z",
+  "notice": "All data invented. Every company, person, signal and number is made up.",
+  "models": {
+    "agent-1": "claude-opus-5-5",
+    "agent-2": "claude-opus-5-5",
+    "agent-3": "claude-opus-5-5",
+    "agent-4": "claude-opus-5-5",
+    "agent-5": "claude-opus-5-5",
+    "agent-6": "claude-opus-5-5"
+  },
+  "notes": [
+    {
+      "id": "acc-01",
+      "strongest_signal": "New COO started 1 September 2026, with a 100-day plan promising 'one login for every site'.",
+      "why_now": "Two identity roles were posted 2 October, so budget and a team are forming now.",
+      "identity_gap": "An on-prem directory plus three cloud apps, each with its own separate login.",
+      "likely_buyer": "Priya Oduya-Marsh, COO, who owns the one-login goal. Ruaridh Okafor-Lindley, Head of IT, will run it.",
+      "name": "Harrowgate Lumen"
+    },
+    {
+      "id": "acc-02",
+      "strongest_signal": "Board approved an ERP replatform on 18 September 2026, targeting go-live in Q3 2027.",
+      "why_now": "Contractor numbers rose 40% by 6 October and need access controlled before the build ramps up.",
+      "identity_gap": "Contractors are onboarded by email and spreadsheet, with no clean way to remove their access.",
+      "likely_buyer": "Ingrid Fallowmere, CIO.",
+      "name": "Veldstone Marine"
+    },
+    {
+      "id": "acc-03",
+      "strongest_signal": "Clinical records audit due March 2027, flagged on 20 August 2026. Access reviews were criticised last year.",
+      "why_now": "Three identity roles were posted on 8 October, and the audit is five months away.",
+      "identity_gap": "Shared ward logins and manual access reviews done twice a year.",
+      "likely_buyer": "Marcus Vellacott, CISO, appointed July 2026.",
+      "name": "Quillon Health"
+    },
+    {
+      "id": "acc-04",
+      "strongest_signal": "Acquisition of an 1,800-person bakery group closed 30 September 2026.",
+      "why_now": "Integration starts now, and there is no plan yet to merge the two directories.",
+      "identity_gap": "Two separate directories with no merge plan.",
+      "likely_buyer": "Obi Lansdowne, IT Director.",
+      "name": "Brackwater Foods"
+    },
+    {
+      "id": "acc-05",
+      "strongest_signal": "Cloud migration RFP issued 5 October 2026, with identity and access as workstream 2.",
+      "why_now": "An open RFP means a buying decision this quarter.",
+      "identity_gap": "Data centre directory, VPN for everyone, and no single sign-on.",
+      "likely_buyer": "Kwame Ashdown, Head of Technology.",
+      "name": "Orrin & Tave"
+    },
+    {
+      "id": "acc-06",
+      "strongest_signal": "Credential-stuffing incident disclosed to the regulator on 12 September 2026.",
+      "why_now": "The regulator is watching, so a fix is needed before the follow-up.",
+      "identity_gap": "Field staff use password-only logins on shared tablets.",
+      "likely_buyer": "Sunita Fairweather, CISO.",
+      "name": "Pellmoor Rail Services"
+    },
+    {
+      "id": "acc-07",
+      "strongest_signal": "New CIO started 15 August 2026, with a cloud-first track record.",
+      "why_now": "400 Irish hires in 2027 need a joined-up identity set-up built first.",
+      "identity_gap": "Head office is on a cloud directory; call centres still use a legacy one.",
+      "likely_buyer": "Lorna Quist, CIO.",
+      "name": "Caskellon Energy"
+    },
+    {
+      "id": "acc-08",
+      "strongest_signal": "Internal audit on 25 September 2026 found 212 SaaS apps, 140 outside IT control.",
+      "why_now": "Audit findings need an owner and a fix plan this quarter.",
+      "identity_gap": "Only 30 apps are behind SSO; the rest use individual logins.",
+      "likely_buyer": "Imogen Castellane, Head of Security.",
+      "name": "Tarnbeck Logistics"
+    },
+    {
+      "id": "acc-09",
+      "strongest_signal": "First ever Head of Information Security role advertised 9 October 2026.",
+      "why_now": "The new security lead will want quick wins once hired.",
+      "identity_gap": "One shared admin account per building.",
+      "likely_buyer": "Bea Trantham, IT Manager, until the security head is hired.",
+      "name": "Mirrenhall Group"
+    },
+    {
+      "id": "acc-10",
+      "strongest_signal": "Merger with a 5,000-person rival announced 3 October 2026, completing January 2027.",
+      "why_now": "Identity is a named day-one risk, and completion is three months away.",
+      "identity_gap": "Two of everything, including directories and logins.",
+      "likely_buyer": "Margarethe Olufemi-Stroud, Group CIO.",
+      "name": "Dunwold Civil"
+    },
+    {
+      "id": "acc-11",
+      "strongest_signal": "Regulator inspection on 8 September 2026 noted shared credentials on the shop floor.",
+      "why_now": "Inspection findings need fixing before the regulator checks again.",
+      "identity_gap": "Shared badge logins on production lines.",
+      "likely_buyer": "Dr Yusuf Carrowmore, VP Quality, with Nadia Ellsworth-Bai, Head of IT.",
+      "name": "Sablefern Pharma Services"
+    },
+    {
+      "id": "acc-12",
+      "strongest_signal": "9,000 seasonal staff to onboard by mid-November, flagged 10 October 2026.",
+      "why_now": "The seasonal hiring deadline is weeks away. The new CDO, started 20 September, wants online and stores joined up.",
+      "identity_gap": "Store staff share tills and logins.",
+      "likely_buyer": "Piers Haldane, CISO, with Siobhan Marchetti-Oyelaran, CDO.",
+      "name": "Lantergate Retail"
+    },
+    {
+      "id": "acc-13",
+      "strongest_signal": "Defence accreditation renewal due June 2027, with identity controls in scope. Flagged 28 August 2026.",
+      "why_now": "Controls must be in place and evidenced before the June renewal.",
+      "identity_gap": "No multi-factor login outside the IT team.",
+      "likely_buyer": "Declan Morrowfield, Head of Compliance.",
+      "name": "Corvane Aerospace Components"
+    },
+    {
+      "id": "acc-14",
+      "strongest_signal": "Phishing campaign reached operations staff, disclosed in the annual report on 30 September 2026.",
+      "why_now": "A public disclosure puts pressure on them to show a fix fast.",
+      "identity_gap": "Separate identities for office and operations networks, with weak protection on the operations side.",
+      "likely_buyer": "Mairead Konstantin, Head of OT Security.",
+      "name": "Whitlowe Water"
+    },
+    {
+      "id": "acc-15",
+      "strongest_signal": "Three newsrooms merged into one hub on 7 October 2026; 600 roles are changing.",
+      "why_now": "600 people need new access as roles change.",
+      "identity_gap": "Each title has its own systems and logins.",
+      "likely_buyer": "Freya Abernethy, Head of Technology.",
+      "name": "Greyhallow Media"
+    },
+    {
+      "id": "acc-16",
+      "strongest_signal": "Buying 40 practices a year, each arriving with its own IT. Noted 15 September 2026.",
+      "why_now": "Every new deal adds more logins with no central control.",
+      "identity_gap": "Practice-level logins and no central directory.",
+      "likely_buyer": "Rupert Olawale, COO.",
+      "name": "Ashcombe Dental Partners"
+    },
+    {
+      "id": "acc-17",
+      "strongest_signal": "Operational resilience deadline March 2027, with access control a named gap. Flagged 22 September 2026.",
+      "why_now": "The deadline is five months out, and the gap is already named.",
+      "identity_gap": "Privileged access is still managed by hand.",
+      "likely_buyer": "Hamish Delacroix, CISO.",
+      "name": "Stornbridge Capital Partners"
+    },
+    {
+      "id": "acc-18",
+      "strongest_signal": "Board asked for a 15% IT cost cut on 4 October 2026; 60 overlapping tools found.",
+      "why_now": "Merging directories helps hit the cost target set by the board.",
+      "identity_gap": "Four directories left over from four acquisitions.",
+      "likely_buyer": "Benedict Oyelowo-Hart, Group IT Director.",
+      "name": "Fellbrook Automotive Retail"
+    },
+    {
+      "id": "acc-19",
+      "strongest_signal": "Agency staff now cover 30% of shifts, and onboarding takes four days. Noted 27 September 2026.",
+      "why_now": "Slow onboarding costs shifts and money every week.",
+      "identity_gap": "Agency staff get systems access via paper sign-in sheets.",
+      "likely_buyer": "Grace Adeyemi-Thorne, COO.",
+      "name": "Morrowick Care Homes"
+    },
+    {
+      "id": "acc-20",
+      "strongest_signal": "New CFO started 5 September 2026, known for digital spend reviews.",
+      "why_now": "The new CFO will review spend early in his tenure.",
+      "identity_gap": "Site offices run on local accounts.",
+      "likely_buyer": "Elspeth Nwachukwu, IT Director, with Vikram Ashdown-Reilly, CFO.",
+      "name": "Kestrelmoor Construction"
+    },
+    {
+      "id": "acc-21",
+      "strongest_signal": "Safeguarding review on 1 October 2026 called for named-user access in every school.",
+      "why_now": "Safeguarding findings need action within this school year.",
+      "identity_gap": "Shared staff-room logins at most schools.",
+      "likely_buyer": "Oliver Sandqvist, Head of IT.",
+      "name": "Haverlane Education Trust"
+    },
+    {
+      "id": "acc-22",
+      "strongest_signal": "New Teesside plant announced 10 September 2026, with 700 hires over 18 months.",
+      "why_now": "Access should be set up before the hiring ramps up.",
+      "identity_gap": "Multi-factor login is used for remote access only.",
+      "likely_buyer": "Fergus Mallinder, Head of IT.",
+      "name": "Tollwick Chemicals"
+    },
+    {
+      "id": "acc-23",
+      "strongest_signal": "Separate staff logins for rota, till and booking systems, with 40% turnover. Noted 29 September 2026.",
+      "why_now": "High turnover means leavers' access is piling up now.",
+      "identity_gap": "No central identity; general managers create accounts themselves.",
+      "likely_buyer": "Tamsin Oyelaran, IT Director.",
+      "name": "Brindlemere Hospitality"
+    },
+    {
+      "id": "acc-24",
+      "strongest_signal": "Board approved 'cloud by 2028' on 2 October 2026, with the identity programme starting Q1 2027.",
+      "why_now": "Vendor choice comes before the programme starts in Q1.",
+      "identity_gap": "A large on-prem estate; cloud is only piloted in one division.",
+      "likely_buyer": "Katarzyna Umeh-Fairfax, Group CIO.",
+      "name": "Ravensholt Engineering Group"
+    },
+    {
+      "id": "acc-25",
+      "strongest_signal": "Ransomware at a competitor prompted a board question on access on 11 October 2026.",
+      "why_now": "The board wants an answer now.",
+      "identity_gap": "Warehouse PCs use shared logins.",
+      "likely_buyer": "Sally Varndean, Head of IT.",
+      "name": "Pennywhistle Logistics"
+    }
+  ],
+  "ranked": [
+    {
+      "id": "acc-01",
+      "score": 90,
+      "why_selected": "A new COO started 1 September and promised one login for every site, and the firm still runs an on-prem directory plus three cloud apps with separate logins.",
+      "how_found": "new COO, 1 September",
+      "name": "Harrowgate Lumen",
+      "rank": 1
+    },
+    {
+      "id": "acc-10",
+      "score": 89,
+      "why_selected": "A merger completing January 2027 names identity as a day-one risk, and the combined group will run two directories under a named Group CIO.",
+      "how_found": "merger announced 3 October",
+      "name": "Dunwold Civil",
+      "rank": 2
+    },
+    {
+      "id": "acc-03",
+      "score": 88,
+      "why_selected": "A March 2027 clinical audit and a new CISO meet shared ward logins and manual access reviews.",
+      "how_found": "three identity roles posted 8 October",
+      "name": "Quillon Health",
+      "rank": 3
+    },
+    {
+      "id": "acc-06",
+      "score": 86,
+      "why_selected": "A credential-stuffing incident was disclosed to the regulator, and field staff still use password-only logins on shared tablets, with a CISO who owns the fix.",
+      "how_found": "incident disclosed 12 September",
+      "name": "Pellmoor Rail Services",
+      "rank": 4
+    },
+    {
+      "id": "acc-12",
+      "score": 84,
+      "why_selected": "9,000 seasonal staff must be onboarded within weeks while store staff share tills and logins, and a CISO and new CDO are engaged.",
+      "how_found": "seasonal hiring deadline flagged 10 October",
+      "name": "Lantergate Retail",
+      "rank": 5
+    },
+    {
+      "id": "acc-02",
+      "score": 80,
+      "why_selected": "An ERP replatform was approved 18 September and contractors are up 40%, but contractor access is still handled by email and spreadsheet, under a named CIO.",
+      "how_found": "ERP replatform approved 18 September",
+      "name": "Veldstone Marine",
+      "rank": 6
+    },
+    {
+      "id": "acc-19",
+      "score": 76,
+      "why_selected": "Agency staff cover 30% of shifts and get access via paper sign-in sheets, and the COO owns the four-day onboarding pain.",
+      "how_found": "agency onboarding noted 27 September",
+      "name": "Morrowick Care Homes",
+      "rank": 7
+    },
+    {
+      "id": "acc-16",
+      "score": 74,
+      "why_selected": "Forty practice acquisitions a year keep adding logins with no central directory, and the COO is the named buyer.",
+      "how_found": "practice acquisitions noted 15 September",
+      "name": "Ashcombe Dental Partners",
+      "rank": 8
+    },
+    {
+      "id": "acc-07",
+      "score": 72,
+      "why_selected": "A new CIO started 15 August while call centres remain on a legacy directory separate from head office's cloud one.",
+      "how_found": "new CIO, 15 August",
+      "name": "Caskellon Energy",
+      "rank": 9
+    },
+    {
+      "id": "acc-05",
+      "score": 70,
+      "why_selected": "An open cloud RFP names identity as workstream 2 and the firm has no single sign-on, though the buyer sits below C-level.",
+      "how_found": "cloud migration RFP, 5 October",
+      "name": "Orrin & Tave",
+      "rank": 10
+    },
+    {
+      "id": "acc-11",
+      "score": 68,
+      "why_selected": "A regulator inspection flagged shared shop-floor credentials, but the buyers are VP Quality and Head of IT rather than C-level.",
+      "how_found": "regulator inspection, 8 September",
+      "name": "Sablefern Pharma Services",
+      "rank": 11
+    },
+    {
+      "id": "acc-18",
+      "score": 67,
+      "why_selected": "The board wants a 15% IT cost cut, and four directories left over from four acquisitions are an obvious place to consolidate, though the buyer is not C-level.",
+      "how_found": "board cost-cut ask, 4 October",
+      "name": "Fellbrook Automotive Retail",
+      "rank": 12
+    },
+    {
+      "id": "acc-04",
+      "score": 66,
+      "why_selected": "An acquisition closed 30 September with no plan to merge the two directories, but the buyer is an IT Director rather than a C-level owner.",
+      "how_found": "acquisition closed 30 September",
+      "name": "Brackwater Foods",
+      "rank": 13
+    },
+    {
+      "id": "acc-14",
+      "score": 64,
+      "why_selected": "A publicly disclosed phishing campaign reached operations staff, whose separate identity set-up is weakly protected, though the buyer sits below C-level.",
+      "how_found": "annual report disclosure, 30 September",
+      "name": "Whitlowe Water",
+      "rank": 14
+    },
+    {
+      "id": "acc-24",
+      "score": 63,
+      "why_selected": "A board-approved cloud programme means an identity vendor will be chosen before Q1 2027, with a Group CIO as buyer, but there is little sign of frontline login sharing.",
+      "how_found": "cloud by 2028 approved 2 October",
+      "name": "Ravensholt Engineering Group",
+      "rank": 15
+    },
+    {
+      "id": "acc-08",
+      "score": 62,
+      "why_selected": "An internal audit found 140 SaaS apps outside IT control and only 30 behind SSO, but the buyer is Head of Security rather than a C-level executive.",
+      "how_found": "SaaS audit, 25 September",
+      "name": "Tarnbeck Logistics",
+      "rank": 16
+    },
+    {
+      "id": "acc-17",
+      "score": 58,
+      "why_selected": "A March 2027 resilience deadline names privileged access as a gap, but there is little frontline login sharing.",
+      "how_found": "resilience deadline flagged 22 September",
+      "name": "Stornbridge Capital Partners",
+      "rank": 17
+    },
+    {
+      "id": "acc-13",
+      "score": 55,
+      "why_selected": "Defence accreditation in June 2027 puts identity controls in scope and there is no multi-factor login outside IT, but the buyer is Head of Compliance.",
+      "how_found": "accreditation renewal flagged 28 August",
+      "name": "Corvane Aerospace Components",
+      "rank": 18
+    },
+    {
+      "id": "acc-21",
+      "score": 52,
+      "why_selected": "A safeguarding review on 1 October called for named-user access to replace shared staff-room logins, but the buyer is Head of IT rather than C-level.",
+      "how_found": "safeguarding review, 1 October",
+      "name": "Haverlane Education Trust",
+      "rank": 19
+    },
+    {
+      "id": "acc-20",
+      "score": 50,
+      "why_selected": "A new CFO started 5 September and will review spend, but the local site accounts are a vaguer gap than at other accounts.",
+      "how_found": "new CFO, 5 September",
+      "name": "Kestrelmoor Construction",
+      "rank": 20
+    },
+    {
+      "id": "acc-23",
+      "score": 45,
+      "why_selected": "There is no central identity and high turnover is piling up leavers' access, but the trigger is a chronic condition rather than a new event.",
+      "how_found": "turnover noted 29 September",
+      "name": "Brindlemere Hospitality",
+      "rank": 21
+    },
+    {
+      "id": "acc-15",
+      "score": 40,
+      "why_selected": "A newsroom merger is changing 600 roles across separate login systems, but the scale is small and there is no C-level buyer.",
+      "how_found": "newsroom merger, 7 October",
+      "name": "Greyhallow Media",
+      "rank": 22
+    },
+    {
+      "id": "acc-22",
+      "score": 35,
+      "why_selected": "A new plant brings 700 hires, but the identity gap is modest and the buyer is Head of IT rather than C-level.",
+      "how_found": "plant announced 10 September",
+      "name": "Tollwick Chemicals",
+      "rank": 23
+    },
+    {
+      "id": "acc-09",
+      "score": 30,
+      "why_selected": "The security function is only now being built, so there is no economic buyer yet despite shared admin accounts in every building.",
+      "how_found": "first security head role advertised 9 October",
+      "name": "Mirrenhall Group",
+      "rank": 24
+    },
+    {
+      "id": "acc-25",
+      "score": 25,
+      "why_selected": "A board question on access followed a competitor's ransomware attack, so the trigger is indirect and the buyer is only Head of IT.",
+      "how_found": "board question, 11 October",
+      "name": "Pennywhistle Logistics",
+      "rank": 25
+    }
+  ],
+  "plans": {
+    "acc-01": {
+      "business_problem": "Staff juggle an on-prem directory plus three cloud apps with separate logins, which wastes time, drives password resets and leaves leavers' access open longer than it should be. The new COO has publicly promised 'one login for every site' within 100 days, so slow progress is now a visible delivery risk for her.",
+      "economic_buyer": "Priya Oduya-Marsh, COO since September 2026. She owns the one-login promise in her 100-day plan and is funding the new identity roles. Ruaridh Okafor-Lindley, Head of IT, will run delivery.",
+      "first_meeting_point_of_view": "Most one-login programmes stall because teams start with the directory rebuild instead of the handful of apps people use every day. Joining up the three cloud apps first gives every site a visible win inside 100 days.",
+      "one_metric_to_agree": "Separate logins per employee: from 4 today to 1 by end of Q1 2027.",
+      "id": "acc-01",
+      "name": "Harrowgate Lumen",
+      "rank": 1,
+      "signal": "new COO, 1 September",
+      "why": "A new COO started 1 September and promised one login for every site, and the firm still runs an on-prem directory plus three cloud apps with separate logins."
+    },
+    "acc-10": {
+      "business_problem": "Merging with a 5,000-person rival in January 2027 means roughly 17,800 people across two directories and two sets of logins, and identity is already named as a day-one integration risk. If access isn't unified by completion, staff can't reach shared systems, leavers may keep access, and integration savings slip.",
+      "economic_buyer": "Margarethe Olufemi-Stroud, Group CIO: she owns the combined IT budget and carries the identity risk named for day one. Callum Reinholt, Programme Director, is a likely ally on timeline.",
+      "first_meeting_point_of_view": "In most mergers, day one fails on access, not systems: people can't log in to what they need. Deciding now which directory becomes the source of truth makes the other integration steps easier to sequence.",
+      "one_metric_to_agree": "Share of combined staff with a single working login on day one: assumed 0% today, target 90% by January 2027 completion.",
+      "id": "acc-10",
+      "name": "Dunwold Civil",
+      "rank": 2,
+      "signal": "merger announced 3 October",
+      "why": "A merger completing January 2027 names identity as a day-one risk, and the combined group will run two directories under a named Group CIO."
+    },
+    "acc-03": {
+      "business_problem": "Shared ward logins and twice-yearly manual access reviews mean Quillon cannot prove who opened which clinical record, the exact weakness flagged last year. With the March 2027 audit five months away, a repeat finding risks regulatory sanction and reputational damage across 6,300 staff.",
+      "economic_buyer": "Marcus Vellacott, CISO since July 2026. He owns the access control budget, is hiring three identity roles, and will answer personally for the audit outcome.",
+      "first_meeting_point_of_view": "Auditors who flagged access reviews last year will first check whether every record view traces to a named person. Closing that gap before March matters more than adding headcount to run manual reviews faster.",
+      "one_metric_to_agree": "Share of clinical record access tied to an individual named login: from roughly 40% today to 95% by the March 2027 audit.",
+      "id": "acc-03",
+      "name": "Quillon Health",
+      "rank": 3,
+      "signal": "three identity roles posted 8 October",
+      "why": "A March 2027 clinical audit and a new CISO meet shared ward logins and manual access reviews."
+    },
+    "acc-06": {
+      "business_problem": "The disclosed credential-stuffing incident shows that password-only logins on shared field tablets can be exploited at scale. With the regulator now watching, a repeat would risk enforcement, contract scrutiny from rail clients and disruption to maintenance work.",
+      "economic_buyer": "Sunita Fairweather, CISO. She owns the remediation the regulator will ask about and the security budget to fund it.",
+      "first_meeting_point_of_view": "Shared tablets with passwords mean one leaked credential can unlock many field accounts, and nobody can tell who actually logged in. Fixing who-is-who on shared devices is likely the cleanest story to give the regulator at follow-up.",
+      "one_metric_to_agree": "Share of field-staff logins protected by a second factor: from 0% today to 95% before the regulator's follow-up.",
+      "id": "acc-06",
+      "name": "Pellmoor Rail Services",
+      "rank": 4,
+      "signal": "incident disclosed 12 September",
+      "why": "A credential-stuffing incident was disclosed to the regulator, and field staff still use password-only logins on shared tablets, with a CISO who owns the fix."
+    },
+    "acc-12": {
+      "business_problem": "Lantergate must onboard 9,000 seasonal staff by mid-November, and today store staff share tills and logins, so every new starter adds untraceable access. That means fraud and data-breach risk at peak trading, plus slow, manual setup and removal when the season ends.",
+      "economic_buyer": "Piers Haldane, CISO: he owns access risk and security spend. Siobhan Marchetti-Oyelaran, the new CDO hired to join up online and store, is the co-sponsor whose agenda depends on it.",
+      "first_meeting_point_of_view": "Shared store logins mean you cannot tell who did what at the till, and 9,000 seasonal starters will multiply that blind spot just as trading peaks. Giving every store worker their own identity, as head office already has, is the foundation for joining up online and store.",
+      "one_metric_to_agree": "Share of store staff with individual logins: from roughly 0% today to 90% of seasonal hires by mid-November.",
+      "id": "acc-12",
+      "name": "Lantergate Retail",
+      "rank": 5,
+      "signal": "seasonal hiring deadline flagged 10 October",
+      "why": "9,000 seasonal staff must be onboarded within weeks while store staff share tills and logins, and a CISO and new CDO are engaged."
+    },
+    "acc-02": {
+      "business_problem": "The approved ERP replatform has driven a 40% contractor surge, and every new contractor is onboarded by email and spreadsheet with no reliable way to remove access. That leaves stale accounts touching finance and operations data during the riskiest build phase, risking audit findings and a delayed Q3 2027 go-live.",
+      "economic_buyer": "Ingrid Fallowmere, CIO. She owns the replatform delivery and the directory, so contractor access risk sits in her budget and on her record.",
+      "first_meeting_point_of_view": "ERP programmes rarely slip on code; they slip when contractor access cannot be granted fast or proven removed at audit. Fixing joiner and leaver control before the build ramps is cheaper than unpicking it after go-live.",
+      "one_metric_to_agree": "Average time to fully remove a departing contractor's access: from an estimated 10 days today to under 24 hours by Q1 2027.",
+      "id": "acc-02",
+      "name": "Veldstone Marine",
+      "rank": 6,
+      "signal": "ERP replatform approved 18 September",
+      "why": "An ERP replatform was approved 18 September and contractors are up 40%, but contractor access is still handled by email and spreadsheet, under a named CIO."
+    },
+    "acc-19": {
+      "business_problem": "With agency staff covering 30% of shifts and onboarding taking four days, Morrowick pays for cover that cannot work on day one and risks short-staffed shifts. Paper sign-in sheets for systems access also leave no reliable record of who accessed resident data.",
+      "economic_buyer": "Grace Adeyemi-Thorne, Chief Operating Officer, owns staffing, shift cover and agency spend, so the onboarding delay hits her budget directly.",
+      "first_meeting_point_of_view": "Most of the four-day onboarding delay is likely waiting for systems access, not training. Giving agency staff controlled access before their first shift could recover paid hours and close an audit gap at once.",
+      "one_metric_to_agree": "Agency onboarding time to first productive shift: from 4 days to 1 day.",
+      "id": "acc-19",
+      "name": "Morrowick Care Homes",
+      "rank": 7,
+      "signal": "agency onboarding noted 27 September",
+      "why": "Agency staff cover 30% of shifts and get access via paper sign-in sheets, and the COO owns the four-day onboarding pain."
+    },
+    "acc-16": {
+      "business_problem": "Ashcombe buys about 40 practices a year, and each one arrives with its own IT and its own practice-level logins. With no central directory, every deal adds access nobody controls centrally, which raises the risk of leavers keeping access to patient data and slows each integration.",
+      "economic_buyer": "Rupert Olawale, COO. He owns integration of the acquired practices and the operating budget that pays for shared systems across all 310 sites.",
+      "first_meeting_point_of_view": "At 40 deals a year, access control is now an integration problem rather than an IT one: each acquisition adds logins faster than anyone can review them. Groups that bring every new practice onto one directory in its first month avoid the untracked access that builds up with each deal.",
+      "one_metric_to_agree": "Share of practices on one central directory: from 0% of 310 today to 80% within 12 months.",
+      "id": "acc-16",
+      "name": "Ashcombe Dental Partners",
+      "rank": 8,
+      "signal": "practice acquisitions noted 15 September",
+      "why": "Forty practice acquisitions a year keep adding logins with no central directory, and the COO is the named buyer."
+    },
+    "acc-07": {
+      "business_problem": "Adding 400 Irish hires in 2027 on top of two separate directories means slower onboarding and more access errors in customer-facing call centres. Every new joiner set up in the legacy system adds cost and audit risk that will be harder to unwind later.",
+      "economic_buyer": "Lorna Quist, CIO since 15 August 2026; she owns the IT and identity budget and has a mandate to modernise from her cloud-first track record.",
+      "first_meeting_point_of_view": "The Irish expansion is the cheapest moment to unify identity, before 400 people are built on the old split. Firms that consolidate first usually onboard new sites in days, not weeks.",
+      "one_metric_to_agree": "Days to give a new call-centre hire full access: from about 5 today to 1 by the first Irish hires.",
+      "id": "acc-07",
+      "name": "Caskellon Energy",
+      "rank": 9,
+      "signal": "new CIO, 15 August",
+      "why": "A new CIO started 15 August while call centres remain on a legacy directory separate from head office's cloud one."
+    },
+    "acc-05": {
+      "business_problem": "Moving 4,800 brokers to the cloud while access still runs through a data centre directory and a VPN for everyone puts a single choke point in front of every client system. Without single sign-on, the migration multiplies passwords, help-desk load and breach exposure just as regulated client data moves.",
+      "economic_buyer": "Kwame Ashdown, Head of Technology. He issued the cloud migration RFP and owns its budget, including identity as workstream 2. Celestine Marrow, COO, is the likely final sign-off.",
+      "first_meeting_point_of_view": "Identity is the workstream that decides whether the whole cloud move feels like progress or pain to brokers. If sign-on is fixed first, the VPN can retire on schedule rather than becoming the migration's bottleneck.",
+      "one_metric_to_agree": "Share of staff signing in through single sign-on rather than the VPN: from 0% today to 90% within 12 months.",
+      "id": "acc-05",
+      "name": "Orrin & Tave",
+      "rank": 10,
+      "signal": "cloud migration RFP, 5 October",
+      "why": "An open cloud RFP names identity as workstream 2 and the firm has no single sign-on, though the buyer sits below C-level."
+    }
+  },
+  "drafts": {
+    "acc-01": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "One login in 100 days: where to start",
+        "body": "Hi Priya,\n\nCongratulations on the COO role at Harrowgate Lumen. Your promise of one login for every site is a bold one, and a good one.\n\nOne pattern worth knowing: most one-login programmes stall because teams start by rebuilding the directory. That work is slow and invisible to staff. The faster route is to join up the few apps people open every day first. For you, that means the three cloud apps. Every site then sees a real change well inside 100 days, and the directory work can follow behind.\n\nNo reply needed. I hope it helps as you plan.\n\nBest regards",
+        "matched_to": "new COO, 1 September; first meeting point of view"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "The hidden cost of four logins",
+        "body": "Hi Priya,\n\nA second thought on your one-login goal. Four separate logins per person cost more than time. They drive password resets, which fill the help desk queue. They also leave leavers' access open longer, because each app has to be closed by hand.\n\nA simple way to show early progress is to track two numbers each month: reset requests and the days it takes to close a leaver's access everywhere. Both should fall as soon as the cloud apps are joined up. They give your board proof long before the full project ends.\n\nNothing needed from you. Just something to use.\n\nBest regards",
+        "matched_to": "business problem: resets and leavers' access"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Hi Priya, I saw your promise of one login for every site at Harrowgate Lumen within 100 days. I work on exactly this problem and would be glad to connect and share what helps teams deliver it on time.",
+        "matched_to": "COO's one-login promise"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "From 4 logins to 1 by end of Q1",
+        "body": "Call script:\nHi Priya, it's [name]. I sent a couple of notes on your one-login promise. Quick idea: agree one number, logins per employee, from four today to one by end of Q1 2027. Could we take fifteen minutes to test that target, perhaps with Ruaridh?\n---\nHi Priya,\n\nFollowing my call today. Your promise comes down to one number: separate logins per employee, from 4 today to 1 by end of Q1 2027.\n\nI'd like fifteen minutes to check that target with you. We would look at whether joining the three cloud apps first gets you there in time. Ruaridh is welcome to join, since he will run delivery.\n\nWould a slot next week work?\n\nBest regards",
+        "matched_to": "one metric: logins per employee 4 to 1"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop",
+        "body": "Hi Priya,\n\nI haven't heard back, so I'll assume the timing isn't right. That's fine. Your first months as COO are full.\n\nI'll stop writing for now. If the one-login work slows down, or you want a second view on getting from four logins to one, just reply to this note. I'm happy to help whenever it suits you.\n\nGood luck with the 100-day plan.\n\nBest regards",
+        "matched_to": "100-day one-login promise"
+      }
+    ],
+    "acc-10": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "Day one at Dunwold: access before systems",
+        "body": "Margarethe,\n\nCongratulations on the merger announced on 3 October. One pattern from mergers like this may help. Day one rarely fails on systems. It fails on access. People arrive at the combined group and can't log in to what they need.\n\nWith roughly 17,800 people across two directories, the first useful decision is which directory becomes the source of truth. Once that is settled, the other integration steps are much easier to put in order.\n\nIt may be worth deciding before the plan for January hardens.\n\nBest regards",
+        "matched_to": "merger announced 3 October; day-one access point of view"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "The leaver risk in two directories",
+        "body": "Margarethe,\n\nA second thought on the merger. While Dunwold and your new partner run two directories, a person who leaves one company can keep access in the other. Nobody owns that gap until the directories are joined.\n\nA simple check helps. List the shared systems both sides will use from completion. Then ask who removes access in each, and how fast. Where the answer is unclear, that is where the day-one risk sits.\n\nIt is a short exercise, and it gives the integration team a clear list to work from.\n\nBest regards",
+        "matched_to": "leavers may keep access across two directories"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Margarethe, I've been following the Dunwold merger and the day-one identity risk you'll carry as Group CIO. I work on joining directories before completion and would value connecting.",
+        "matched_to": "Group CIO owns the named identity risk"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "A single login for day one",
+        "body": "Call script: Hi Margarethe, it's [name]. I sent two notes on the merger and day-one access. One question: how many of the 17,800 staff will have a single working login when you complete in January? If that's open, could we take fifteen minutes to set a target?\n---\nMargarethe,\n\nThanks for your time on the phone today. My guess is that today almost no combined staff have a single working login. A fair target might be 90% by completion in January 2027.\n\nCould we take fifteen minutes to agree that number and what it would take? Callum Reinholt may want to join, given the timeline.\n\nBest regards",
+        "matched_to": "single working login on day one: 0% to 90%"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop",
+        "body": "Margarethe,\n\nI haven't heard back, so I'll assume the timing isn't right. That is completely fine with a merger this size on your desk.\n\nI won't keep writing. If access for day one in January comes back up, I'm glad to help you think through which directory leads and what a working target looks like.\n\nWishing you and the team a smooth completion.\n\nBest regards",
+        "matched_to": "merger completing January 2027"
+      }
+    ],
+    "acc-03": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "What the March auditors will check first",
+        "body": "Marcus,\n\nI saw Quillon posted three identity roles on 8 October. With the March 2027 audit five months out, one point may help.\n\nAuditors who flagged access reviews last year usually start with a single test. They pick a clinical record view and ask who opened it. If the answer is a shared ward login, the finding repeats, however fast the manual reviews run.\n\nSo the first question to settle is how much record access already traces to a named person. That is the gap they will look at first.\n\nNo reply needed. I hope it is useful as you plan the next five months.",
+        "matched_to": "three identity roles posted 8 October"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "Shared ward logins and the March audit",
+        "body": "Marcus,\n\nA second thought on the March audit.\n\nShared ward logins exist for a reason. Clinicians need fast access at the bedside, and a slow sign-in gets worked around. Wards that moved to named logins without fixing speed often slid back to shared ones within weeks.\n\nThe wards that held the change made the named login as quick as the shared one. They also started with the busiest wards first, where most record views happen. That moved the numbers fastest.\n\nFor Quillon's 6,300 staff, the order of wards may matter as much as the method.\n\nNothing needed from you. Just something to weigh.",
+        "matched_to": "shared ward logins weakness"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Marcus, I've been following Quillon's push to tie every clinical record view to a named person before the March 2027 audit. I work on that exact problem with hospitals and would value connecting.",
+        "matched_to": "new CISO facing March 2027 audit"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "From 40% to 95% named access by March",
+        "body": "Call script: Hi Marcus, it's [name]. I sent two notes on the March audit. Quick question: roughly what share of clinical record access ties to a named login today? We often see about 40%. Would fifteen minutes be worth it to test whether 95% by March is realistic? I can send times.\n---\nMarcus,\n\nFollowing my call today.\n\nOne number may decide the March audit: the share of clinical record access tied to a named login. My guess is Quillon sits near 40% today. Getting to 95% by March would answer the finding from last year.\n\nCould we take fifteen minutes to agree whether that target is right and reachable? If the number is wrong, I'd like to hear it.\n\nHappy to work around your diary.",
+        "matched_to": "one metric: 40% to 95% named access"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop",
+        "body": "Marcus,\n\nI haven't heard back, so I'll assume the timing isn't right. That's fine. You have three roles to fill and an audit in March.\n\nI'll stop writing for now. If the share of record access tied to named logins becomes the pressing question before March, I'm glad to help, even if only to compare notes.\n\nGood luck with the audit and the new team.",
+        "matched_to": "March 2027 audit five months away"
+      }
+    ],
+    "acc-06": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "Shared tablets after 12 September",
+        "body": "Sunita,\n\nAfter a credential-stuffing incident, the hardest question is often not how attackers got in. It is who was actually logged in. On shared field tablets with password-only logins, one leaked password can open many accounts, and the logs can't tell you which person was holding the device.\n\nTeams in your position often find that fixing who-is-who on shared devices gives the regulator the clearest story at follow-up. It shows you closed the root cause, not just the one hole.\n\nThought it might be useful as you shape the remediation plan.\n\nBest regards",
+        "matched_to": "incident disclosed 12 September; shared tablets"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "One number the regulator can check",
+        "body": "Sunita,\n\nA second thought on the follow-up. Regulators respond well to one clear, measurable number rather than a long list of actions.\n\nFor Pellmoor, a strong candidate is the share of field-staff logins protected by a second factor. Today that is likely close to zero on the shared tablets. Moving it near the top before the follow-up is easy to show, and easy to check.\n\nIt also helps with your rail clients. If they ask what changed, you can give them the same number.\n\nBest regards",
+        "matched_to": "one metric: second-factor share of field logins"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Hi Sunita, I've been following how rail maintenance teams secure shared field tablets after credential incidents. Given Pellmoor's work with the regulator, I'd value connecting and sharing what I see working.",
+        "matched_to": "CISO owns the fix"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "15 minutes on field-login protection",
+        "body": "Call script: Hi Sunita, it's [name]. I sent two notes on shared field tablets after the September incident. Quick question: is getting field logins onto a second factor before the regulator's follow-up on your plan? I'd like fifteen minutes to compare how you'd measure it. Could we find a time this week?\n---\nSunita,\n\nThanks for your time today, or sorry I missed you.\n\nI'd like fifteen minutes to agree one target: field-staff logins protected by a second factor, from 0% today to 95% before the regulator's follow-up. If that's the right number, we can talk about how to get there on shared tablets without slowing maintenance crews.\n\nWould Tuesday or Thursday suit?\n\nBest regards",
+        "matched_to": "metric 0% to 95% before regulator follow-up"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop",
+        "body": "Sunita,\n\nI haven't heard back, so I'll assume the timing isn't right or the remediation is already in hand. Either is fine.\n\nI'll stop writing for now. If the regulator's follow-up gets closer and you want a second view on securing logins on the shared field tablets, just reply to this note. I'm glad to help.\n\nWishing you and the team well with it.\n\nBest regards",
+        "matched_to": "regulator follow-up; shared tablets"
+      }
+    ],
+    "acc-12": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "9,000 starters and shared till logins",
+        "body": "Piers,\n\nWith 9,000 seasonal staff due by mid-November, one point stands out. When store staff share tills and logins, every new starter widens a gap: you cannot tell who did what at the till.\n\nAt peak trading, that gap is where fraud and data loss hide. It also makes investigations slow, because shared access leaves no trail to a person.\n\nA useful test before the season: pick one store and ask how quickly you could name the person behind a given refund. The answer usually shows the size of the risk.\n\nBest,",
+        "matched_to": "seasonal hiring deadline, shared logins"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "The other end of the season",
+        "body": "Piers,\n\nMost seasonal planning focuses on getting people started. The quieter risk is January.\n\nWhen 9,000 temporary staff leave, their access has to go too. With manual setup and shared logins, removal is slow, and some access lingers long after people have gone.\n\nRetailers who give each store worker their own login find leavers are simple to switch off on their last day. Head office already works this way at Lantergate, so the habit exists. It just stops at the store door.\n\nIt may be worth planning the January clean-up now, alongside onboarding.\n\nBest,",
+        "matched_to": "manual setup and removal at season end"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Piers, I have been following how Lantergate is preparing for 9,000 seasonal starters by mid-November. I work on giving store staff their own logins instead of shared ones, and would value connecting.",
+        "matched_to": "9,000 seasonal staff by mid-November"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "Individual logins for seasonal hires",
+        "body": "Call: Hi Piers, it's [name]. I'll be brief. With 9,000 seasonal starters coming and shared till logins, I think there's one number worth agreeing: the share of store staff with their own login. Could we take fifteen minutes to see if 90% of seasonal hires by mid-November is realistic?\n---\nPiers,\n\nFollowing my call, one small ask: fifteen minutes to agree a single number.\n\nToday close to 0% of store staff have their own login. The goal I would test with you is 90% of seasonal hires by mid-November.\n\nThat would show who did what at the till during peak trading. It would also give Siobhan the base she needs to join up online and store.\n\nWould a short call next week work?\n\nBest,",
+        "matched_to": "one metric: individual logins 0% to 90%"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop",
+        "body": "Piers,\n\nI have not heard back, so I will assume the timing is not right. That is completely fine with the season this close.\n\nIf shared till logins or the January clean-up of seasonal access come up later, I am happy to pick this up again. Just reply to this note.\n\nWishing you and the team a smooth peak.\n\nBest,",
+        "matched_to": "seasonal hiring deadline"
+      }
+    ],
+    "acc-02": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "Contractor access during the ERP build",
+        "body": "Ingrid,\n\nCongratulations on getting the ERP replatform approved on 18 September.\n\nOne pattern worth flagging. ERP programmes rarely slip on code. They slip when contractor access cannot be granted fast, or cannot be proven removed at audit.\n\nWith contractor numbers up around 40%, every joiner handled by email and spreadsheet adds an account someone must remember to close. Over a long build, those stale accounts tend to sit on finance and operations data.\n\nA simple check: pick five contractors who left last quarter and confirm each one's access is fully gone. The result is usually telling.\n\nBest regards",
+        "matched_to": "ERP replatform approved 18 September"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "Fixing leavers before the build ramps",
+        "body": "Ingrid,\n\nA second thought on the replatform.\n\nThe cheapest time to fix joiner and leaver control is before the build ramps, not after go-live. Once data migration starts, auditors will ask who could touch finance and operations records, and when that access ended.\n\nTeams that answer well usually do three things early. They give every contractor an end date at onboarding. They tie removal to that date, not to a reminder email. They keep one record of who approved what.\n\nNone of that needs to wait for the new system. It protects your Q3 2027 go-live.\n\nBest regards",
+        "matched_to": "Fix joiner and leaver control before build ramps"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Hi Ingrid, I have been following Veldstone's ERP replatform and the contractor growth behind it. I work on keeping contractor access clean during builds like this and would value connecting.",
+        "matched_to": "40% contractor surge under the CIO"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "Removing contractor access within 24 hours",
+        "body": "Call script: Hi Ingrid, it is about contractor access on the ERP replatform. My guess is removing a departing contractor's access takes around ten days today. Is that close? Teams in your position aim for under 24 hours before audit. Could we take fifteen minutes to test whether that is realistic by Q1 2027?\n---\nIngrid,\n\nI tried to reach you today about one number on the replatform: how long it takes to fully remove a departing contractor's access.\n\nMy estimate is about 10 days today. A fair goal is under 24 hours by Q1 2027, well before the Q3 2027 go-live.\n\nWould you give me fifteen minutes to check whether that estimate and target hold for Veldstone? If the number is already good, I will say so.\n\nBest regards",
+        "matched_to": "Removal time: 10 days to under 24 hours"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop",
+        "body": "Ingrid,\n\nI have not heard back, so I will assume contractor access is either in hand or not a priority right now. Both are fair.\n\nI will stop writing. If removal times or audit questions come up as the replatform build ramps, I would be glad to help then.\n\nGood luck with the programme and the Q3 2027 go-live.\n\nBest regards",
+        "matched_to": "Audit risk to Q3 2027 go-live"
+      }
+    ],
+    "acc-19": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "Where the four days go",
+        "body": "Hi Grace,\n\nWith agency staff covering about 30% of Morrowick's shifts, a four-day onboarding gap adds up fast. You pay for cover that cannot fully work on day one.\n\nIn care groups we look at, most of that delay is rarely training. It is usually waiting for systems access. Logins get requested, approved and set up by hand, one person at a time.\n\nIf you map the four days hour by hour, the access wait often turns out to be the largest block. It is also the easiest one to move.\n\nI hope that is useful as you look at agency spend.\n\nBest regards",
+        "matched_to": "agency onboarding noted 27 September; four-day delay"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "The paper sign-in sheet question",
+        "body": "Hi Grace,\n\nA second thought on agency cover at Morrowick.\n\nPaper sign-in sheets for systems access work on a busy shift. They become a problem when someone asks who viewed a resident's record last Tuesday. Handwriting, missing entries and shared logins leave no reliable answer.\n\nThe same fix can solve two problems. If agency staff get controlled access before their first shift, they can start sooner. You also get a clean record of who accessed resident data and when.\n\nIt may be worth checking how your last audit treated those sheets.\n\nBest regards",
+        "matched_to": "paper sign-in sheets leave no reliable access record"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Hi Grace, I have been looking at how care groups cut agency onboarding from days to one, mostly by fixing systems access before the first shift. Given Morrowick's agency cover, I thought it worth connecting.",
+        "matched_to": "COO owns four-day onboarding pain"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "Agency onboarding: 4 days to 1",
+        "body": "Call script: Hi Grace, it's [name]. I sent a note about agency onboarding. Most of the four days is often waiting for systems access, not training. Would a fifteen-minute call be worth it to test whether Morrowick could get agency staff productive on day one? Would next week suit?\n---\nHi Grace,\n\nI tried you by phone today.\n\nI would like to suggest one measure to test together: agency onboarding time to first productive shift, from four days to one.\n\nIf most of the delay is access, getting it set up before the first shift could recover paid hours and close the gap left by paper sign-in sheets.\n\nWould you have fifteen minutes next week to see if that target holds for Morrowick?\n\nBest regards",
+        "matched_to": "one metric: onboarding 4 days to 1 day"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop",
+        "body": "Hi Grace,\n\nI have not heard back, so I will assume agency onboarding is not a priority right now. That is fine.\n\nIf the four-day wait or the paper sign-in sheets come up again, perhaps at budget time or before an audit, I am happy to pick this up. The offer of fifteen minutes on getting agency staff productive from day one stays open.\n\nThank you for your time, and best of luck with the winter staffing season.\n\nBest regards",
+        "matched_to": "onboarding delay and access audit gap"
+      }
+    ],
+    "acc-16": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "Access across 310 practices",
+        "body": "Rupert,\n\nAshcombe buys about 40 practices a year. Each one arrives with its own IT and its own practice-level logins.\n\nWith no central directory, nobody can see all of that access in one place. The real risk is leavers who keep logins to patient data long after they have gone.\n\nOne simple test: pick your last five acquisitions. Ask how many people who left those practices since the deal still have a working login. That number often tells a group more than any audit.\n\nNo reply needed. I thought it might be useful as you plan the next deals.\n\nBest,",
+        "matched_to": "Leavers keeping access to patient data"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "The first month after each deal",
+        "body": "Rupert,\n\nA second thought on your acquisitions.\n\nAt 40 deals a year, access control stops being an IT task. It becomes part of integration, because each deal adds logins faster than anyone can review them.\n\nThe groups that handle this well do one thing. They bring every new practice onto one directory in its first month. After that, the access gets messy and the clean-up costs more.\n\nIt also speeds up integration. New sites get shared systems sooner, with fewer one-off fixes.\n\nNothing to do here. Just a pattern worth knowing.\n\nBest,",
+        "matched_to": "First-month directory point of view"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Rupert, I have been following Ashcombe's practice acquisitions. I work with groups bringing each new site's logins under one directory during integration. Would be glad to connect.",
+        "matched_to": "Practice acquisitions noted 15 September"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "15 minutes on one number",
+        "body": "Call script:\nHi Rupert, it's [name]. I sent two notes on access across your acquired practices. One quick question: how many of your 310 sites share one central directory today? If it's few, could we take fifteen minutes to agree a target, say 80% within a year? When suits you?\n---\nRupert,\n\nI tried you by phone today.\n\nOne number matters here: the share of your practices on one central directory. Today that looks like 0% of 310. A fair goal is 80% within 12 months.\n\nCould we take fifteen minutes to agree whether that target is right for Ashcombe? I can work around your diary.\n\nBest,",
+        "matched_to": "Share of practices on one directory"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop",
+        "body": "Rupert,\n\nI haven't heard back, so I will stop writing for now. I know integration keeps a COO busy.\n\nIf untracked access across new practices becomes a priority, or the next wave of deals raises it, I am happy to pick this up. Just reply to this note.\n\nThanks for reading, and good luck with the coming acquisitions.\n\nBest,",
+        "matched_to": "Forty acquisitions a year, COO as buyer"
+      }
+    ],
+    "acc-07": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "Your first 90 days and the two directories",
+        "body": "Lorna,\n\nCongratulations on starting as CIO at Caskellon on 15 August.\n\nOne thing stood out to us. Your call centres still run on a legacy directory, separate from head office's cloud one. That split is easy to live with today. It gets harder once more people are built on it.\n\nWith 400 Irish hires planned for 2027, every joiner set up in the old system adds cost and audit risk. It also adds work you will have to undo later.\n\nThe cheapest moment to bring the two together is before those hires arrive, not after.\n\nNo reply needed. I thought it was worth flagging early.\n\nBest regards",
+        "matched_to": "new CIO, 15 August; legacy directory split"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "Days, not weeks, for the Irish sites",
+        "body": "Lorna,\n\nA second thought on the Irish expansion.\n\nFirms that unify identity before opening a new site usually get new staff working in days, not weeks. Firms that wait often carry two sets of access rules into the new site. Those rules then drift apart.\n\nIn a customer-facing call centre, that shows up fast. A new hire waits for access. Or they get the wrong access, which becomes an audit question later.\n\nA simple test is worth running now. How many days does it take today for a new call-centre hire to get full access? That number tends to set the pace for everything after.\n\nBest regards",
+        "matched_to": "first meeting point of view: onboard new sites in days"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Hi Lorna, congratulations on joining Caskellon as CIO. I've been looking at how firms bring call-centre and head-office directories together before a big hiring push like your Irish one. Would be glad to connect.",
+        "matched_to": "new CIO; Irish expansion"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "From 5 days to 1 for new call-centre hires",
+        "body": "Hi Lorna, it's [name]. I'll be brief. Your call centres still sit on a separate directory, and 400 Irish hires are coming in 2027. Today a new hire takes about five days to get full access. Could we take fifteen minutes to see if one day is realistic before Ireland?\n---\nLorna,\n\nI tried you by phone today.\n\nOne number seems to matter most before the Irish hires arrive. A new call-centre hire takes about five days to get full access today. Getting that to one day by the first Irish hires would cut cost and audit risk.\n\nWould you be open to a fifteen-minute call to check whether that target is right for Caskellon? If it is not, I would rather know.\n\nBest regards",
+        "matched_to": "one metric: days to full access, 5 to 1"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop",
+        "body": "Lorna,\n\nI have not heard back, which is fine. Your first months as CIO are busy, and this may not be a priority right now.\n\nI will stop writing for now. If the access time for new call-centre hires becomes a focus as the Irish plans firm up, I would be glad to help.\n\nWishing you a good start at Caskellon.\n\nBest regards",
+        "matched_to": "Irish hires 2027; access time for new hires"
+      }
+    ],
+    "acc-05": [
+      {
+        "touch": 1,
+        "kind": "insight email",
+        "subject": "Workstream 2 and the VPN",
+        "body": "Kwame,\n\nYour cloud RFP from 5 October puts identity at workstream 2. That order matters more than it looks.\n\nRight now every one of your 4,800 brokers reaches client systems through one data centre directory and one VPN. If systems move to the cloud before sign-on changes, that VPN stays in the middle of everything. It becomes the choke point the migration was meant to remove.\n\nFirms that sort sign-on early can retire the VPN on schedule. Firms that leave it late often end up running both for years.\n\nWorth a look as you score the bids.\n\nBest regards",
+        "matched_to": "cloud migration RFP, identity as workstream 2"
+      },
+      {
+        "touch": 2,
+        "kind": "insight email",
+        "subject": "Passwords multiply as data moves",
+        "body": "Kwame,\n\nOne more thought on the migration.\n\nWithout single sign-on, each new cloud system tends to bring its own password. Across 4,800 brokers, that adds up fast. Help-desk resets climb. Weak and reused passwords spread. And it happens just as regulated client data is moving.\n\nA simple check: count how many separate sign-ins a broker will need on day one after cutover. If the number is above two or three, the help desk will feel it first, and Celestine will likely hear about it soon after.\n\nHappy to share how others have measured this.\n\nBest regards",
+        "matched_to": "passwords, help-desk load and breach exposure"
+      },
+      {
+        "touch": 3,
+        "kind": "LinkedIn connection request",
+        "subject": "",
+        "body": "Kwame, I've been reading your cloud RFP with identity as workstream 2. I work on moving large broker teams off the VPN and onto single sign-on, and would value being connected as the migration takes shape.",
+        "matched_to": "identity workstream in the cloud RFP"
+      },
+      {
+        "touch": 4,
+        "kind": "call, no voicemail, then email",
+        "subject": "15 minutes on one number: VPN to sign-on",
+        "body": "Call script:\nKwame, it's about workstream 2 in your cloud RFP. One question: what share of your brokers should sign in through single sign-on, not the VPN, a year from now? Today it's zero. I'd suggest aiming for 90%. Could we take fifteen minutes to test whether that's right?\n---\nKwame,\n\nI tried you by phone today about workstream 2.\n\nOne number could anchor the identity work: share of staff signing in through single sign-on rather than the VPN. Zero today, 90% within 12 months. If that holds, the VPN can retire on schedule.\n\nCould we take fifteen minutes to agree whether that target fits your plan? Any time next week works.\n\nBest regards",
+        "matched_to": "one metric: 0% to 90% single sign-on in 12 months"
+      },
+      {
+        "touch": 5,
+        "kind": "break-up email",
+        "subject": "Closing the loop on workstream 2",
+        "body": "Kwame,\n\nI haven't heard back, so I'll assume the timing isn't right or the RFP is already well in hand. That's fine.\n\nI'll stop writing for now. If sign-on or the VPN retirement becomes a sticking point as the migration moves, I'd be glad to help then.\n\nGood luck with the move.\n\nBest regards",
+        "matched_to": "first meeting point of view: VPN retiring on schedule"
+      }
+    ]
+  },
+  "schedule": {
+    "acc-01": {
+      "name": "Harrowgate Lumen",
+      "stage": "first_call",
+      "next_touch": null,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "given",
+          "body_hash": "91329d85dab36a77"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "given",
+          "body_hash": "44b66ce1dd8f9564"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "given",
+          "body_hash": "a731c8b2b680dd4c"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "cancelled, replied",
+          "body_hash": "b383fd0687c1f9b6"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "cancelled, replied",
+          "body_hash": "ab27a567060fe6c9"
+        }
+      ],
+      "day": 10
+    },
+    "acc-10": {
+      "name": "Dunwold Civil",
+      "stage": "first_call",
+      "next_touch": null,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "given",
+          "body_hash": "82c751da450d0ec4"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "cancelled, replied",
+          "body_hash": "73ac955bac7996e8"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "cancelled, replied",
+          "body_hash": "7a68a866d8f95700"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "cancelled, replied",
+          "body_hash": "0bd510fb356be138"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "cancelled, replied",
+          "body_hash": "726569dc65934813"
+        }
+      ],
+      "day": 10
+    },
+    "acc-03": {
+      "name": "Quillon Health",
+      "stage": "first_call",
+      "next_touch": null,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "given",
+          "body_hash": "1678107cf42202a0"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "given",
+          "body_hash": "90bd9d9019251a70"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "cancelled, replied",
+          "body_hash": "7d63f6fdf8902804"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "cancelled, replied",
+          "body_hash": "97f067bed82ee86e"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "cancelled, replied",
+          "body_hash": "f5e749b3b4ccad9e"
+        }
+      ],
+      "day": 10
+    },
+    "acc-06": {
+      "name": "Pellmoor Rail Services",
+      "stage": "first_call",
+      "next_touch": null,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "given",
+          "body_hash": "c0d9cd06c9c5642d"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "given",
+          "body_hash": "35830c3d8ea04123"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "cancelled, replied",
+          "body_hash": "e68a4e2c1f0e02cc"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "cancelled, replied",
+          "body_hash": "5e648e1e9ca35663"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "cancelled, replied",
+          "body_hash": "6e2da2a23aa4e33c"
+        }
+      ],
+      "day": 10
+    },
+    "acc-12": {
+      "name": "Lantergate Retail",
+      "stage": "T3",
+      "next_touch": 3,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "given",
+          "body_hash": "828384eecd018758"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "given",
+          "body_hash": "3990bab5858bec73"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "given",
+          "body_hash": "278a36dea17ec315"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "scheduled",
+          "body_hash": "2fb64c1f4ba33796"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "scheduled",
+          "body_hash": "8ff703e615975088"
+        }
+      ],
+      "day": 9
+    },
+    "acc-02": {
+      "name": "Veldstone Marine",
+      "stage": "first_call",
+      "next_touch": null,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "given",
+          "body_hash": "5a66d7e1cfb0be32"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "given",
+          "body_hash": "fcd1ae9886e41e5c"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "given",
+          "body_hash": "560902225458c370"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "given",
+          "body_hash": "f73b61e8d6f4a4d3"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "cancelled, replied",
+          "body_hash": "01c18899f70eb23f"
+        }
+      ],
+      "day": 12
+    },
+    "acc-19": {
+      "name": "Morrowick Care Homes",
+      "stage": "first_call",
+      "next_touch": null,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "given",
+          "body_hash": "5026976e90ce8f18"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "given",
+          "body_hash": "a0c35de95f78ab04"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "given",
+          "body_hash": "6aaa2495df808da3"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "cancelled, replied",
+          "body_hash": "fba2c249ee52fa4e"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "cancelled, replied",
+          "body_hash": "d4cb461a140f971f"
+        }
+      ],
+      "day": 10
+    },
+    "acc-16": {
+      "name": "Ashcombe Dental Partners",
+      "stage": "T4",
+      "next_touch": 4,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "given",
+          "body_hash": "a72d98d4da4bb8b7"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "given",
+          "body_hash": "af6bf620a418cb75"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "given",
+          "body_hash": "fbf3a2bf60b981f8"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "given",
+          "body_hash": "1be96ae155449bc3"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "scheduled",
+          "body_hash": "55d25f90310f8edd"
+        }
+      ],
+      "day": 12
+    },
+    "acc-07": {
+      "name": "Caskellon Energy",
+      "stage": "first_call",
+      "next_touch": null,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "given",
+          "body_hash": "3cc1fe5d6373aa51"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "cancelled, replied",
+          "body_hash": "6ea421e8f52a3e0f"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "cancelled, replied",
+          "body_hash": "d1d46ae7971c8adc"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "cancelled, replied",
+          "body_hash": "3b1010779386db20"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "cancelled, replied",
+          "body_hash": "97b271911e12f120"
+        }
+      ],
+      "day": 10
+    },
+    "acc-05": {
+      "name": "Orrin & Tave",
+      "stage": "T1",
+      "next_touch": 1,
+      "touches": [
+        {
+          "touch": 1,
+          "kind": "insight email",
+          "day": 1,
+          "due": "2026-10-16",
+          "status": "scheduled",
+          "body_hash": "97e80c59a5b85b86"
+        },
+        {
+          "touch": 2,
+          "kind": "insight email",
+          "day": 5,
+          "due": "2026-10-20",
+          "status": "scheduled",
+          "body_hash": "7d71e92cdd4a374a"
+        },
+        {
+          "touch": 3,
+          "kind": "LinkedIn connection request",
+          "day": 8,
+          "due": "2026-10-23",
+          "status": "scheduled",
+          "body_hash": "c7fb570b73e0ba17"
+        },
+        {
+          "touch": 4,
+          "kind": "call, no voicemail, then email",
+          "day": 11,
+          "due": "2026-10-26",
+          "status": "scheduled",
+          "body_hash": "92b6b41866fc4857"
+        },
+        {
+          "touch": 5,
+          "kind": "break-up email",
+          "day": 18,
+          "due": "2026-11-02",
+          "status": "scheduled",
+          "body_hash": "165c4ae5dc9f6f59"
+        }
+      ],
+      "day": 0
+    }
+  },
+  "qualified": {
+    "acc-01": {
+      "id": "acc-01",
+      "name": "Harrowgate Lumen",
+      "replied_at": "T3",
+      "qualification": {
+        "metrics": "Share of sites and apps on one login, 0% today; she liked this measure.",
+        "economic_buyer": "Priya Oduya-Marsh (COO) holds the budget; the CFO signs anything over a set threshold, and the threshold is not yet known.",
+        "decision_criteria": "Not yet known, beyond needing a plan she can show the board in November.",
+        "decision_process": "Not yet known in detail; the COO owns it, the CFO signs above threshold, and the head of HR should be involved.",
+        "paper_process": "Not yet known; only that the CFO signs above a set threshold.",
+        "identified_pain": "Leavers keep access in the cloud apps for weeks, with two near misses this quarter.",
+        "champion": "Ruaridh Okafor-Lindley (Head of IT) will run delivery and is keen; whether he will sell internally is not yet known.",
+        "competition": "Not yet known.",
+        "gaps": "Not yet known: the CFO threshold and likely deal size, decision criteria, formal steps and timing, legal and procurement process, other options being weighed, number of sites and apps, the head of HR's name and view, and the board meeting date."
+      },
+      "value_frame": {
+        "problem_identified": "In her words, leavers keep access to cloud apps for weeks, and there have been two near misses this quarter.",
+        "value_defined": "Every site and app sits on one login, so a leaver's access ends on the day they leave and the near-miss risk drops.",
+        "value_sized": "Estimate from the call: move from 0% of sites and apps on one login to a target set with her, and cut leaver access from weeks to same day. No money figure was given; the cost of a near miss is not yet known.",
+        "how_value_is_realised": "Value identified on the call, value framed in the board plan, value realised by tracking share of sites and apps on one login and the days a leaver keeps access, reported monthly after go-live."
+      },
+      "mutual_plan": {
+        "goal": "Give the COO a board-ready plan in November to get every site onto one login by mid December.",
+        "steps": [
+          {
+            "who": "You",
+            "what": "Share the list of sites and cloud apps and the two near-miss cases.",
+            "by": "2026-10-21"
+          },
+          {
+            "who": "I",
+            "what": "Draft the board plan with the 0% baseline, targets and leaver-access measure.",
+            "by": "2026-10-28"
+          },
+          {
+            "who": "You",
+            "what": "Book a meeting with the CFO, head of HR and Ruaridh to review the draft.",
+            "by": "2026-10-30"
+          },
+          {
+            "who": "I",
+            "what": "Confirm the CFO threshold, signing steps and paperwork with your team.",
+            "by": "2026-11-04"
+          },
+          {
+            "who": "You",
+            "what": "Present the final plan to the board.",
+            "by": "2026-11-20"
+          },
+          {
+            "who": "I",
+            "what": "Start delivery with Ruaridh so the first sites are live on one login.",
+            "by": "2026-12-15"
+          }
+        ],
+        "the_ask": "Please bring the CFO and the head of HR, with Ruaridh Okafor-Lindley, into our next meeting by 30 October. That lets us agree the plan, the threshold and the leaver process once, in time for your November board."
+      }
+    },
+    "acc-10": {
+      "id": "acc-10",
+      "name": "Dunwold Civil",
+      "replied_at": "T1",
+      "qualification": {
+        "metrics": "Not yet known. The call did not set a number for success.",
+        "economic_buyer": "Not yet known by name. The two boards must agree spend.",
+        "decision_criteria": "Not yet known beyond needing a joint design agreed before the merger completes.",
+        "decision_process": "Programme Director Callum Reinholt owns the integration plan. The two boards must agree spend. The steps between are not yet known.",
+        "paper_process": "Not yet known.",
+        "identified_pain": "Identity is named a day-one risk in the merger integration plan. The merger completes January 2027.",
+        "champion": "Possible champion: Margarethe Olufemi-Stroud, Group CIO. She wants a joint design agreed before completion. Not yet tested.",
+        "competition": "Not yet known.",
+        "gaps": "No metrics or cost of the risk. No named economic buyer on either board. Unknown how the boards approve spend or on what timetable. No paper, legal or procurement process. No view of competitors or an in-house option. No budget. Callum Reinholt's view not yet heard. The exact completion date in January is not yet known."
+      },
+      "value_frame": {
+        "problem_identified": "Identity is a day-one risk in the integration plan for a merger completing January 2027. The cost of that risk was not put in the buyer's words on the call.",
+        "value_defined": "If fixed, both companies have one agreed identity design before completion, so day one runs without that risk.",
+        "value_sized": "Not yet known. No number was given on the call. An estimate needs the people affected and the cost of a day-one failure, to be gathered next meeting.",
+        "how_value_is_realised": "Value identified: the day-one identity risk. Value framed: a joint design agreed before completion. Value realised: measured after go-live against agreed day-one checks, such as people able to sign in and access the right systems from day one, with numbers to be set together."
+      },
+      "mutual_plan": {
+        "goal": "Agree a joint identity design both boards can back before the merger completes in January 2027.",
+        "steps": [
+          {
+            "who": "I",
+            "what": "Send a short summary of the call and a draft outline of the joint design work.",
+            "by": "2026-10-20"
+          },
+          {
+            "who": "You",
+            "what": "Share the identity section of the integration plan and the completion date.",
+            "by": "2026-10-23"
+          },
+          {
+            "who": "You",
+            "what": "Confirm how and when the two boards approve spend.",
+            "by": "2026-10-27"
+          },
+          {
+            "who": "I",
+            "what": "Draft a sized estimate of the day-one risk and the value of fixing it.",
+            "by": "2026-10-30"
+          },
+          {
+            "who": "You",
+            "what": "Hold a meeting with Callum Reinholt and the board sponsors to review the outline and estimate.",
+            "by": "2026-11-06"
+          },
+          {
+            "who": "I",
+            "what": "Send a proposal and the paper steps needed for board approval.",
+            "by": "2026-11-13"
+          }
+        ],
+        "the_ask": "Please bring Callum Reinholt, the Programme Director, and the board sponsor from each company who will agree spend to our next meeting. Please also invite anyone from the buying committee, such as finance or procurement, who must sign off, so we can agree the design and approval path in one session."
+      }
+    },
+    "acc-03": {
+      "id": "acc-03",
+      "name": "Quillon Health",
+      "replied_at": "T2",
+      "qualification": {
+        "metrics": "Not yet known. The clear target is passing the March 2027 clinical records audit without access review findings.",
+        "economic_buyer": "Not yet known. The board approves the budget in January. Who signs inside the business is not confirmed.",
+        "decision_criteria": "Not yet known. It likely needs to satisfy audit needs and be acceptable to clinical staff, but this was not stated as criteria.",
+        "decision_process": "Partly known. The CISO leads. The CMIO must be in the room as the clinical voice. A budget request goes to the board in January.",
+        "paper_process": "Not yet known. Contract, legal, security review and purchasing steps were not discussed.",
+        "identified_pain": "Last year's access reviews were done by hand and were flagged in audit. Three identity roles are open and unfilled. The next audit is in March 2027.",
+        "champion": "Possible champion: Marcus Vellacott, the new CISO. He has a clear reason to act, but his influence is not yet tested.",
+        "competition": "Not yet known. Doing nothing, or hiring to fill the three roles, are possible alternatives.",
+        "gaps": "We do not know who signs, the budget amount, what the audit flags cost, the success measures, the paper process, other options being considered, how many users and systems are in scope, or the CMIO's view."
+      },
+      "value_frame": {
+        "problem_identified": "Access reviews were done by hand and flagged in last year's audit. Three identity roles sit empty. The clinical records audit comes in March 2027.",
+        "value_defined": "Access reviews run on time and leave evidence that auditors accept. The team covers the work of the empty roles. Clinicians keep the access they need without delay.",
+        "value_sized": "Estimate from the call, not confirmed: three unfilled roles' worth of work. At an assumed 100,000 per role each year, that is about 300,000 a year, plus avoiding a repeat audit finding. The salary figure and the cost of a finding need checking with the buyer.",
+        "how_value_is_realised": "Value identified: manual reviews, an audit flag and empty roles. Value framed: agree on the baseline and targets with the CISO and CMIO. Value realised: after go-live, track review completion time, the share of reviews done on schedule, hours of manual effort saved, and the number of findings in the March 2027 audit."
+      },
+      "mutual_plan": {
+        "goal": "Get an approved plan into the January board budget request so access reviews are fixed before the March 2027 audit.",
+        "steps": [
+          {
+            "who": "You",
+            "what": "Share last year's audit findings on access reviews.",
+            "by": "2026-10-23"
+          },
+          {
+            "who": "I",
+            "what": "Send a short draft of the baseline and value estimate for you to correct.",
+            "by": "2026-10-28"
+          },
+          {
+            "who": "You",
+            "what": "Confirm who signs, the budget range and the board paper deadline.",
+            "by": "2026-10-30"
+          },
+          {
+            "who": "I",
+            "what": "Run a working session with you, Dr Achterberg and the budget owner on needs and success measures.",
+            "by": "2026-11-06"
+          },
+          {
+            "who": "I",
+            "what": "Deliver a written proposal and timeline that fit the board paper.",
+            "by": "2026-11-20"
+          },
+          {
+            "who": "You",
+            "what": "Start the security, legal and purchasing review.",
+            "by": "2026-12-04"
+          },
+          {
+            "who": "You",
+            "what": "Submit the budget request to the board.",
+            "by": "2027-01-15"
+          }
+        ],
+        "the_ask": "Marcus, please bring Dr Achterberg and the person who owns the board budget request to our next meeting, along with anyone from finance or purchasing who will review it. With them in the room, we can agree on the needs and numbers once and keep your January board date safe."
+      }
+    },
+    "acc-06": {
+      "id": "acc-06",
+      "name": "Pellmoor Rail Services",
+      "replied_at": "T2",
+      "qualification": {
+        "metrics": "Not yet known. No target was set on the call. A likely measure is accounts protected by more than a password, but this needs confirming.",
+        "economic_buyer": "Likely Gareth Ilunga-Price, MD. He wants a fix before the next board. Not yet confirmed that he signs.",
+        "decision_criteria": "A credible plan that can be shown to the regulator and the board. Other criteria are not yet known.",
+        "decision_process": "Not yet known. The MD and the board are involved. The steps and the people beyond them are not yet known.",
+        "paper_process": "Not yet known. Budget is available this year if the plan is credible. Procurement, legal and security review steps are not yet known.",
+        "identified_pain": "A credential-stuffing incident was reported to the regulator. Field staff use shared tablets with passwords only. A regulator follow-up is due in 60 days.",
+        "champion": "Possibly Sunita Fairweather, CISO. She owns the problem. It is not yet tested whether she will sell this internally.",
+        "competition": "Not yet known.",
+        "gaps": "Next board date. Who signs and to what amount. Budget size. How many field staff and tablets. Who else is on the buying committee, such as IT, operations, procurement and finance. Other options under review. Success measures. Cost of the incident so far. Procurement and legal steps."
+      },
+      "value_frame": {
+        "problem_identified": "Value identified: a credential-stuffing incident has already been reported to the regulator. Field staff log in on shared tablets with passwords only, so the risk remains. The regulator follows up in 60 days, and the MD wants it fixed before the next board.",
+        "value_defined": "Value framed: field staff log in with more than a shared password. Stolen passwords alone no longer open accounts. Pellmoor can show the regulator and the board a working fix with evidence.",
+        "value_sized": "Estimate from the call: the risk on the table is a regulator follow-up in 60 days and a board review. The money cost is not yet known. It needs the number of field staff, the cost of the incident, and any possible penalty before a figure can be given.",
+        "how_value_is_realised": "Value realised: after go-live, track the share of field staff accounts protected beyond a password. Track blocked login attacks and repeat incidents, and record evidence passed to the regulator by the follow-up date."
+      },
+      "mutual_plan": {
+        "goal": "Have a credible, board-approved plan in place, with first protection live, before the regulator follow-up in mid-December 2026.",
+        "steps": [
+          {
+            "who": "You",
+            "what": "Share the next board date, field staff and tablet numbers, and the regulator's expectations.",
+            "by": "2026-10-21"
+          },
+          {
+            "who": "I",
+            "what": "Send a short draft plan and value estimate based on those facts.",
+            "by": "2026-10-26"
+          },
+          {
+            "who": "You",
+            "what": "Bring Gareth and the buying committee to a plan review meeting.",
+            "by": "2026-10-30"
+          },
+          {
+            "who": "I",
+            "what": "Send a final proposal with timeline, cost and evidence for the regulator.",
+            "by": "2026-11-04"
+          },
+          {
+            "who": "You",
+            "what": "Confirm procurement, legal and security review steps and start them.",
+            "by": "2026-11-06"
+          },
+          {
+            "who": "You",
+            "what": "Get sign-off and a start date.",
+            "by": "2026-11-13"
+          },
+          {
+            "who": "I",
+            "what": "Deliver first protection for field staff and a regulator evidence pack.",
+            "by": "2026-12-11"
+          }
+        ],
+        "the_ask": "Sunita, please bring Gareth Ilunga-Price to our next meeting, along with the heads of IT, field operations, procurement and finance. That way we can agree one credible plan before the board and the regulator follow-up."
+      }
+    },
+    "acc-02": {
+      "id": "acc-02",
+      "name": "Veldstone Marine",
+      "replied_at": "T4",
+      "qualification": {
+        "metrics": "Contractor numbers are up 40%. No target for onboarding time or cost was set on the call.",
+        "economic_buyer": "Likely Dafydd Okonkwo-Price, Finance Director, who owns the replatform budget. Not yet confirmed for this spend.",
+        "decision_criteria": "Not yet known. The only stated need is to have contractor access sorted before the January build starts.",
+        "decision_process": "No formal process yet. A steering group meets monthly. Its role in this decision is not yet known.",
+        "paper_process": "Not yet known.",
+        "identified_pain": "Contractors are up 40%, and they are onboarded by spreadsheet. Ingrid called this the sore point.",
+        "champion": "Possibly Ingrid Fallowmere, CIO. She raised the pain and the deadline. Her willingness to push this internally is not yet tested.",
+        "competition": "Not yet known. The spreadsheet process is the current way of working.",
+        "gaps": "No figures on onboarding time, errors or access risk. Dafydd's view on this spend is not yet known. Criteria, steering group membership and next meeting date are not yet known. Paper process and approval steps are not yet known. Budget source is not yet known: replatform budget or separate. Competitors are not yet known."
+      },
+      "value_frame": {
+        "problem_identified": "Contractors are up 40%, and onboarding them by spreadsheet is the sore point. It must be fixed before the replatform build starts in January.",
+        "value_defined": "Contractors get the right access quickly and in a controlled way. The spreadsheet goes. The January build starts without an access bottleneck.",
+        "value_sized": "Not yet sized. The only number from the call is a 40% rise in contractors. Any figure needs contractor count, hours per onboarding and staff cost from the buyer. Treat any sizing as an estimate until then.",
+        "how_value_is_realised": "Value identified: the spreadsheet onboarding pain. Value framed: faster, controlled access before January. Value realised: after go-live, track days to onboard a contractor, staff hours per onboarding, and access errors against today's baseline."
+      },
+      "mutual_plan": {
+        "goal": "Have controlled contractor access running at Veldstone Marine before the replatform build starts in January 2027.",
+        "steps": [
+          {
+            "who": "You",
+            "what": "Share current contractor numbers and rough hours spent per onboarding.",
+            "by": "2026-10-23"
+          },
+          {
+            "who": "I",
+            "what": "Send a short written value estimate built from those numbers.",
+            "by": "2026-10-28"
+          },
+          {
+            "who": "You",
+            "what": "Confirm the steering group date and members, and invite Dafydd Okonkwo-Price.",
+            "by": "2026-10-30"
+          },
+          {
+            "who": "I",
+            "what": "Present the value case and a January-ready timeline to you, Dafydd and the steering group.",
+            "by": "2026-11-13"
+          },
+          {
+            "who": "You",
+            "what": "Confirm the decision criteria, budget source and approval steps.",
+            "by": "2026-11-20"
+          },
+          {
+            "who": "I",
+            "what": "Deliver a proposal and contract for review.",
+            "by": "2026-11-27"
+          }
+        ],
+        "the_ask": "Please bring Dafydd Okonkwo-Price, who owns the replatform budget, and the steering group members to our next meeting. That way we can agree the value, budget and timeline in one meeting and hit your January deadline."
+      }
+    },
+    "acc-19": {
+      "id": "acc-19",
+      "name": "Morrowick Care Homes",
+      "replied_at": "T3",
+      "qualification": {
+        "metrics": "Agency staff cover 30% of shifts. Onboarding takes four days on paper. The target is under one day.",
+        "economic_buyer": "Likely Grace Adeyemi-Thorne, COO, who set the under-one-day target and whose operations line holds the budget. Not yet confirmed.",
+        "decision_criteria": "Not yet known, beyond getting onboarding under one day.",
+        "decision_process": "Not yet known.",
+        "paper_process": "Not yet known. Budget is said to come from the operations line.",
+        "identified_pain": "Agency nurses arrive for their first shift without system access.",
+        "champion": "Possibly Leon Starkadder, Head of Digital. Not yet tested.",
+        "competition": "Not yet known. The current alternative is the paper process.",
+        "gaps": "Budget size and timing. Who else signs off, including clinical, HR and procurement. Decision criteria and process. Contract and legal steps. Timeline. Any other options under review. Whether Leon will actively sponsor this. How many homes and agency nurses are affected. The cost of the current delay."
+      },
+      "value_frame": {
+        "problem_identified": "Agency staff fill 30% of shifts. Onboarding takes four days on paper, so agency nurses start their first shift without system access.",
+        "value_defined": "Agency nurses get onboarded in under one day. They have system access from their first shift.",
+        "value_sized": "Estimate from the call: onboarding time drops from four days to under one day, a cut of at least 75% per agency hire, across the 30% of shifts covered by agency staff. The money value is not yet known and needs hire volumes and cost per day.",
+        "how_value_is_realised": "Value identified: four-day paper onboarding and no first-shift access. Value framed: the COO target of under one day. Value realised: after go-live, track average onboarding time per agency nurse, and the share of agency nurses with system access at the start of their first shift, against today's baseline."
+      },
+      "mutual_plan": {
+        "goal": "Agree whether a faster onboarding approach can get agency nurses access in under one day, with the COO and the buying committee.",
+        "steps": [
+          {
+            "who": "You",
+            "what": "Share monthly agency hire numbers and the current onboarding steps.",
+            "by": "2026-10-23"
+          },
+          {
+            "who": "I",
+            "what": "Send a short summary of this call and a draft baseline for onboarding time.",
+            "by": "2026-10-20"
+          },
+          {
+            "who": "You",
+            "what": "Confirm who signs off on budget, contract and clinical safety.",
+            "by": "2026-10-23"
+          },
+          {
+            "who": "I",
+            "what": "Prepare a value estimate based on your hire numbers and the under-one-day target.",
+            "by": "2026-10-28"
+          },
+          {
+            "who": "You",
+            "what": "Book a meeting with Grace Adeyemi-Thorne and the buying committee.",
+            "by": "2026-10-30"
+          },
+          {
+            "who": "I",
+            "what": "Present the value estimate and a proposed plan to that group.",
+            "by": "2026-11-06"
+          }
+        ],
+        "the_ask": "Please bring Grace Adeyemi-Thorne, your COO, to our next meeting, along with whoever owns the operations budget, HR and clinical sign-off. With them in the room, we can agree the under-one-day target and the next steps together."
+      }
+    },
+    "acc-07": {
+      "id": "acc-07",
+      "name": "Caskellon Energy",
+      "replied_at": "T1",
+      "qualification": {
+        "metrics": "400 new hires for the Irish entry next year. Target is every new hire live on day one. Other numbers not yet known.",
+        "economic_buyer": "Likely the CEO, Fenwick Adebayo-Ross, who wants new hires live on day one. Budget owner not yet confirmed.",
+        "decision_criteria": "Not yet known, beyond getting new hires working on day one.",
+        "decision_process": "Decision at the Q1 board. Lorna Quist writes the board paper. Who else reviews it is not yet known.",
+        "paper_process": "Board paper written by Lorna for Q1. Procurement, legal and contract steps not yet known.",
+        "identified_pain": "Call centres still run on the legacy directory. That puts day-one readiness for 400 Irish hires at risk.",
+        "champion": "Lorna Quist, CIO, is the likely champion. She owns the board paper. Her commitment is not yet tested.",
+        "competition": "Not yet known.",
+        "gaps": "No cost of delay or current onboarding time. No budget or budget owner. No decision criteria. No buying committee names. No procurement or legal path. No view of competition or of doing nothing. No firm Irish go-live date. Unclear if the CEO has engaged."
+      },
+      "value_frame": {
+        "problem_identified": "Call centres still sit on the legacy directory. The CEO wants 400 Irish new hires live on day one. The old setup puts that at risk.",
+        "value_defined": "New hires get working access on their first day. The Irish entry starts on time. The call centres move off the legacy directory.",
+        "value_sized": "Estimate from the call: 400 hires. Each day a hire waits for access is a lost working day, so 400 lost days per day of delay. Daily cost per hire is not yet known. To be confirmed with Lorna.",
+        "how_value_is_realised": "Value identified: day-one readiness for 400 hires. Value framed: lost working days avoided and the Irish launch kept on schedule. Value realised: after go-live, track the share of hires live on day one and the days to full access. Report this to Lorna and the CEO."
+      },
+      "mutual_plan": {
+        "goal": "Give Lorna a board-ready paper for the Q1 board that shows how 400 Irish hires go live on day one.",
+        "steps": [
+          {
+            "who": "I",
+            "what": "Send a written recap of the call and a draft value estimate for you to correct.",
+            "by": "2026-10-20"
+          },
+          {
+            "who": "You",
+            "what": "Share current onboarding time, cost per hire per day, and the Irish start date.",
+            "by": "2026-10-27"
+          },
+          {
+            "who": "You",
+            "what": "Name the buying committee and confirm procurement and legal steps.",
+            "by": "2026-10-30"
+          },
+          {
+            "who": "I",
+            "what": "Run a working session with you, the CEO and the committee on criteria and plan.",
+            "by": "2026-11-10"
+          },
+          {
+            "who": "I",
+            "what": "Deliver the business case and draft board paper sections.",
+            "by": "2026-11-27"
+          },
+          {
+            "who": "You",
+            "what": "Review the paper and confirm the board submission date.",
+            "by": "2026-12-11"
+          }
+        ],
+        "the_ask": "Lorna, please bring Fenwick Adebayo-Ross and the people who will review your board paper, including finance, procurement and your call-centre lead, to our next meeting. Their input now keeps the Q1 board decision on track."
+      }
+    }
+  },
+  "stopped": [],
+  "state": {
+    "acc-01": {
+      "name": "Harrowgate Lumen",
+      "zone": 1,
+      "stop": "Buying committee"
+    },
+    "acc-02": {
+      "name": "Veldstone Marine",
+      "zone": 2,
+      "stop": "Problem identified, value defined"
+    },
+    "acc-03": {
+      "name": "Quillon Health",
+      "zone": 1,
+      "stop": "Buying committee"
+    },
+    "acc-04": {
+      "name": "Brackwater Foods",
+      "zone": 3,
+      "stop": "resting after T5"
+    },
+    "acc-05": {
+      "name": "Orrin & Tave",
+      "zone": 4,
+      "stop": "T1 scheduled"
+    },
+    "acc-06": {
+      "name": "Pellmoor Rail Services",
+      "zone": 2,
+      "stop": "Problem identified, value defined"
+    },
+    "acc-07": {
+      "name": "Caskellon Energy",
+      "zone": 2,
+      "stop": "Problem identified, value defined"
+    },
+    "acc-08": {
+      "name": "Tarnbeck Logistics",
+      "zone": 3,
+      "stop": "resting after T5"
+    },
+    "acc-09": {
+      "name": "Mirrenhall Group",
+      "zone": 4,
+      "stop": "start"
+    },
+    "acc-10": {
+      "name": "Dunwold Civil",
+      "zone": 1,
+      "stop": "Buying committee"
+    },
+    "acc-11": {
+      "name": "Sablefern Pharma Services",
+      "zone": 3,
+      "stop": "T3 given, awaiting reply"
+    },
+    "acc-12": {
+      "name": "Lantergate Retail",
+      "zone": 3,
+      "stop": "T3 given, awaiting reply"
+    },
+    "acc-13": {
+      "name": "Corvane Aerospace Components",
+      "zone": 4,
+      "stop": "start"
+    },
+    "acc-14": {
+      "name": "Whitlowe Water",
+      "zone": 4,
+      "stop": "start"
+    },
+    "acc-15": {
+      "name": "Greyhallow Media",
+      "zone": 4,
+      "stop": "start"
+    },
+    "acc-16": {
+      "name": "Ashcombe Dental Partners",
+      "zone": 3,
+      "stop": "T4 given, awaiting reply"
+    },
+    "acc-17": {
+      "name": "Stornbridge Capital Partners",
+      "zone": 3,
+      "stop": "T4 given, awaiting reply"
+    },
+    "acc-18": {
+      "name": "Fellbrook Automotive Retail",
+      "zone": 4,
+      "stop": "start"
+    },
+    "acc-19": {
+      "name": "Morrowick Care Homes",
+      "zone": 2,
+      "stop": "Problem identified, value defined"
+    },
+    "acc-20": {
+      "name": "Kestrelmoor Construction",
+      "zone": 4,
+      "stop": "start"
+    },
+    "acc-21": {
+      "name": "Haverlane Education Trust",
+      "zone": 4,
+      "stop": "start"
+    },
+    "acc-22": {
+      "name": "Tollwick Chemicals",
+      "zone": 4,
+      "stop": "start"
+    },
+    "acc-23": {
+      "name": "Brindlemere Hospitality",
+      "zone": 4,
+      "stop": "start"
+    },
+    "acc-24": {
+      "name": "Ravensholt Engineering Group",
+      "zone": 3,
+      "stop": "resting after T5"
+    },
+    "acc-25": {
+      "name": "Pennywhistle Logistics",
+      "zone": 4,
+      "stop": "start"
+    }
+  },
+  "lights": {
+    "registered": true,
+    "permitted": true,
+    "logged": true,
+    "stoppable": true
+  },
+  "agents": [
+    {
+      "agent_id": "agent-1",
+      "name": "Researcher",
+      "owner": "ae-001",
+      "purpose": "Reads the book of 25 accounts and their signals; writes nothing, sends nothing",
+      "created_at": "2026-10-16T09:04:29+00:00",
+      "status": "done",
+      "colour": "#E69F00"
+    },
+    {
+      "agent_id": "agent-2",
+      "name": "Scorer",
+      "owner": "ae-001",
+      "purpose": "Ranks the 25 against the ideal client profile; says why each was selected and how it was found",
+      "created_at": "2026-10-16T09:04:29+00:00",
+      "status": "done",
+      "colour": "#56B4E9"
+    },
+    {
+      "agent_id": "agent-3",
+      "name": "Planner",
+      "owner": "ae-001",
+      "purpose": "Drafts the account plan for each of the top ten",
+      "created_at": "2026-10-16T09:04:29+00:00",
+      "status": "done",
+      "colour": "#F0E442"
+    },
+    {
+      "agent_id": "agent-4",
+      "name": "Writer",
+      "owner": "ae-001",
+      "purpose": "Drafts the five touches for each top-ten account from its plan; never sees the raw book, never sends",
+      "created_at": "2026-10-16T09:04:29+00:00",
+      "status": "done",
+      "colour": "#0072B2"
+    },
+    {
+      "agent_id": "agent-5",
+      "name": "Cadence",
+      "owner": "ae-001",
+      "purpose": "Schedules the five touches, enforces the rest rule and the no-repeat rule, hands replies to the Qualifier; never sends",
+      "created_at": "2026-10-16T09:04:29+00:00",
+      "status": "done",
+      "colour": "#D55E00"
+    },
+    {
+      "agent_id": "agent-6",
+      "name": "Qualifier",
+      "owner": "ae-001",
+      "purpose": "After the first call: light MEDDPICC, the problem and value framed and sized, the mutual plan with the ask to bring the boss and the committee in; never sees the raw book, never sends",
+      "created_at": "2026-10-16T09:04:29+00:00",
+      "status": "done",
+      "colour": "#CC79A7"
+    }
+  ],
+  "spend": {
+    "gbp": 0.4878,
+    "calls": 29,
+    "input_tokens": 24104,
+    "output_tokens": 26886
+  },
+  "log": [
+    "09:04:29.101  desk  registered  Researcher  ok  owner ae-001",
+    "09:04:29.102  desk  registered  Scorer  ok  owner ae-001",
+    "09:04:29.102  desk  registered  Planner  ok  owner ae-001",
+    "09:04:29.102  desk  registered  Writer  ok  owner ae-001",
+    "09:04:29.102  desk  registered  Cadence  ok  owner ae-001",
+    "09:04:29.102  desk  registered  Qualifier  ok  owner ae-001",
+    "09:04:29.102  desk  run started  25 accounts  ok  All data invented. Every company, person, signal and number is made up.",
+    "09:04:29.102  Researcher  read book  25 accounts  ok",
+    "09:04:29.102  Researcher  read signals  25 accounts  ok",
+    "09:04:55.921  Scorer  read research  25 notes  ok",
+    "09:05:14.207  Scorer  ranked 25  ok  top: Harrowgate Lumen",
+    "09:05:14.208  Planner  read scores  top 10  ok",
+    "09:05:17.987  Planner  account plan  Quillon Health  ok",
+    "09:05:18.739  Planner  account plan  Pellmoor Rail Services  ok",
+    "09:05:18.835  Planner  account plan  Harrowgate Lumen  ok",
+    "09:05:18.854  Planner  account plan  Lantergate Retail  ok",
+    "09:05:19.452  Planner  account plan  Dunwold Civil  ok",
+    "09:05:22.687  Planner  account plan  Veldstone Marine  ok",
+    "09:05:24.509  Planner  account plan  Ashcombe Dental Partners  ok",
+    "09:05:25.296  Planner  account plan  Caskellon Energy  ok",
+    "09:05:25.756  Planner  account plan  Morrowick Care Homes  ok",
+    "09:05:26.571  Planner  account plan  Orrin & Tave  ok",
+    "09:05:26.572  Writer  read plans  10 plans  ok",
+    "09:05:38.852  Writer  drafted T1 to T5  Dunwold Civil  ok",
+    "09:05:39.838  Writer  drafted T1 to T5  Quillon Health  ok",
+    "09:05:39.998  Writer  drafted T1 to T5  Harrowgate Lumen  ok",
+    "09:05:43.000  Writer  drafted T1 to T5  Pellmoor Rail Services  ok",
+    "09:05:45.789  Writer  drafted T1 to T5  Lantergate Retail  ok",
+    "09:05:51.624  Writer  drafted T1 to T5  Veldstone Marine  ok",
+    "09:05:52.389  Writer  drafted T1 to T5  Ashcombe Dental Partners  ok",
+    "09:05:53.273  Writer  drafted T1 to T5  Morrowick Care Homes  ok",
+    "09:05:59.431  Writer  drafted T1 to T5  Orrin & Tave  ok",
+    "09:05:59.797  Writer  drafted T1 to T5  Caskellon Energy  ok",
+    "09:05:59.799  Cadence  read drafts  10 accounts  ok",
+    "09:05:59.800  Cadence  scheduled T1 to T5  Harrowgate Lumen  ok",
+    "09:05:59.800  Cadence  scheduled T1 to T5  Dunwold Civil  ok",
+    "09:05:59.800  Cadence  scheduled T1 to T5  Quillon Health  ok",
+    "09:05:59.800  Cadence  scheduled T1 to T5  Pellmoor Rail Services  ok",
+    "09:05:59.801  Cadence  scheduled T1 to T5  Lantergate Retail  ok",
+    "09:05:59.801  Cadence  scheduled T1 to T5  Veldstone Marine  ok",
+    "09:05:59.801  Cadence  scheduled T1 to T5  Morrowick Care Homes  ok",
+    "09:05:59.802  Cadence  scheduled T1 to T5  Ashcombe Dental Partners  ok",
+    "09:05:59.802  Cadence  scheduled T1 to T5  Caskellon Energy  ok",
+    "09:05:59.802  Cadence  scheduled T1 to T5  Orrin & Tave  ok",
+    "09:05:59.803  Cadence  T1 given  Harrowgate Lumen  ok",
+    "09:05:59.803  Cadence  no reply  Harrowgate Lumen  ok  next T2",
+    "09:05:59.803  Cadence  T2 given  Harrowgate Lumen  ok",
+    "09:05:59.803  Cadence  no reply  Harrowgate Lumen  ok  next T3",
+    "09:05:59.803  Cadence  T3 given  Harrowgate Lumen  ok",
+    "09:05:59.804  Cadence  reply received, invented  Harrowgate Lumen  ok  at T3, to Qualifier, First call",
+    "09:05:59.804  Cadence  T1 given  Dunwold Civil  ok",
+    "09:05:59.804  Cadence  reply received, invented  Dunwold Civil  ok  at T1, to Qualifier, First call",
+    "09:05:59.804  Cadence  T1 given  Quillon Health  ok",
+    "09:05:59.804  Cadence  no reply  Quillon Health  ok  next T2",
+    "09:05:59.804  Cadence  T2 given  Quillon Health  ok",
+    "09:05:59.805  Cadence  reply received, invented  Quillon Health  ok  at T2, to Qualifier, First call",
+    "09:05:59.805  Cadence  T1 given  Pellmoor Rail Services  ok",
+    "09:05:59.805  Cadence  no reply  Pellmoor Rail Services  ok  next T2",
+    "09:05:59.805  Cadence  T2 given  Pellmoor Rail Services  ok",
+    "09:05:59.805  Cadence  reply received, invented  Pellmoor Rail Services  ok  at T2, to Qualifier, First call",
+    "09:05:59.805  Cadence  T1 given  Lantergate Retail  ok",
+    "09:05:59.806  Cadence  no reply  Lantergate Retail  ok  next T2",
+    "09:05:59.806  Cadence  T2 given  Lantergate Retail  ok",
+    "09:05:59.806  Cadence  no reply  Lantergate Retail  ok  next T3",
+    "09:05:59.806  Cadence  T3 given  Lantergate Retail  ok",
+    "09:05:59.806  Cadence  awaiting reply  Lantergate Retail  ok  T2 given, day 9 of the sequence",
+    "09:05:59.807  Cadence  T1 given  Veldstone Marine  ok",
+    "09:05:59.807  Cadence  no reply  Veldstone Marine  ok  next T2",
+    "09:05:59.807  Cadence  T2 given  Veldstone Marine  ok",
+    "09:05:59.808  Cadence  no reply  Veldstone Marine  ok  next T3",
+    "09:05:59.808  Cadence  T3 given  Veldstone Marine  ok",
+    "09:05:59.808  Cadence  no reply  Veldstone Marine  ok  next T4",
+    "09:05:59.808  Cadence  T4 given  Veldstone Marine  ok",
+    "09:05:59.808  Cadence  reply received, invented  Veldstone Marine  ok  at T4, to Qualifier, First call",
+    "09:05:59.809  Cadence  T1 given  Morrowick Care Homes  ok",
+    "09:05:59.809  Cadence  no reply  Morrowick Care Homes  ok  next T2",
+    "09:05:59.809  Cadence  T2 given  Morrowick Care Homes  ok",
+    "09:05:59.810  Cadence  no reply  Morrowick Care Homes  ok  next T3",
+    "09:05:59.810  Cadence  T3 given  Morrowick Care Homes  ok",
+    "09:05:59.810  Cadence  reply received, invented  Morrowick Care Homes  ok  at T3, to Qualifier, First call",
+    "09:05:59.810  Cadence  T1 given  Ashcombe Dental Partners  ok",
+    "09:05:59.810  Cadence  no reply  Ashcombe Dental Partners  ok  next T2",
+    "09:05:59.811  Cadence  T2 given  Ashcombe Dental Partners  ok",
+    "09:05:59.812  Cadence  no reply  Ashcombe Dental Partners  ok  next T3",
+    "09:05:59.812  Cadence  T3 given  Ashcombe Dental Partners  ok",
+    "09:05:59.812  Cadence  no reply  Ashcombe Dental Partners  ok  next T4",
+    "09:05:59.813  Cadence  T4 given  Ashcombe Dental Partners  ok",
+    "09:05:59.813  Cadence  awaiting reply  Ashcombe Dental Partners  ok  T3 given, day 12 of the sequence",
+    "09:05:59.813  Cadence  T1 given  Caskellon Energy  ok",
+    "09:05:59.813  Cadence  reply received, invented  Caskellon Energy  ok  at T1, to Qualifier, First call",
+    "09:05:59.814  desk  book position, invented  Ravensholt Engineering Group  ok  resting after T5",
+    "09:05:59.814  desk  book position, invented  Sablefern Pharma Services  ok  T3 given, awaiting reply",
+    "09:05:59.814  desk  book position, invented  Stornbridge Capital Partners  ok  T4 given, awaiting reply",
+    "09:05:59.814  desk  book position, invented  Brackwater Foods  ok  resting after T5",
+    "09:05:59.815  desk  book position, invented  Tarnbeck Logistics  ok  resting after T5",
+    "09:05:59.816  Qualifier  read call notes  Harrowgate Lumen  ok",
+    "09:05:59.818  Qualifier  read call notes  Dunwold Civil  ok",
+    "09:05:59.821  Qualifier  read call notes  Quillon Health  ok",
+    "09:05:59.823  Qualifier  read call notes  Pellmoor Rail Services  ok",
+    "09:05:59.825  Qualifier  read call notes  Veldstone Marine  ok",
+    "09:06:11.499  Qualifier  qualified, MEDDPICC-lite  Veldstone Marine  ok  champion: Possibly Ingrid Fallowmere, CIO. She rai",
+    "09:06:11.499  Qualifier  value framed  Veldstone Marine  ok  Not yet sized. The only number from the call is a 40% rise i",
+    "09:06:11.500  Qualifier  mutual plan drafted  Veldstone Marine  ok  6 steps, ask to bring the committee in",
+    "09:06:11.500  Qualifier  read call notes  Morrowick Care Homes  ok",
+    "09:06:13.142  Qualifier  qualified, MEDDPICC-lite  Pellmoor Rail Services  ok  champion: Possibly Sunita Fairweather, CISO. She o",
+    "09:06:13.142  Qualifier  value framed  Pellmoor Rail Services  ok  Estimate from the call: the risk on the table is a regulator",
+    "09:06:13.143  Qualifier  mutual plan drafted  Pellmoor Rail Services  ok  7 steps, ask to bring the committee in",
+    "09:06:13.143  Qualifier  read call notes  Caskellon Energy  ok",
+    "09:06:13.244  Qualifier  qualified, MEDDPICC-lite  Quillon Health  ok  champion: Possible champion: Marcus Vellacott, the",
+    "09:06:13.245  Qualifier  value framed  Quillon Health  ok  Estimate from the call, not confirmed: three unfilled roles'",
+    "09:06:13.245  Qualifier  mutual plan drafted  Quillon Health  ok  7 steps, ask to bring the committee in",
+    "09:06:13.702  Qualifier  qualified, MEDDPICC-lite  Dunwold Civil  ok  champion: Possible champion: Margarethe Olufemi-St",
+    "09:06:13.702  Qualifier  value framed  Dunwold Civil  ok  Not yet known. No number was given on the call. An estimate ",
+    "09:06:13.702  Qualifier  mutual plan drafted  Dunwold Civil  ok  6 steps, ask to bring the committee in",
+    "09:06:14.406  Qualifier  qualified, MEDDPICC-lite  Harrowgate Lumen  ok  champion: Ruaridh Okafor-Lindley (Head of IT) will",
+    "09:06:14.407  Qualifier  value framed  Harrowgate Lumen  ok  Estimate from the call: move from 0% of sites and apps on on",
+    "09:06:14.407  Qualifier  mutual plan drafted  Harrowgate Lumen  ok  6 steps, ask to bring the committee in",
+    "09:06:27.511  Qualifier  qualified, MEDDPICC-lite  Morrowick Care Homes  ok  champion: Possibly Leon Starkadder, Head of Digita",
+    "09:06:27.511  Qualifier  value framed  Morrowick Care Homes  ok  Estimate from the call: onboarding time drops from four days",
+    "09:06:27.511  Qualifier  mutual plan drafted  Morrowick Care Homes  ok  6 steps, ask to bring the committee in",
+    "09:06:28.269  Qualifier  qualified, MEDDPICC-lite  Caskellon Energy  ok  champion: Lorna Quist, CIO, is the likely champion",
+    "09:06:28.270  Qualifier  value framed  Caskellon Energy  ok  Estimate from the call: 400 hires. Each day a hire waits for",
+    "09:06:28.270  Qualifier  mutual plan drafted  Caskellon Energy  ok  6 steps, ask to bring the committee in",
+    "09:06:28.271  desk  buying committee accepted the ask, invented  Harrowgate Lumen  ok  boss and committee booked, Zone 1",
+    "09:06:28.271  desk  buying committee accepted the ask, invented  Dunwold Civil  ok  boss and committee booked, Zone 1",
+    "09:06:28.271  desk  buying committee accepted the ask, invented  Quillon Health  ok  boss and committee booked, Zone 1",
+    "09:06:28.272  Writer  send email  Harrowgate Lumen  DENIED  not permitted",
+    "09:06:28.272  desk  run finished  ok  £0.49 this run, 29 model calls"
+  ]
+}

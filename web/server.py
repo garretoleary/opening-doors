@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import threading
 import time
@@ -19,7 +20,7 @@ from zoneinfo import ZoneInfo
 
 from opening_doors import config
 from opening_doors.book import load_book
-from opening_doors.claude import SpendCapReached
+from opening_doors.claude import Spend, SpendCapReached
 
 UK = ZoneInfo("Europe/London")
 HERE = Path(__file__).parent
@@ -185,12 +186,14 @@ class App:
                 elif who == "Qualifier" and what == "mutual plan drafted":
                     self.revealed.add(("qualified", on_what))
 
-    def _reset(self, mode: str) -> None:
+    def _reset(self, mode: str, keep_limit: bool = False) -> None:
         with self.lock:
             self.running, self.mode = True, mode
             self.started, self.finished = time.time(), None
             self.lights = {k: False for k in self.lights}
-            self.log, self.agents, self.spend_gbp, self.limit = [], {n: "waiting" for n in AGENT_NAMES}, 0.0, None
+            self.log, self.agents, self.spend_gbp = [], {n: "waiting" for n in AGENT_NAMES}, 0.0
+            if not keep_limit:
+                self.limit = None
             self.replay_stopped = set()
             self.data, self.revealed = {}, set()
             self.zones, self.stops, self.book_size = {}, {}, 0
@@ -207,6 +210,7 @@ class App:
     def _run(self) -> None:
         from opening_doors.desk import Desk
         try:
+            Spend(ledger_path=config.STATE_DIR / "spend.json").check()      # the caps, before anything is spent
             desk = Desk()
             self.desk = desk
             with self.lock:
@@ -217,12 +221,14 @@ class App:
                 self.spend_gbp = desk.spend.gbp_this_run
         except SpendCapReached as exc:
             with self.lock:
-                self.limit = f"{exc}. Here is the video instead."
+                self.limit = f"{exc}. This is a replay of the last run."
+                self.running, self.finished = False, time.time()
+            self.start_replay(keep_limit=True)        # a public page still shows the hunt, without spending
+            return                                    # the replay thread now owns the running flag
         except Exception as exc:                      # the page must never hang on an error
             self._entry(datetime.now(timezone.utc).isoformat(), "desk", "run failed", "", "error", type(exc).__name__)
-        finally:
-            with self.lock:
-                self.running, self.finished = False, time.time()
+        with self.lock:
+            self.running, self.finished = False, time.time()
 
     def stop_agent(self, name: str) -> bool:
         """The Stop button on the page. A real run: the desk's Stop, token revoked, next call refused.
@@ -244,15 +250,17 @@ class App:
         return True
 
     # ---- replay of a saved run, for the demo and for testing the page without spend ------------
-    def start_replay(self, run_id: Optional[str] = None) -> bool:
+    def start_replay(self, run_id: Optional[str] = None, keep_limit: bool = False) -> bool:
         with self.lock:
             if self.running:
                 return False
         runs = sorted(p for p in config.RUNS_DIR.iterdir() if (p / "audit.jsonl").exists()) if config.RUNS_DIR.exists() else []
+        if not runs and (config.SEED_RUN_DIR / "audit.jsonl").exists():
+            runs = [config.SEED_RUN_DIR]                  # the run shipped with the page
         if not runs:
             return False
         path = (config.RUNS_DIR / run_id) if run_id else runs[-1]
-        self._reset("replay")
+        self._reset("replay", keep_limit=keep_limit)
         threading.Thread(target=self._replay, args=(path,), daemon=True).start()
         return True
 
@@ -328,9 +336,10 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main(argv: Optional[List[str]] = None) -> None:
-    port = int((argv or sys.argv[1:] or ["8765"])[0])
-    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
-    print(f"Opening Doors page on http://127.0.0.1:{port}  ({config.INVENTED_DATA_NOTICE})")
+    port = int((argv or sys.argv[1:] or [os.environ.get("PORT", "8765")])[0])
+    host = os.environ.get("OPENING_DOORS_HOST", "127.0.0.1")      # the host sets 0.0.0.0
+    server = ThreadingHTTPServer((host, port), Handler)
+    print(f"Opening Doors page on http://{host}:{port}  ({config.INVENTED_DATA_NOTICE})")
     server.serve_forever()
 
 

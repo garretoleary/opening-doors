@@ -8,8 +8,10 @@ ROOT = Path(__file__).resolve().parent.parent
 BOOK_PATH = ROOT / "opening_doors" / "book" / "accounts.json"
 CALL_NOTES_PATH = ROOT / "opening_doors" / "book" / "call_notes.json"
 JOURNEY_PATH = ROOT / "opening_doors" / "book" / "journey.json"
-RUNS_DIR = ROOT / "runs"            # per-run audit logs and outputs, git-ignored, never edited after a run
-STATE_DIR = ROOT / "state"          # the spend ledger, git-ignored, updated on every call
+DATA_DIR = Path(os.environ.get("OPENING_DOORS_DATA_DIR", str(ROOT)))   # on the host, a persistent disk
+RUNS_DIR = DATA_DIR / "runs"        # per-run audit logs and outputs, git-ignored, never edited after a run
+STATE_DIR = DATA_DIR / "state"      # the spend ledger, git-ignored, updated on every call
+SEED_RUN_DIR = ROOT / "web" / "seed_run"   # one saved run shipped with the page, replayed when no run exists yet
 
 # The Claude model the agents use, and per-agent overrides. One line to change an agent's model.
 MODEL = os.environ.get("OPENING_DOORS_MODEL", "claude-opus-5-5")
@@ -30,7 +32,7 @@ PARALLEL_CALLS = int(os.environ.get("OPENING_DOORS_PARALLEL_CALLS", "5"))   # pe
 
 # Caps. Garret's API key pays. Both are estimates until measured.
 SPEND_CAP_GBP = float(os.environ.get("OPENING_DOORS_SPEND_CAP_GBP", "20"))
-RUNS_PER_DAY = int(os.environ.get("OPENING_DOORS_RUNS_PER_DAY", "20"))
+RUNS_PER_DAY = int(os.environ.get("OPENING_DOORS_RUNS_PER_DAY", "10"))   # a public button; a run costs about £0.49
 USD_PER_GBP = 1.30                  # estimate, used only to show spend in pounds
 
 # Price per million tokens, US dollars, from the Claude API price list 2026-10-06.

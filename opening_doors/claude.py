@@ -45,6 +45,14 @@ class Spend:
     def gbp_this_run(self) -> float:
         return self.usd / config.USD_PER_GBP
 
+    def check(self) -> None:
+        """Raise if a cap is hit. Counts nothing."""
+        today = date.today().isoformat()
+        if self.ledger["runs"].get(today, 0) >= config.RUNS_PER_DAY:
+            raise SpendCapReached(f"limit reached: today's {config.RUNS_PER_DAY} runs are used")
+        if self.ledger["gbp_this_month"] >= config.SPEND_CAP_GBP:
+            raise SpendCapReached(f"limit reached: £{self.ledger['gbp_this_month']:.2f} this month")
+
     def start_run(self) -> None:
         today = date.today().isoformat()
         runs_today = self.ledger["runs"].get(today, 0)
