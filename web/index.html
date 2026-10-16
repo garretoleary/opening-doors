@@ -307,6 +307,7 @@
       if (dotEls[el.title] !== el) el.parentNode.removeChild(el);
     });
   }
+  var DESKTOP = window.matchMedia("(min-width: 1200px)");
   function renderOut(s) {
     var rows = s.out || [], show = (outAll || DESKTOP.matches) ? rows : rows.slice(0, 3);
     $("outempty").hidden = rows.length > 0;
@@ -385,7 +386,9 @@
     if (s.limit) { $("limitcard").className = "card limit"; $("limitcard").textContent = s.limit; }
   }
   function poll() {
-    fetch("/state", { cache: "no-store" }).then(function (r) { return r.json(); }).then(render).catch(function () {}).then(function () { setTimeout(poll, 700); });
+    fetch("/state", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (s) {
+      try { render(s); } catch (e) { console.error("render failed:", e && e.stack ? e.stack : e); }   // never hide a fault, never stop polling
+    }).catch(function (e) { console.error("state fetch failed:", e); }).then(function () { setTimeout(poll, 700); });
   }
   $("run").addEventListener("click", function () { fetch("/run", { method: "POST" }); });
   $("expand").addEventListener("click", function () { expanded = !expanded; if (state) render(state); });
