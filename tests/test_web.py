@@ -194,3 +194,70 @@ def test_limit_reached_shows_a_labelled_replay_of_the_seed_run(tmp_path, monkeyp
 def test_daily_limit_is_ten():
     from opening_doors import config
     assert config.RUNS_PER_DAY == 10
+
+
+def test_dots_tiles_and_log_agree_at_every_moment(tmp_path, monkeypatch):
+    """One source. At every log line: dots per zone == tile counts == what the log alone implies."""
+    from opening_doors import config
+    from opening_doors.desk import Desk
+    from tests.test_agents import fake_ask
+    desk = Desk(ask=fake_ask)
+    desk.run()
+    entries = [json.loads(l) for l in (desk.run_dir / "audit.jsonl").read_text().splitlines()]
+    app = App()
+    app._reset("replay")
+    expected = {}                                            # name -> zone, derived here from the log alone
+    size = 0
+    for e in entries:
+        app._entry(e["time"], e["who"], e["what"], e["on_what"], e["outcome"], e["detail"])
+        if e["what"] == "run started":
+            size = int(e["on_what"].split()[0])
+        if e["outcome"] == "ok" and e["on_what"]:
+            w, o, d = e["who"], e["what"], e["detail"]
+            if w == "Cadence" and o == "T3 given":
+                expected[e["on_what"]] = 3
+            elif w == "Cadence" and o.startswith("reply received"):
+                expected[e["on_what"]] = 3
+            elif w == "Qualifier" and o == "mutual plan drafted":
+                expected[e["on_what"]] = 2
+            elif w == "desk" and o.startswith("buying committee accepted"):
+                expected[e["on_what"]] = 1
+            elif w == "desk" and o == "book position, invented":
+                given = next((n for n in (5, 4, 3, 2, 1) if f"T{n}" in d), 0)
+                expected[e["on_what"]] = 3 if ("resting" in d or "replied" in d or given >= 3) else 4
+        snap = app.snapshot()
+        tiles = {z["zone"]: z["count"] for z in snap["zones"]}
+        dots = {z: sum(1 for x in snap["dots"] if x["zone"] == z) for z in (4, 3, 2, 1)}
+        from_log = {z: sum(1 for v in expected.values() if v == z) for z in (3, 2, 1)}
+        from_log[4] = (size - sum(from_log.values())) if size else 0
+        assert dots == tiles == from_log, (e["what"], e["on_what"], dots, tiles, from_log)
+        for x in snap["dots"]:                                 # and each account sits where the log put it
+            assert x["zone"] == expected.get(x["name"], 4), x
+    assert tiles == {4: 11, 3: 8, 2: 3, 1: 3}                   # the stand-in Scorer's spread, reached only at the end
+    moves = [e for e in entries if e["outcome"] == "ok" and ((e["who"] == "Qualifier" and e["what"] == "mutual plan drafted") or e["what"].startswith("buying committee"))]
+    assert moves, "zone 2 and 1 moves must come from logged events"
+
+
+def test_no_account_moves_before_its_event_is_logged():
+    """Before any Cadence or Qualifier line, every account is in Zone 4, whatever the desk's own state says."""
+    app = App()
+    app._reset("run")
+    app._entry("2026-10-16T13:37:00+00:00", "desk", "run started", "25 accounts", "ok", "")
+    for who, what, on in (("Researcher", "read book", "25 accounts"), ("Scorer", "ranked 25", ""), ("Planner", "account plan", "Dunwold Civil"),
+                          ("Writer", "drafted T1 to T5", "Dunwold Civil"), ("Cadence", "scheduled T1 to T5", "Dunwold Civil"), ("Cadence", "T1 given", "Dunwold Civil")):
+        app._entry("2026-10-16T13:37:01+00:00", who, what, on, "ok", "")
+        snap = app.snapshot()
+        assert [z["count"] for z in snap["zones"]] == [25, 0, 0, 0]
+        assert all(d["zone"] == 4 for d in snap["dots"])
+
+
+def test_a_query_string_does_not_hide_the_page():
+    from web.server import Handler
+    class Fake(Handler):
+        def __init__(self, path):
+            self.path = path; self.sent = []
+        def _send(self, code, body, ctype): self.sent.append((code, ctype))
+    h = Fake("/?from=a-shared-link"); h.do_GET()
+    assert h.sent[0][0] == 200 and "text/html" in h.sent[0][1]
+    h = Fake("/state?x=1"); h.do_GET()
+    assert h.sent[0][0] == 200 and "json" in h.sent[0][1]

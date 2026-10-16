@@ -309,6 +309,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self) -> None:
+        self.path = self.path.split("?", 1)[0]              # a query string never changes what is served
         if self.path in ("/", "/index.html"):
             self._send(200, (HERE / "index.html").read_bytes(), "text/html; charset=utf-8")
         elif self.path == "/state":
@@ -320,6 +321,7 @@ class Handler(BaseHTTPRequestHandler):
             self._send(404, b"not found", "text/plain")
 
     def do_POST(self) -> None:
+        self.path = self.path.split("?", 1)[0]
         if self.path == "/run":
             ok = APP.start_run()
         elif self.path.startswith("/replay"):

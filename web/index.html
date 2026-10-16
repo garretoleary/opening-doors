@@ -285,7 +285,11 @@
     if (!map || getComputedStyle(map).display === "none") return;
     (s.zones || []).forEach(function (z) { var el = $("bc" + z.zone); if (el) el.textContent = z.count + (z.count === 1 ? " account" : " accounts"); });
     var bands = {}; [4, 3, 2, 1].forEach(function (z) { bands[z] = map.querySelector(".band.z" + z); });
+    // The dots are drawn from the state and nothing else: every dot in the state is placed in the zone the
+    // state gives it, and any dot on screen that the state no longer lists is removed.
+    var wanted = {};
     (s.dots || []).forEach(function (d) {
+      wanted[d.name] = true;
       var el = dotEls[d.name];
       if (!el) { el = document.createElement("div"); el.className = "dot"; el.title = d.name; dotEls[d.name] = el; }
       var band = bands[d.zone] || bands[4];
@@ -296,9 +300,13 @@
       el.style.left = (100 * x) + "%";
       el.style.top = (100 * hashRow(d.name)) + "%";
     });
-    if (!(s.dots || []).length) Object.keys(dotEls).forEach(function (k) { if (dotEls[k].parentNode) dotEls[k].parentNode.removeChild(dotEls[k]); dotEls = {}; });
+    Object.keys(dotEls).forEach(function (name) {
+      if (!wanted[name]) { var el = dotEls[name]; if (el.parentNode) el.parentNode.removeChild(el); delete dotEls[name]; }
+    });
+    map.querySelectorAll(".dot").forEach(function (el) {            // nothing on screen that the table does not own
+      if (dotEls[el.title] !== el) el.parentNode.removeChild(el);
+    });
   }
-  var DESKTOP = window.matchMedia("(min-width: 1200px)");
   function renderOut(s) {
     var rows = s.out || [], show = (outAll || DESKTOP.matches) ? rows : rows.slice(0, 3);
     $("outempty").hidden = rows.length > 0;
