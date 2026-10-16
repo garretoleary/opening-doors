@@ -104,8 +104,10 @@ def test_spend_counts_pounds_and_stops_at_cap(tmp_path, monkeypatch):
     from opening_doors import config
     spend = Spend(ledger_path=tmp_path / "spend.json")
     spend.start_run()
-    spend.add(1_000_000, 0)                       # one million input tokens
+    spend.add(1_000_000, 0)                       # one million input tokens on the default model
     assert round(spend.gbp_this_run, 2) == round(4.00 / config.USD_PER_GBP, 2)
+    spend.add(1_000_000, 0, "claude-haiku-5-5")   # the same on Haiku costs a fortieth
+    assert round(spend.gbp_this_run, 3) == round(4.10 / config.USD_PER_GBP, 3)
     monkeypatch.setattr(config, "SPEND_CAP_GBP", 1.0)
     with pytest.raises(SpendCapReached):
         spend.start_run()

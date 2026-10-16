@@ -13,3 +13,11 @@ def test_desk_runs_one_account_end_to_end(tmp_path, monkeypatch):
     assert (tmp_path / "run" / "out.json").exists() and (tmp_path / "run" / "audit.jsonl").exists()
     assert out["state"]["acc-01"]["stop"] == "Buying committee" and len(out["drafts"]["acc-01"]) == 5   # replies at T3, accepts the ask
     assert len(out["schedule"]["acc-01"]["touches"]) == 5
+
+
+def test_each_agent_can_have_its_own_model(monkeypatch):
+    from opening_doors import config
+    monkeypatch.setitem(config.AGENT_MODELS, "agent-1", "claude-haiku-5-5")
+    desk = Desk(ask=fake_ask)
+    assert desk.models["agent-1"] == "claude-haiku-5-5" and desk.models["agent-2"] == config.MODEL
+    assert config.model_for("agent-9") == config.MODEL

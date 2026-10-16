@@ -28,6 +28,7 @@ class Spend:
     input_tokens: int = 0
     output_tokens: int = 0
     calls: int = 0
+    usd: float = 0.0
     ledger: Dict[str, Any] = field(default_factory=dict)
     _lock: threading.Lock = field(default_factory=threading.Lock, repr=False)
 
@@ -42,9 +43,7 @@ class Spend:
 
     @property
     def gbp_this_run(self) -> float:
-        usd = (self.input_tokens * config.PRICE_USD_PER_MTOK["input"]
-               + self.output_tokens * config.PRICE_USD_PER_MTOK["output"]) / 1_000_000
-        return usd / config.USD_PER_GBP
+        return self.usd / config.USD_PER_GBP
 
     def start_run(self) -> None:
         today = date.today().isoformat()
@@ -56,11 +55,13 @@ class Spend:
         self.ledger["runs"][today] = runs_today + 1
         self._save()
 
-    def add(self, input_tokens: int, output_tokens: int) -> None:
+    def add(self, input_tokens: int, output_tokens: int, model: str = config.MODEL) -> None:
+        price = config.PRICES_USD_PER_MTOK.get(model, config.PRICE_USD_PER_MTOK)
         with self._lock:
             before = self.gbp_this_run
             self.input_tokens += input_tokens
             self.output_tokens += output_tokens
+            self.usd += (input_tokens * price["input"] + output_tokens * price["output"]) / 1_000_000
             self.calls += 1
             self.ledger["gbp_this_month"] += self.gbp_this_run - before
             self._save()
@@ -74,25 +75,26 @@ class Spend:
             self.ledger_path.write_text(json.dumps(self.ledger, indent=2))
 
 
-def make_ask(spend: Spend) -> AskFn:
-    """Build the real ask function. Imports the SDK here so tests need no key."""
+def make_ask(spend: Spend, model: str = config.MODEL) -> AskFn:
+    """Build the real ask function for one model. Imports the SDK here so tests need no key."""
     import anthropic
     from dotenv import load_dotenv
 
     load_dotenv(config.ROOT / ".env")
     client = anthropic.Anthropic()
+    # A declined request retries on a backup model, where the API offers that (not for Haiku).
+    extra = {} if model.startswith("claude-haiku") else {"betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"}
 
     def ask_json(system: str, user: str, schema: Dict[str, Any], max_tokens: int = config.MAX_TOKENS) -> Dict[str, Any]:
         response = client.beta.messages.create(
-            model=config.MODEL,
+            model=model,
             max_tokens=max_tokens,
             system=[{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}],
             messages=[{"role": "user", "content": user}],
             output_config={"effort": config.EFFORT, "format": {"type": "json_schema", "schema": schema}},
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
+            **extra,
         )
-        spend.add(response.usage.input_tokens, response.usage.output_tokens)
+        spend.add(response.usage.input_tokens, response.usage.output_tokens, model)
         if response.stop_reason == "refusal":
             raise RuntimeError("the model declined this request")
         if response.stop_reason == "max_tokens":

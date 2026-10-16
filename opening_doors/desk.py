@@ -28,13 +28,23 @@ class Desk:
         self.run_dir = run_dir or (config.RUNS_DIR / self.run_id)
         self.spend = Spend(ledger_path=config.STATE_DIR / "spend.json")
         self.gov = Governor(owner=config.AE["id"], log_path=self.run_dir / "audit.jsonl")
-        self.ask = ask or make_ask(self.spend)
-        self.researcher = Researcher(self.gov, self.ask)
-        self.scorer = Scorer(self.gov, self.ask)
-        self.planner = Planner(self.gov, self.ask)
-        self.writer = Writer(self.gov, self.ask)
-        self.cadence = Cadence(self.gov, self.ask)
-        self.qualifier = Qualifier(self.gov, self.ask)
+        # Each agent asks its own model (config.model_for); a stand-in ask serves every agent in tests.
+        asks = {}
+        def ask_for(agent_id: str):
+            if ask:
+                return ask
+            m = config.model_for(agent_id)
+            if m not in asks:
+                asks[m] = make_ask(self.spend, m)
+            return asks[m]
+        self.ask = ask
+        self.researcher = Researcher(self.gov, ask_for("agent-1"))
+        self.scorer = Scorer(self.gov, ask_for("agent-2"))
+        self.planner = Planner(self.gov, ask_for("agent-3"))
+        self.writer = Writer(self.gov, ask_for("agent-4"))
+        self.cadence = Cadence(self.gov, ask_for("agent-5"))
+        self.qualifier = Qualifier(self.gov, ask_for("agent-6"))
+        self.models = {a.agent_id: config.model_for(a.agent_id) for a in (self.researcher, self.scorer, self.planner, self.writer, self.cadence, self.qualifier)}
         self.agents = [self.researcher, self.scorer, self.planner, self.writer, self.cadence, self.qualifier]
         self.state: Dict[str, Dict] = {}     # account id -> zone, stop
         self.out: Dict = {}
@@ -140,7 +150,7 @@ class Desk:
         self.gov.log.record("desk", "run finished", "", "ok",
                             f"£{self.spend.gbp_this_run:.2f} this run, {self.spend.calls} model calls")
         self.out = {
-            "run_id": self.run_id, "notice": config.INVENTED_DATA_NOTICE,
+            "run_id": self.run_id, "notice": config.INVENTED_DATA_NOTICE, "models": self.models,
             "notes": notes, "ranked": ranked, "plans": plans, "drafts": drafts, "schedule": schedule, "qualified": qualified, "stopped": self.stopped, "state": self.state,
             "lights": self.gov.lights, "agents": self.gov.registry.as_rows(),
             "spend": {"gbp": round(self.spend.gbp_this_run, 4), "calls": self.spend.calls,
