@@ -113,7 +113,7 @@ def test_out_appears_after_the_scorer_and_target_detail_fills_as_the_log_announc
     t = app.target(first["id"])
     assert set(t["plan"]) == {"business_problem", "economic_buyer", "first_meeting_point_of_view", "one_metric_to_agree"}
     assert [x["touch"] for x in t["touches"]] == [1, 2, 3, 4, 5] and all(x["due"] for x in t["touches"])
-    assert t["qualified"] is None                               # no reply was played, so no first call
+    assert t["qualified"] and t["qualified"]["mutual_plan"]["steps"]   # the book's invented reply brought the Qualifier in
     assert app.target("acc-99") is None
 
 
@@ -141,9 +141,11 @@ def test_zone_tiles_count_the_book_and_move_with_the_log():
     assert [z["count"] for z in app.snapshot()["zones"]] == [25, 0, 0, 0]          # T1 and T2 are Zone 4
     app._entry("2026-10-15T16:48:01+00:00", "Cadence", "T3 given", "Harrowgate Lumen", "ok", "")
     assert [z["count"] for z in app.snapshot()["zones"]] == [24, 1, 0, 0]          # T3 is Zone 3
-    app._entry("2026-10-15T16:48:02+00:00", "Cadence", "reply at T3", "Harrowgate Lumen", "ok", "to Qualifier, First call")
+    app._entry("2026-10-15T16:48:02+00:00", "Cadence", "reply received, invented", "Harrowgate Lumen", "ok", "at T3, to Qualifier, First call")
     assert [z["count"] for z in app.snapshot()["zones"]] == [24, 1, 0, 0]          # First call ends Zone 3
     app._entry("2026-10-15T16:48:03+00:00", "Qualifier", "mutual plan drafted", "Harrowgate Lumen", "ok", "")
     assert [z["count"] for z in app.snapshot()["zones"]] == [24, 0, 1, 0]          # Zone 2
     app._entry("2026-10-15T16:48:04+00:00", "Cadence", "T3 given", "Quillon Health", "stopped", "token revoked")
     assert [z["count"] for z in app.snapshot()["zones"]] == [24, 0, 1, 0]          # a refused move is no move
+    app._entry("2026-10-15T16:48:05+00:00", "desk", "buying committee accepted the ask, invented", "Harrowgate Lumen", "ok", "Zone 1")
+    assert [z["count"] for z in app.snapshot()["zones"]] == [24, 0, 0, 1]          # Zone 1

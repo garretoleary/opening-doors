@@ -10,7 +10,7 @@ from tests.test_agents import fake_ask
 
 def qualifier_after_reply():
     desk = Desk(ask=fake_ask)
-    out = desk.run(["acc-01", "acc-02"], simulate_reply={"acc-01": 3})
+    out = desk.run(["acc-01", "acc-04"])          # Harrowgate Lumen replies at T3; Brackwater Foods never replies
     return desk, out
 
 
@@ -22,8 +22,8 @@ def test_reply_reaches_qualifier_and_produces_three_things():
     assert set(q["qualification"]) >= {"metrics", "economic_buyer", "champion", "gaps"}
     assert q["value_frame"]["value_sized"]
     assert q["mutual_plan"]["steps"] and "committee" in q["mutual_plan"]["the_ask"].lower()
-    assert out["state"]["acc-01"]["stop"] == "Problem identified, value defined" and out["state"]["acc-01"]["zone"] == 2
-    assert out["state"]["acc-02"]["stop"] == "T1 scheduled"
+    assert out["state"]["acc-01"]["stop"] == "Buying committee" and out["state"]["acc-01"]["zone"] == 1
+    assert out["state"]["acc-04"]["stop"] == "resting after T5" and out["state"]["acc-04"]["zone"] == 3
     lines = desk.gov.log.lines()
     for phrase in ("Qualifier  read call notes  Harrowgate Lumen  ok", "Qualifier  qualified, MEDDPICC-lite  Harrowgate Lumen  ok",
                    "Qualifier  value framed  Harrowgate Lumen  ok", "Qualifier  mutual plan drafted  Harrowgate Lumen  ok"):
@@ -32,7 +32,7 @@ def test_reply_reaches_qualifier_and_produces_three_things():
 
 def test_no_reply_means_no_qualifier_work():
     desk = Desk(ask=fake_ask)
-    out = desk.run(["acc-01"])
+    out = desk.run(["acc-04"])
     assert out["qualified"] == {}
     assert not any("Qualifier  read call notes" in l for l in desk.gov.log.lines())
 

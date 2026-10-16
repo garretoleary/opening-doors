@@ -71,8 +71,8 @@ class Cadence(Agent):
 
     def reply(self, pid: str, touch: int) -> Dict:
         """A reply at any touch: the account moves to First call and goes to the Qualifier."""
-        return self.act("write_log", self._name(pid), lambda: self._handoff(pid, touch), what=f"reply at T{touch}",
-                        detail_of=lambda h: "to Qualifier, First call")
+        return self.act("write_log", self._name(pid), lambda: self._handoff(pid, touch), what="reply received, invented",
+                        detail_of=lambda h: f"at T{touch}, to Qualifier, First call")
 
     # ---- the rules ----------------------------------------------------------------------------
     def _record_given(self, pid: str, touch: int) -> None:

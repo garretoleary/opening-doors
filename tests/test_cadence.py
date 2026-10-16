@@ -92,7 +92,7 @@ def test_reply_at_any_touch_hands_off_to_qualifier():
     s = c.schedule["acc-01"]
     assert s["stage"] == "first_call" and s["next_touch"] is None
     assert [t["status"] for t in s["touches"]] == ["given", "given", "given", "cancelled, replied", "cancelled, replied"]
-    assert last_line(gov).endswith("Cadence  reply at T3  Harrowgate Lumen  ok  to Qualifier, First call")
+    assert last_line(gov).endswith("Cadence  reply received, invented  Harrowgate Lumen  ok  at T3, to Qualifier, First call")
     with pytest.raises(RuleDenied):                        # no further touches after a reply
         c.given_by_ae("acc-01", 4)
     assert "DENIED  account already replied" in last_line(gov)
@@ -106,7 +106,7 @@ def test_reply_at_t5_still_hands_off_and_reply_needs_a_given_touch():
     assert c.reply("acc-02", 5)["replied_at"] == "T5"
     with pytest.raises(RuleDenied):
         c.reply("acc-03", 2)
-    assert "Cadence  reply at T2  Quillon Health  DENIED  T2 was not given" in last_line(gov) or "DENIED  T2 was not given" in last_line(gov)
+    assert "DENIED  T2 was not given" in last_line(gov)
 
 
 def test_cadence_may_not_send_and_denial_is_logged():

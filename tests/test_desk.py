@@ -11,5 +11,5 @@ def test_desk_runs_one_account_end_to_end(tmp_path, monkeypatch):
     assert all(out["lights"].values())                     # all four on, in order, as the run starts; Stop is armed
     assert any("Writer  send email  Harrowgate Lumen  DENIED  not permitted" in l for l in out["log"])
     assert (tmp_path / "run" / "out.json").exists() and (tmp_path / "run" / "audit.jsonl").exists()
-    assert out["state"]["acc-01"]["stop"] == "T1 scheduled" and len(out["drafts"]["acc-01"]) == 5
+    assert out["state"]["acc-01"]["stop"] == "Buying committee" and len(out["drafts"]["acc-01"]) == 5   # replies at T3, accepts the ask
     assert len(out["schedule"]["acc-01"]["touches"]) == 5

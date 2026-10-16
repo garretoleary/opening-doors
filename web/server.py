@@ -140,10 +140,12 @@ class App:
             if outcome == "ok" and on_what:                       # the journey: where each account sits
                 if who == "Cadence" and what == "T3 given":
                     self.zones[on_what] = 3                       # Zone 3, Earn the call
-                elif who == "Cadence" and what.startswith("reply at"):
+                elif who == "Cadence" and what.startswith("reply received"):
                     self.zones[on_what] = 3                       # First call, still Zone 3
                 elif who == "Qualifier" and what == "mutual plan drafted":
                     self.zones[on_what] = 2                       # Zone 2, Frame the value
+                elif who == "desk" and what.startswith("buying committee accepted"):
+                    self.zones[on_what] = 1                       # Zone 1, Commit
             if outcome == "ok":                                   # what OUT may now show
                 if who == "Scorer" and what.startswith("ranked"):
                     self.revealed.add(("ranked", ""))

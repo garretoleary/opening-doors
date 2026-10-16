@@ -35,7 +35,7 @@ def test_stop_before_any_call_refuses_everything_from_that_agent():
 def test_stop_is_recorded_and_the_rest_of_the_desk_keeps_going():
     desk = Desk(ask=fake_ask)
     desk.press_stop_when("agent-5", "Cadence  read drafts")
-    out = desk.run(["acc-01"], simulate_reply={"acc-01": 2})
+    out = desk.run(["acc-01"])
     log = "\n".join(out["log"])
     assert "Cadence  STOPPED by AE" in log
     assert "Cadence  scheduled T1 to T5  Harrowgate Lumen  STOPPED  token revoked" in log

@@ -15,7 +15,7 @@ from typing import Dict, List, Optional
 
 from . import config
 from .agents import Cadence, Planner, Qualifier, Researcher, Scorer, Writer
-from .book import call_notes, load_book
+from .book import call_notes, load_book, replies
 from .claude import AskFn, Spend, SpendCapReached, make_ask
 from .governance import Governor, PermissionDenied, Stopped
 
@@ -24,7 +24,7 @@ ZONES = {4: "Open the door", 3: "Earn the call", 2: "Frame the value", 1: "Commi
 
 class Desk:
     def __init__(self, ask: Optional[AskFn] = None, run_dir: Optional[Path] = None):
-        self.run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        self.run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f")[:-3] + "Z"   # unique to the millisecond
         self.run_dir = run_dir or (config.RUNS_DIR / self.run_id)
         self.spend = Spend(ledger_path=config.STATE_DIR / "spend.json")
         self.gov = Governor(owner=config.AE["id"], log_path=self.run_dir / "audit.jsonl")
@@ -65,11 +65,13 @@ class Desk:
             self.gov.log.record("desk", "stage ended early", agent.name, "ok", "stopped by AE, run continues")
             return empty
 
-    def run(self, only_ids: Optional[List[str]] = None, simulate_reply: Optional[Dict[str, int]] = None) -> Dict:
+    def run(self, only_ids: Optional[List[str]] = None) -> Dict:
         """Take the book, or a chosen few accounts, through the six agents.
 
-        simulate_reply: {account id: touch} to play out, for the demo, the AE giving touches up to that
-        one and the buyer replying, so the account reaches First call and the Qualifier.
+        After the schedule is set the run plays the sequence out: the AE gives each touch in turn and
+        the book answers with its invented replies (data, so every run is repeatable). A reply moves
+        the account to First call and the Qualifier; no reply by touch 5 rests it. After the mutual
+        plan, a buyer who accepts the ask brings the buying committee in: Zone 1.
         """
         self.spend.start_run()                                  # daily run limit, monthly cap
         book = load_book()
@@ -98,23 +100,34 @@ class Desk:
         for pid in schedule:
             self.state[pid]["stop"] = "T1 scheduled"
 
-        # The demo's simulated replies: the AE gives touches, the buyer answers, the account moves on.
-        for pid, touch in (simulate_reply or {}).items():
-            if pid not in schedule:
-                continue
-            def play(pid=pid, touch=touch):
-                for n in range(1, touch + 1):
+        # The sequence plays out: the AE gives each touch; the book answers with its invented replies.
+        book_replies = replies()
+        def play_out():
+            for pid in schedule:
+                answer = book_replies.get(pid)
+                for n in range(1, 6):
                     self.cadence.given_by_ae(pid, n)
-                    if n < touch:
-                        self.cadence.no_reply(pid)
-                self.cadence.reply(pid, touch)
-                self.state[pid].update(zone=2, stop="First call")
-            self._stage(self.cadence, play, None)
+                    self.state[pid]["stop"] = f"T{n} given"
+                    if n >= 3:
+                        self.state[pid]["zone"] = 3
+                    if answer and answer["at_touch"] == n:
+                        self.cadence.reply(pid, n)
+                        self.state[pid].update(zone=3, stop="First call")
+                        break
+                    self.cadence.no_reply(pid)
+                else:
+                    self.state[pid]["stop"] = "resting after T5"
+        if schedule:
+            self._stage(self.cadence, play_out, None)
         qualified = (self._stage(self.qualifier, lambda: self.qualifier.run(self.cadence.handoffs, call_notes()), {})
                      if self.cadence.handoffs else {})
         self.results["qualified"] = qualified
         for pid in qualified:
-            self.state[pid]["stop"] = "Problem identified, value defined"
+            self.state[pid].update(zone=2, stop="Problem identified, value defined")
+            if book_replies.get(pid, {}).get("committee"):
+                self.gov.log.record("desk", "buying committee accepted the ask, invented", self.state[pid]["name"], "ok",
+                                    "boss and committee booked, Zone 1")
+                self.state[pid].update(zone=1, stop="Buying committee")
 
         # The governance check every run makes: no agent may send. Refused and logged, never skipped.
         checker = self.writer if "agent-4" not in self.stopped else self.planner
@@ -141,17 +154,14 @@ class Desk:
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(description="Opening Doors desk")
     p.add_argument("--only", nargs="*", help="account ids, e.g. acc-01")
-    p.add_argument("--simulate-reply", nargs="*", default=[], metavar="ID:TOUCH",
-                   help="play a reply at that touch, e.g. acc-01:3, so the account reaches the Qualifier")
     p.add_argument("--stop", nargs=2, metavar=("AGENT", "WHEN"), default=None,
                    help="press Stop on an agent when a log line contains WHEN, e.g. --stop agent-4 'read plans'")
     args = p.parse_args(argv)
-    sim = {x.split(":")[0]: int(x.split(":")[1]) for x in args.simulate_reply}
     desk = Desk()
     if args.stop:
         desk.press_stop_when(args.stop[0], args.stop[1])
     try:
-        out = desk.run(args.only, sim)
+        out = desk.run(args.only)
     except SpendCapReached as e:
         print(f"{e}. Here is the video instead.")
         return 2
@@ -161,6 +171,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(" ", line)
     print("\nLIGHTS", {k: ("on" if v else "off") for k, v in out["lights"].items()})
     print("AGENTS", "  ".join(f"{a['name']}: {a['status']}" for a in out["agents"]))
+    zones = {z: sum(1 for v in out["state"].values() if v["zone"] == z) for z in (4, 3, 2, 1)}
+    print("ZONES", "  ".join(f"Zone {z}: {n}" for z, n in zones.items()))
     print("\nSPEND", f"£{out['spend']['gbp']:.4f}", out["spend"]["calls"], "calls",
           out["spend"]["input_tokens"], "in,", out["spend"]["output_tokens"], "out")
     print("\nOUT")

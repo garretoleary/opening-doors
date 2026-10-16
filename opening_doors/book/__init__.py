@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from typing import Dict, List
 
-from ..config import BOOK_PATH, CALL_NOTES_PATH
+from ..config import BOOK_PATH, CALL_NOTES_PATH, REPLIES_PATH
 
 NOTICE = "All data invented."
 
@@ -61,3 +61,16 @@ def call_notes() -> dict:
     if len(notes) != 25:
         raise BookError(f"expected 25 invented call notes, found {len(notes)}")
     return notes
+
+
+def replies() -> Dict[str, Dict]:
+    """Invented replies, keyed by account id: at_touch 1 to 4, committee True or False."""
+    data = json.loads(REPLIES_PATH.read_text(encoding="utf-8"))
+    if "invented" not in data.get("notice", "").lower():
+        raise BookError("replies must carry the invented-data notice")
+    out = {}
+    for r in data["replies"]:
+        if r.get("invented") is not True or not (1 <= int(r["at_touch"]) <= 4):
+            raise BookError(f"{r.get('id')}: a reply is invented and arrives at touch 1 to 4")
+        out[r["id"]] = {"at_touch": int(r["at_touch"]), "committee": bool(r["committee"])}
+    return out
