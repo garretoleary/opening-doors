@@ -36,28 +36,29 @@
   .light.on.red .dot { background: var(--red); }
   .light .label { font-size: 15px; }
   .agents { list-style: none; margin: 0; padding: 0; }
-  .agents li { display: grid; grid-template-columns: 34px 1fr auto auto; align-items: center; gap: 10px; min-height: 52px; border-top: 1px solid var(--line); }
+  .agents li { display: grid; grid-template-columns: 34px minmax(0, 1fr) 84px 72px; align-items: center; gap: 6px; min-height: 52px; border-top: 1px solid var(--line); }
+  .agents li > * { min-width: 0; }
   .agents li:first-child { border-top: 0; }
   .tag { width: 28px; height: 7px; border-radius: 4px; }
   .tag.edge { box-shadow: 0 0 0 1.5px #111; height: 6px; }
-  .agents .name { font-size: 16px; }
+  .agents .name { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .agents .name b { font-weight: 600; margin-right: 6px; color: var(--muted); }
-  .agents .status { font-size: 15px; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
-  .status .sd { width: 12px; height: 12px; border-radius: 50%; background: #bdbdbd; }
+  .agents .status { font-size: 15px; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 6px; overflow: hidden; }
+  .status .sd { width: 12px; height: 12px; border-radius: 50%; background: #bdbdbd; flex: 0 0 12px; }
   .status.running .sd { background: var(--amber); }
   .status.done .sd { background: var(--green); }
   .status.stopped .sd { background: var(--red); }
   .status.stopped { color: var(--red); }
   .agents li.stopped .name { color: var(--red); }
-  .stop { min-width: 64px; min-height: 44px; border: 1.5px solid var(--red); border-radius: 22px; background: #fff; color: var(--red);
-    font: 600 15px Inter, -apple-system, sans-serif; cursor: pointer; }
+  .stop { width: 72px; min-height: 44px; padding: 0; margin: 0; justify-self: end; border: 1.5px solid var(--red); border-radius: 22px; background: #fff; color: var(--red);
+    font: 600 15px Inter, -apple-system, sans-serif; cursor: pointer; -webkit-appearance: none; appearance: none; }
   .stop:disabled { opacity: .4; cursor: default; }
-  .zones { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-  .zone { border-radius: 8px; padding: 10px 4px 8px; text-align: center; border: 1px solid var(--line); min-height: 44px; }
+  .zones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .zone { border-radius: 8px; padding: 8px 3px 6px; text-align: center; border: 1px solid var(--line); min-height: 44px; min-width: 0; }
   .zone.z4 { background: #c9c9c9; } .zone.z3 { background: #dedede; } .zone.z2 { background: #efefef; } .zone.z1 { background: #fff; }
   .zone .zn { font-size: 15px; font-weight: 600; }
   .zone .zc { font-size: 26px; font-weight: 600; line-height: 1.2; margin: 2px 0; font-variant-numeric: tabular-nums; }
-  .zone .zl { font-size: 15px; color: var(--muted); line-height: 1.2; }
+  .zone .zl { font-size: 15px; color: var(--muted); line-height: 1.15; }
   .out { list-style: none; margin: 0; padding: 0; }
   .out li { border-top: 1px solid var(--line); }
   .out li:first-child { border-top: 0; }
@@ -120,7 +121,7 @@
     .card.agentscard { grid-area: agents; margin: 0; overflow: auto; padding: 12px 16px; }
     .card.agentscard h2 { margin-bottom: 8px; }
     .card.agentscard .agents li { min-height: 40px; }
-    .card.agentscard .stop { min-height: 32px; min-width: 60px; }
+    .card.agentscard .stop { min-height: 32px; }
     .card.bookcard { grid-area: book; margin: 0; display: flex; flex-direction: column; min-height: 0; padding: 12px 16px; }
     .card.bookcard h2 { margin-bottom: 8px; }
     .card.bookcard .zones { display: none; }
