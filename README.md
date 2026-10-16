@@ -30,7 +30,7 @@ Orchestration is not an agent. It is the desk, a plain controller that hands wor
 
 ## Governance
 
-Modelled on the Blueprint Alliance's four questions, asked in this order:
+The Blueprint Alliance published its whitepaper, Governing Agentic Execution, in September 2026. Its four questions for governing AI agents are modelled here, asked in this order:
 
 1. Registered. Where are my agents? A registry: identity, owner, purpose, creation time. Nothing runs unless registered.
 2. Permitted. What can they do? A permission list per agent, enforced in code. A denied call is logged and refused.
