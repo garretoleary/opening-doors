@@ -94,7 +94,7 @@
   .log li.red .t { color: var(--red); }
   .empty { color: var(--muted); font-size: 15px; margin: 0; }
   .expand { display: block; width: 100%; min-height: 44px; margin-top: 8px; border: 0; background: none; color: var(--blue); font: 600 15px Inter, -apple-system, sans-serif; text-align: right; cursor: pointer; }
-  .limit { background: #fff4f4; border-color: var(--red); color: var(--red); }
+  .limit { background: #fff4f4; border-color: var(--red); color: var(--red); text-align: left; margin-top: 10px; }
   footer { color: var(--muted); font-size: 13px; margin-top: 8px; }
   .desktop-only { display: none; }
 
@@ -117,6 +117,8 @@
     button.run { width: 300px; }
     .runbox .runline { display: none; }          /* on desktop the timer and spend live in the governance strip */
     .address { font-size: 14px; color: var(--muted); margin-top: 6px; }
+    .runbox .limit { display: none; }                    /* on desktop the limit message takes the strip's timer slot */
+    .card.gov .stripinfo.limit { background: none; border: 0; color: var(--red); padding: 0; margin: 0; text-align: right; }
     .card.gov { grid-area: gov; display: grid; grid-template-columns: 180px 1fr 220px; align-items: center; margin: 0; padding: 8px 20px; }
     .card.gov .light .dot { width: 42px; height: 42px; font-size: 17px; margin-bottom: 4px; }
     .card.gov .light .label { font-size: 14px; white-space: nowrap; }
@@ -175,10 +177,9 @@
       <button class="run" id="run" type="button">&#9654;&nbsp; Run the hunt</button>
       <div class="runline" id="runline"></div>
       <div class="address desktop-only">openingdoors.builtbygarret.com</div>
+      <section class="card" id="limitcard" hidden></section>
     </div>
   </div>
-
-  <section class="card" id="limitcard" hidden></section>
 
   <section class="card gov" aria-label="Governance">
     <h2>GOVERNANCE <span>&middot; in order</span></h2>
@@ -366,7 +367,8 @@
         + '<span class="status ' + a.status + '"><span class="sd"></span>' + a.status + "</span>"
         + '<button class="stop" type="button" data-agent="' + a.name + '"' + (s.running && a.status !== "stopped" && a.status !== "done" ? "" : " disabled") + ">Stop</button></li>";
     }).join("");
-    $("stripinfo").textContent = $("runline").textContent;
+    $("stripinfo").textContent = s.limit ? s.limit : $("runline").textContent;
+    $("stripinfo").className = "stripinfo desktop-only" + (s.limit ? " limit" : "");
     renderMap(s);
     $("zones").innerHTML = (s.zones || []).map(function (z) {
       return '<div class="zone z' + z.zone + '"><div class="zn">Zone ' + z.zone + '</div><div class="zc">' + z.count + '</div><div class="zl">' + esc(z.name) + "</div></div>";
