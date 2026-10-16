@@ -1,0 +1,104 @@
+{
+  "notice": "All data invented. Each account's place in the sequence and its reply are made up so the demonstration is repeatable; they are data, not a model's choice.",
+  "as_of": "2026-10-16",
+  "journey": [
+    {
+      "id": "acc-01",
+      "days_in": 10,
+      "at_touch": 3,
+      "committee": true,
+      "invented": true
+    },
+    {
+      "id": "acc-10",
+      "days_in": 10,
+      "at_touch": 1,
+      "committee": true,
+      "invented": true
+    },
+    {
+      "id": "acc-03",
+      "days_in": 10,
+      "at_touch": 2,
+      "committee": true,
+      "invented": true
+    },
+    {
+      "id": "acc-06",
+      "days_in": 10,
+      "at_touch": 2,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-02",
+      "days_in": 12,
+      "at_touch": 4,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-07",
+      "days_in": 10,
+      "at_touch": 1,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-19",
+      "days_in": 10,
+      "at_touch": 3,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-12",
+      "days_in": 9,
+      "at_touch": null,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-16",
+      "days_in": 12,
+      "at_touch": null,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-24",
+      "days_in": 20,
+      "at_touch": null,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-11",
+      "days_in": 9,
+      "at_touch": null,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-17",
+      "days_in": 12,
+      "at_touch": null,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-04",
+      "days_in": 20,
+      "at_touch": null,
+      "committee": false,
+      "invented": true
+    },
+    {
+      "id": "acc-08",
+      "days_in": 20,
+      "at_touch": null,
+      "committee": false,
+      "invented": true
+    }
+  ]
+}

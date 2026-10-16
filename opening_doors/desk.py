@@ -15,7 +15,7 @@ from typing import Dict, List, Optional
 
 from . import config
 from .agents import Cadence, Planner, Qualifier, Researcher, Scorer, Writer
-from .book import call_notes, load_book, replies
+from .book import call_notes, journey, load_book
 from .claude import AskFn, Spend, SpendCapReached, make_ask
 from .governance import Governor, PermissionDenied, Stopped
 
@@ -78,10 +78,13 @@ class Desk:
     def run(self, only_ids: Optional[List[str]] = None) -> Dict:
         """Take the book, or a chosen few accounts, through the six agents.
 
-        After the schedule is set the run plays the sequence out: the AE gives each touch in turn and
-        the book answers with its invented replies (data, so every run is repeatable). A reply moves
-        the account to First call and the Qualifier; no reply by touch 5 rests it. After the mutual
-        plan, a buyer who accepts the ask brings the buying committee in: Zone 1.
+        The run depicts a book a few weeks in. The book says where each account stands (days into the
+        sequence) and how it answers; all invented data, so every run is repeatable. For the accounts
+        this run drafts, the AE gives each touch due by that day and the book answers: a reply moves
+        the account to First call and the Qualifier; a touch out with no reply yet waits; no reply by
+        touch 5 rests it. After the mutual plan a buyer who accepts the ask brings the committee in,
+        Zone 1. Accounts worked in an earlier wave but outside this run's top ten keep the position the
+        book gives them, logged by the desk.
         """
         self.spend.start_run()                                  # daily run limit, monthly cap
         book = load_book()
@@ -110,31 +113,54 @@ class Desk:
         for pid in schedule:
             self.state[pid]["stop"] = "T1 scheduled"
 
-        # The sequence plays out: the AE gives each touch; the book answers with its invented replies.
-        book_replies = replies()
+        # The sequence plays out to today: the AE gives each touch due; the book answers.
+        positions = journey()
         def play_out():
             for pid in schedule:
-                answer = book_replies.get(pid)
+                pos = positions.get(pid, {"days_in": 0, "at_touch": None, "committee": False})
+                schedule[pid]["day"] = pos["days_in"]
                 for n in range(1, 6):
+                    if config.CADENCE_DAY[n] > pos["days_in"]:          # not due yet
+                        if n > 1:
+                            self.cadence.awaiting(pid)
+                            self.state[pid]["stop"] = f"T{n - 1} given, awaiting reply"
+                        break
                     self.cadence.given_by_ae(pid, n)
                     self.state[pid]["stop"] = f"T{n} given"
                     if n >= 3:
                         self.state[pid]["zone"] = 3
-                    if answer and answer["at_touch"] == n:
+                    if pos["at_touch"] == n:
                         self.cadence.reply(pid, n)
                         self.state[pid].update(zone=3, stop="First call")
+                        break
+                    if n < 5 and config.CADENCE_DAY[n + 1] > pos["days_in"]:   # reply day not reached
+                        self.cadence.awaiting(pid)
+                        self.state[pid]["stop"] = f"T{n} given, awaiting reply"
                         break
                     self.cadence.no_reply(pid)
                 else:
                     self.state[pid]["stop"] = "resting after T5"
         if schedule:
             self._stage(self.cadence, play_out, None)
+        # Accounts worked in an earlier wave, outside this run's top ten: the book says where they stand.
+        for pid, pos in positions.items():
+            if pid in schedule or pid not in self.state or pos["days_in"] <= 0:
+                continue
+            given = max((n for n in range(1, 6) if config.CADENCE_DAY[n] <= pos["days_in"]), default=0)
+            if pos["at_touch"] and pos["at_touch"] <= given:
+                detail, zone, stop = f"replied at T{pos['at_touch']}, First call", 3, "First call"
+            elif given >= 5:
+                detail, zone, stop = "resting after T5", 3, "resting after T5"
+            else:
+                detail, zone, stop = f"T{given} given, awaiting reply", (3 if given >= 3 else 4), f"T{given} given, awaiting reply"
+            self.gov.log.record("desk", "book position, invented", self.state[pid]["name"], "ok", detail)
+            self.state[pid].update(zone=zone, stop=stop)
         qualified = (self._stage(self.qualifier, lambda: self.qualifier.run(self.cadence.handoffs, call_notes()), {})
                      if self.cadence.handoffs else {})
         self.results["qualified"] = qualified
         for pid in qualified:
             self.state[pid].update(zone=2, stop="Problem identified, value defined")
-            if book_replies.get(pid, {}).get("committee"):
+            if positions.get(pid, {}).get("committee"):
                 self.gov.log.record("desk", "buying committee accepted the ask, invented", self.state[pid]["name"], "ok",
                                     "boss and committee booked, Zone 1")
                 self.state[pid].update(zone=1, stop="Buying committee")

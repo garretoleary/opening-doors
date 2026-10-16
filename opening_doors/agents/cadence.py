@@ -69,6 +69,14 @@ class Cadence(Agent):
         self.act("write_schedule", self._name(pid), lambda: self._advance(pid), what="no reply",
                  detail_of=lambda s: f"next T{s['next_touch']}" if s["stage"] != "resting" else "resting, no sixth touch")
 
+    def awaiting(self, pid: str) -> None:
+        """The last touch is out and its reply day has not come: the account waits where it is."""
+        self.act("write_log", self._name(pid), lambda: self._state(pid), what="awaiting reply",
+                 detail_of=lambda s: f"T{(s['next_touch'] or 1) - 1} given, day {self._day(pid)} of the sequence" if s["next_touch"] else "")
+
+    def _day(self, pid: str) -> int:
+        return self._state(pid).get("day", 0)
+
     def reply(self, pid: str, touch: int) -> Dict:
         """A reply at any touch: the account moves to First call and goes to the Qualifier."""
         return self.act("write_log", self._name(pid), lambda: self._handoff(pid, touch), what="reply received, invented",

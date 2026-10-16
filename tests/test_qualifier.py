@@ -10,7 +10,7 @@ from tests.test_agents import fake_ask
 
 def qualifier_after_reply():
     desk = Desk(ask=fake_ask)
-    out = desk.run(["acc-01", "acc-04"])          # Harrowgate Lumen replies at T3; Brackwater Foods never replies
+    out = desk.run(["acc-01", "acc-04"])          # Harrowgate Lumen replies at T3; Brackwater Foods never replies, day 20
     return desk, out
 
 

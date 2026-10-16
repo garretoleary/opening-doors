@@ -64,6 +64,7 @@
   .target { display: grid; grid-template-columns: 28px 1fr; gap: 6px 8px; width: 100%; min-height: 56px; padding: 10px 0; border: 0; background: none; text-align: left; cursor: pointer; font: inherit; color: inherit; }
   .target .rank { color: var(--blue); font-weight: 600; font-size: 16px; }
   .target .tn { font-weight: 600; font-size: 16px; }
+  .target .score { display: none; }
   .target .why { grid-column: 2; color: var(--muted); font-size: 15px; }
   .target .how { grid-column: 2; color: var(--muted); font-size: 15px; }
   .detail { padding: 0 0 14px 36px; font-size: 15px; }
@@ -97,31 +98,46 @@
   @media (min-width: 1200px) {
     html, body { height: 100%; }
     body { overflow: hidden; }
-    main { max-width: none; height: 100vh; padding: 20px 28px; display: grid; gap: 14px;
-      grid-template-columns: 1fr 1.2fr; grid-template-rows: auto auto minmax(0, 1.25fr) minmax(0, 1fr);
+    main { max-width: none; height: 100vh; padding: 14px 28px; display: grid; gap: 12px;
+      grid-template-columns: 1fr 1.2fr; grid-template-rows: auto auto auto minmax(0, 1fr);
       grid-template-areas: "head head" "gov gov" "agents book" "log out"; }
     .desktop-only { display: block; }
     .head { grid-area: head; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
-    .head h1 { font-size: 32px; margin: 0 0 4px; }
+    .head h1 { font-size: 28px; margin: 0 0 2px; }
+    button.run { min-height: 48px; font-size: 19px; }
     .head .desc, .head .notice { margin: 0; display: inline; }
     .head .notice { margin-left: 12px; }
     .runbox { text-align: right; flex: 0 0 300px; }
     button.run { width: 300px; }
     .runbox .runline { display: none; }          /* on desktop the timer and spend live in the governance strip */
     .address { font-size: 14px; color: var(--muted); margin-top: 6px; }
-    .card.gov { grid-area: gov; display: grid; grid-template-columns: 180px 1fr 220px; align-items: center; margin: 0; padding: 10px 20px; }
-    .card.gov .light .dot { width: 48px; height: 48px; }
+    .card.gov { grid-area: gov; display: grid; grid-template-columns: 180px 1fr 220px; align-items: center; margin: 0; padding: 8px 20px; }
+    .card.gov .light .dot { width: 42px; height: 42px; font-size: 17px; margin-bottom: 4px; }
     .card.gov .light .label { font-size: 14px; }
     .card.gov h2 { margin: 0; }
     .card.gov .lights { gap: 24px; max-width: 760px; margin: 0 auto; }
     .card.gov .stripinfo { text-align: right; font-size: 15px; color: var(--muted); }
-    .card.agentscard { grid-area: agents; margin: 0; overflow: auto; }
-    .card.agentscard .agents li { min-height: 44px; }
-    .card.agentscard .stop { min-height: 36px; }
-    .card.bookcard { grid-area: book; margin: 0; display: flex; flex-direction: column; min-height: 0; }
+    .card.agentscard { grid-area: agents; margin: 0; overflow: auto; padding: 12px 16px; }
+    .card.agentscard h2 { margin-bottom: 8px; }
+    .card.agentscard .agents li { min-height: 40px; }
+    .card.agentscard .stop { min-height: 32px; min-width: 60px; }
+    .card.bookcard { grid-area: book; margin: 0; display: flex; flex-direction: column; min-height: 0; padding: 12px 16px; }
+    .card.bookcard h2 { margin-bottom: 8px; }
     .card.bookcard .zones { display: none; }
-    .card.outcard { grid-area: out; margin: 0; overflow: auto; }
-    .card.logcard { grid-area: log; margin: 0; overflow: auto; }
+    .card.outcard { grid-area: out; margin: 0; overflow: auto; padding: 12px 16px; }
+    .card.outcard h2 { margin-bottom: 6px; }
+    .card.outcard #outexpand { display: none; }
+    .card.outcard .target { grid-template-columns: 24px minmax(200px, auto) 32px 1fr; gap: 0 10px; min-height: 0; padding: 4px 0; align-items: baseline; line-height: 1.25; }
+    .card.outcard .target .score { display: block; }
+    .card.outcard .target .rank { font-size: 15px; }
+    .card.outcard .target .tn { font-size: 15px; white-space: nowrap; }
+    .card.outcard .target .score { font-size: 15px; color: var(--muted); text-align: right; }
+    .card.outcard .target .why { grid-column: 4; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card.outcard .target .how { display: none; }
+    .card.outcard .out li { border-top: 1px solid #ececec; }
+    .card.logcard { grid-area: log; margin: 0; overflow: auto; padding: 12px 16px; }
+    .card.logcard h2 { margin-bottom: 6px; }
+    .card.logcard .log li { padding: 7px 0; }
     footer { display: none; }
     .map { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 64px; grid-template-rows: auto 1fr auto; flex: 1; min-height: 0; column-gap: 6px; }
     .map .band { border-radius: 8px; position: relative; grid-row: 2; }
@@ -264,15 +280,16 @@
       var band = bands[d.zone] || bands[4];
       if (el.parentNode !== band) band.appendChild(el);
       el.classList.toggle("z1", d.zone === 1);
-      var x = STOP_X[d.stop] || 0.18;
+      var x = STOP_X[d.stop] || STOP_X[(d.stop || "").replace("awaiting ", "")] || 0.18;
       if (d.stop === "start") x = 0.08 + hashRow(d.name + "x") * 0.9;   // the untouched spread across the zone
       el.style.left = (100 * x) + "%";
       el.style.top = (100 * hashRow(d.name)) + "%";
     });
     if (!(s.dots || []).length) Object.keys(dotEls).forEach(function (k) { if (dotEls[k].parentNode) dotEls[k].parentNode.removeChild(dotEls[k]); dotEls = {}; });
   }
+  var DESKTOP = window.matchMedia("(min-width: 1200px)");
   function renderOut(s) {
-    var rows = s.out || [], show = outAll ? rows : rows.slice(0, 3);
+    var rows = s.out || [], show = (outAll || DESKTOP.matches) ? rows : rows.slice(0, 3);
     $("outempty").hidden = rows.length > 0;
     $("outexpand").hidden = rows.length <= 3;
     $("outexpand").textContent = outAll ? "show top three" : "see all 10";
@@ -282,8 +299,9 @@
     outKey = key;
     $("out").innerHTML = show.map(function (r) {
       var open = r.id === openId;
-      return '<li><button class="target" type="button" data-id="' + r.id + '" aria-expanded="' + open + '">'
+      return '<li><button class="target" type="button" data-id="' + r.id + '" aria-expanded="' + open + '" title="' + esc(r.why) + '">'
         + '<span class="rank">' + r.rank + '</span><span class="tn">' + esc(r.name) + "</span>"
+        + '<span class="score">' + r.score + "</span>"
         + '<span class="why">' + esc(r.why) + "</span>"
         + '<span class="how">signal: ' + esc(r.how_found) + "</span></button>"
         + (open ? renderDetail(detail[r.id]) : "") + "</li>";

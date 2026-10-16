@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from typing import Dict, List
 
-from ..config import BOOK_PATH, CALL_NOTES_PATH, REPLIES_PATH
+from ..config import BOOK_PATH, CALL_NOTES_PATH, JOURNEY_PATH
 
 NOTICE = "All data invented."
 
@@ -63,14 +63,16 @@ def call_notes() -> dict:
     return notes
 
 
-def replies() -> Dict[str, Dict]:
-    """Invented replies, keyed by account id: at_touch 1 to 4, committee True or False."""
-    data = json.loads(REPLIES_PATH.read_text(encoding="utf-8"))
+def journey() -> Dict[str, Dict]:
+    """Where each account stands when a run begins, keyed by account id:
+    days_in (0 = untouched), at_touch (1 to 4 or None), committee (True or False). All invented."""
+    data = json.loads(JOURNEY_PATH.read_text(encoding="utf-8"))
     if "invented" not in data.get("notice", "").lower():
-        raise BookError("replies must carry the invented-data notice")
+        raise BookError("the journey must carry the invented-data notice")
     out = {}
-    for r in data["replies"]:
-        if r.get("invented") is not True or not (1 <= int(r["at_touch"]) <= 4):
-            raise BookError(f"{r.get('id')}: a reply is invented and arrives at touch 1 to 4")
-        out[r["id"]] = {"at_touch": int(r["at_touch"]), "committee": bool(r["committee"])}
+    for r in data["journey"]:
+        at = r.get("at_touch")
+        if r.get("invented") is not True or int(r["days_in"]) < 0 or (at is not None and not 1 <= int(at) <= 4):
+            raise BookError(f"{r.get('id')}: a position is invented, days_in is 0 or more, a reply is at touch 1 to 4 or none")
+        out[r["id"]] = {"days_in": int(r["days_in"]), "at_touch": None if at is None else int(at), "committee": bool(r["committee"])}
     return out

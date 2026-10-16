@@ -153,6 +153,17 @@ class App:
                     self.stops[on_what] = what
                 elif who == "Cadence" and what == "no reply" and detail.startswith("resting"):
                     self.stops[on_what] = "resting"
+                elif who == "Cadence" and what == "awaiting reply":
+                    self.stops[on_what] = "awaiting " + (self.stops.get(on_what, "T1 given"))
+                elif who == "desk" and what == "book position, invented":
+                    given = next((n for n in (5, 4, 3, 2, 1) if f"T{n}" in detail), 0)
+                    if "resting" in detail:
+                        self.zones[on_what], self.stops[on_what] = 3, "resting"
+                    elif "replied" in detail:
+                        self.zones[on_what], self.stops[on_what] = 3, "first call"
+                    else:
+                        self.zones[on_what] = 3 if given >= 3 else 4
+                        self.stops[on_what] = f"awaiting T{given} given"
                 elif who == "Cadence" and what.startswith("reply received"):
                     self.zones[on_what] = 3                       # First call, still Zone 3
                     self.stops[on_what] = "first call"

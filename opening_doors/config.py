@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 BOOK_PATH = ROOT / "opening_doors" / "book" / "accounts.json"
 CALL_NOTES_PATH = ROOT / "opening_doors" / "book" / "call_notes.json"
-REPLIES_PATH = ROOT / "opening_doors" / "book" / "replies.json"
+JOURNEY_PATH = ROOT / "opening_doors" / "book" / "journey.json"
 RUNS_DIR = ROOT / "runs"            # per-run audit logs and outputs, git-ignored, never edited after a run
 STATE_DIR = ROOT / "state"          # the spend ledger, git-ignored, updated on every call
 
