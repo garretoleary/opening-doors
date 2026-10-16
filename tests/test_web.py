@@ -149,3 +149,23 @@ def test_zone_tiles_count_the_book_and_move_with_the_log():
     assert [z["count"] for z in app.snapshot()["zones"]] == [24, 0, 1, 0]          # a refused move is no move
     app._entry("2026-10-15T16:48:05+00:00", "desk", "buying committee accepted the ask, invented", "Harrowgate Lumen", "ok", "Zone 1")
     assert [z["count"] for z in app.snapshot()["zones"]] == [24, 0, 0, 1]          # Zone 1
+
+
+def test_dots_follow_the_log_for_the_desktop_map():
+    app = App()
+    app._reset("replay")
+    assert app.snapshot()["dots"] == []
+    app._entry("2026-10-16T08:00:00+00:00", "desk", "run started", "25 accounts", "ok", "")
+    dots = app.snapshot()["dots"]
+    assert len(dots) == 25 and all(d["zone"] == 4 and d["stop"] == "start" for d in dots)
+    app._entry("2026-10-16T08:00:01+00:00", "Planner", "account plan", "Harrowgate Lumen", "ok", "")
+    app._entry("2026-10-16T08:00:02+00:00", "Cadence", "T1 given", "Harrowgate Lumen", "ok", "")
+    app._entry("2026-10-16T08:00:03+00:00", "Cadence", "no reply", "Harrowgate Lumen", "ok", "next T2")
+    app._entry("2026-10-16T08:00:04+00:00", "Cadence", "T3 given", "Harrowgate Lumen", "ok", "")
+    d = next(x for x in app.snapshot()["dots"] if x["name"] == "Harrowgate Lumen")
+    assert d == {"name": "Harrowgate Lumen", "zone": 3, "stop": "T3 given"}
+    app._entry("2026-10-16T08:00:05+00:00", "Cadence", "no reply", "Harrowgate Lumen", "ok", "resting, no sixth touch")
+    assert next(x for x in app.snapshot()["dots"] if x["name"] == "Harrowgate Lumen")["stop"] == "resting"
+    app._entry("2026-10-16T08:00:06+00:00", "desk", "buying committee accepted the ask, invented", "Dunwold Civil", "ok", "")
+    d2 = next(x for x in app.snapshot()["dots"] if x["name"] == "Dunwold Civil")
+    assert d2["zone"] == 1 and d2["stop"] == "committee"

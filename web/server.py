@@ -18,6 +18,7 @@ from typing import Dict, List, Optional
 from zoneinfo import ZoneInfo
 
 from opening_doors import config
+from opening_doors.book import load_book
 from opening_doors.claude import SpendCapReached
 
 UK = ZoneInfo("Europe/London")
@@ -49,7 +50,9 @@ class App:
         self.replay_stopped: set = set()     # agents stopped by the AE during a replay
         self.data: Dict = {}                 # the run's results: ranked, plans, drafts, schedule, qualified
         self.zones: Dict[str, int] = {}      # account name -> zone 4..1, moved by the log as the run goes
+        self.stops: Dict[str, str] = {}      # account name -> last stop reached, for the map's dots
         self.book_size = 0
+        self.book_names: List[str] = [a["name"] for a in load_book()["accounts"]]
         self.revealed: set = set()           # (kind, account name) pairs the log has announced
 
     # ---- what the page reads ---------------------------------------------------------------
@@ -98,6 +101,7 @@ class App:
             elapsed = int(((self.finished or now) - self.started)) if self.started else 0
             return {
                 "zones": self._zone_counts(),
+                "dots": [{"name": n, "zone": self.zones.get(n, 4), "stop": self.stops.get(n, "start")} for n in self.book_names] if self.book_size else [],
                 "out": self._out(),
                 "notice": config.INVENTED_DATA_NOTICE,
                 "running": self.running, "mode": self.mode, "elapsed": elapsed,
@@ -138,14 +142,26 @@ class App:
                 except (ValueError, IndexError):
                     self.book_size = 0
             if outcome == "ok" and on_what:                       # the journey: where each account sits
-                if who == "Cadence" and what == "T3 given":
+                if who == "Planner" and what == "account plan":
+                    self.stops[on_what] = "planned"
+                elif who == "Cadence" and what in ("T1 given", "T2 given"):
+                    self.stops[on_what] = what
+                elif who == "Cadence" and what == "T3 given":
                     self.zones[on_what] = 3                       # Zone 3, Earn the call
+                    self.stops[on_what] = what
+                elif who == "Cadence" and what in ("T4 given", "T5 given"):
+                    self.stops[on_what] = what
+                elif who == "Cadence" and what == "no reply" and detail.startswith("resting"):
+                    self.stops[on_what] = "resting"
                 elif who == "Cadence" and what.startswith("reply received"):
                     self.zones[on_what] = 3                       # First call, still Zone 3
+                    self.stops[on_what] = "first call"
                 elif who == "Qualifier" and what == "mutual plan drafted":
                     self.zones[on_what] = 2                       # Zone 2, Frame the value
+                    self.stops[on_what] = "qualified"
                 elif who == "desk" and what.startswith("buying committee accepted"):
                     self.zones[on_what] = 1                       # Zone 1, Commit
+                    self.stops[on_what] = "committee"
             if outcome == "ok":                                   # what OUT may now show
                 if who == "Scorer" and what.startswith("ranked"):
                     self.revealed.add(("ranked", ""))
@@ -166,7 +182,7 @@ class App:
             self.log, self.agents, self.spend_gbp, self.limit = [], {n: "waiting" for n in AGENT_NAMES}, 0.0, None
             self.replay_stopped = set()
             self.data, self.revealed = {}, set()
-            self.zones, self.book_size = {}, 0
+            self.zones, self.stops, self.book_size = {}, {}, 0
 
     # ---- a real run ----------------------------------------------------------------------------
     def start_run(self) -> bool:

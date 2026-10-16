@@ -91,20 +91,72 @@
   .expand { display: block; width: 100%; min-height: 44px; margin-top: 8px; border: 0; background: none; color: var(--blue); font: 600 15px Inter, -apple-system, sans-serif; text-align: right; cursor: pointer; }
   .limit { background: #fff4f4; border-color: var(--red); color: var(--red); }
   footer { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  .desktop-only { display: none; }
+
+  /* ---- Desktop, 1200 px and up: one screen, no page scroll. Phone styles above are untouched. ---- */
+  @media (min-width: 1200px) {
+    html, body { height: 100%; }
+    body { overflow: hidden; }
+    main { max-width: none; height: 100vh; padding: 20px 28px; display: grid; gap: 14px;
+      grid-template-columns: 1fr 1.2fr; grid-template-rows: auto auto minmax(0, 1.25fr) minmax(0, 1fr);
+      grid-template-areas: "head head" "gov gov" "agents book" "log out"; }
+    .desktop-only { display: block; }
+    .head { grid-area: head; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+    .head h1 { font-size: 32px; margin: 0 0 4px; }
+    .head .desc, .head .notice { margin: 0; display: inline; }
+    .head .notice { margin-left: 12px; }
+    .runbox { text-align: right; flex: 0 0 300px; }
+    button.run { width: 300px; }
+    .runbox .runline { display: none; }          /* on desktop the timer and spend live in the governance strip */
+    .address { font-size: 14px; color: var(--muted); margin-top: 6px; }
+    .card.gov { grid-area: gov; display: grid; grid-template-columns: 180px 1fr 220px; align-items: center; margin: 0; padding: 10px 20px; }
+    .card.gov .light .dot { width: 48px; height: 48px; }
+    .card.gov .light .label { font-size: 14px; }
+    .card.gov h2 { margin: 0; }
+    .card.gov .lights { gap: 24px; max-width: 760px; margin: 0 auto; }
+    .card.gov .stripinfo { text-align: right; font-size: 15px; color: var(--muted); }
+    .card.agentscard { grid-area: agents; margin: 0; overflow: auto; }
+    .card.agentscard .agents li { min-height: 44px; }
+    .card.agentscard .stop { min-height: 36px; }
+    .card.bookcard { grid-area: book; margin: 0; display: flex; flex-direction: column; min-height: 0; }
+    .card.bookcard .zones { display: none; }
+    .card.outcard { grid-area: out; margin: 0; overflow: auto; }
+    .card.logcard { grid-area: log; margin: 0; overflow: auto; }
+    footer { display: none; }
+    .map { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 64px; grid-template-rows: auto 1fr auto; flex: 1; min-height: 0; column-gap: 6px; }
+    .map .band { border-radius: 8px; position: relative; grid-row: 2; }
+    .map .band.z4 { background: #c9c9c9; } .map .band.z3 { background: #dedede; } .map .band.z2 { background: #efefef; } .map .band.z1 { background: #fff; border: 1px solid var(--line); }
+    .map .bh { grid-row: 1; text-align: center; padding-bottom: 6px; }
+    .map .bh b { display: block; font-size: 15px; }
+    .map .bh span { font-size: 14px; color: var(--muted); }
+    .map .bc { grid-row: 3; text-align: center; font-size: 14px; color: var(--muted); padding-top: 6px; }
+    .map .pound { grid-column: 5; grid-row: 2; align-self: center; width: 56px; height: 56px; border-radius: 50%; border: 4px solid #111; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; }
+    .map .pound-label { grid-column: 5; grid-row: 1; font-size: 12px; color: var(--muted); text-align: center; align-self: end; padding-bottom: 6px; }
+    .map .dotsline { position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid #9a9a9a; }
+    .map .dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--blue); border: 2px solid #fff; margin: -8px 0 0 -8px; transition: left .6s ease, top .6s ease; }
+    .map .dot.z1 { background: #111; }
+    .map .dot[title] { cursor: default; }
+  }
 </style>
 </head>
 <body>
 <main>
-  <h1>Opening Doors</h1>
-  <p class="desc">Six AI Agents hunting 25 named accounts, on the AE's behalf, under governance.</p>
-  <p class="notice">All data invented.</p>
-
-  <button class="run" id="run" type="button">&#9654;&nbsp; Run the hunt</button>
-  <div class="runline" id="runline"></div>
+  <div class="head">
+    <div>
+      <h1>Opening Doors</h1>
+      <p class="desc">Six AI Agents hunting 25 named accounts, on the AE's behalf, under governance.</p>
+      <p class="notice">All data invented.</p>
+    </div>
+    <div class="runbox">
+      <button class="run" id="run" type="button">&#9654;&nbsp; Run the hunt</button>
+      <div class="runline" id="runline"></div>
+      <div class="address desktop-only">openingdoors.builtbygarret.com</div>
+    </div>
+  </div>
 
   <section class="card" id="limitcard" hidden></section>
 
-  <section class="card" aria-label="Governance">
+  <section class="card gov" aria-label="Governance">
     <h2>GOVERNANCE <span>&middot; in order</span></h2>
     <div class="lights">
       <div class="light black" id="l-registered"><div class="dot">1</div><div class="label">Registered</div></div>
@@ -112,26 +164,43 @@
       <div class="light amber" id="l-logged"><div class="dot">3</div><div class="label">Logged</div></div>
       <div class="light red" id="l-stoppable"><div class="dot">4</div><div class="label">Stoppable</div></div>
     </div>
+    <div class="stripinfo desktop-only" id="stripinfo"></div>
   </section>
 
-  <section class="card" aria-label="Agents">
+  <section class="card agentscard" aria-label="Agents">
     <h2>AGENTS <span>&middot; every one acts on the AE's behalf</span></h2>
     <ul class="agents" id="agents"></ul>
   </section>
 
-  <section class="card" aria-label="The book">
+  <section class="card bookcard" aria-label="The book">
     <h2>THE BOOK <span>&middot; where the 25 sit</span></h2>
     <div class="zones" id="zones"></div>
+    <div class="map desktop-only" id="map" aria-hidden="true">
+      <div class="bh" style="grid-column:1"><b>ZONE 4</b><span>Open the door</span></div>
+      <div class="bh" style="grid-column:2"><b>ZONE 3</b><span>Earn the call</span></div>
+      <div class="bh" style="grid-column:3"><b>ZONE 2</b><span>Frame the value</span></div>
+      <div class="bh" style="grid-column:4"><b>ZONE 1</b><span>Commit</span></div>
+      <div class="pound-label">Plan signed</div>
+      <div class="band z4" style="grid-column:1"><div class="dotsline"></div></div>
+      <div class="band z3" style="grid-column:2"><div class="dotsline"></div></div>
+      <div class="band z2" style="grid-column:3"><div class="dotsline"></div></div>
+      <div class="band z1" style="grid-column:4"><div class="dotsline"></div></div>
+      <div class="pound">&pound;</div>
+      <div class="bc" id="bc4" style="grid-column:1"></div>
+      <div class="bc" id="bc3" style="grid-column:2"></div>
+      <div class="bc" id="bc2" style="grid-column:3"></div>
+      <div class="bc" id="bc1" style="grid-column:4"></div>
+    </div>
   </section>
 
-  <section class="card" aria-label="OUT">
+  <section class="card outcard" aria-label="OUT">
     <h2>OUT <span>&middot; top targets, tap for the plan</span></h2>
     <p class="empty" id="outempty">Ten targets, ranked, each with its reason, once the Scorer has run.</p>
     <ul class="out" id="out"></ul>
     <button class="expand" id="outexpand" type="button" hidden>see all 10</button>
   </section>
 
-  <section class="card" aria-label="Live log">
+  <section class="card logcard" aria-label="Live log">
     <h2>LIVE LOG <span>&middot; who, what, on which account, outcome</span></h2>
     <p class="empty" id="logempty">Nothing yet. Press Run the hunt.</p>
     <ul class="log" id="log"></ul>
@@ -179,6 +248,28 @@
       h += '</ol><p><span class="k">The ask.</span> ' + esc(m.the_ask) + "</p>";
     } else h += '<p class="notyet">After the first call. A reply at any touch brings the Qualifier in.</p>';
     return h + "</div>";
+  }
+  // Where a dot sits inside its zone, left to right, by the stop it has reached.
+  var STOP_X = { start: 0.18, planned: 0.32, "T1 given": 0.50, "T2 given": 0.78, "T3 given": 0.22, "T4 given": 0.45, "T5 given": 0.62, resting: 0.62, "first call": 0.86, qualified: 0.55, committee: 0.55 };
+  function hashRow(name) { var h = 0; for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0; return 0.12 + (h % 1000) / 1000 * 0.76; }
+  var dotEls = {};
+  function renderMap(s) {
+    var map = $("map");
+    if (!map || getComputedStyle(map).display === "none") return;
+    (s.zones || []).forEach(function (z) { var el = $("bc" + z.zone); if (el) el.textContent = z.count + (z.count === 1 ? " account" : " accounts"); });
+    var bands = {}; [4, 3, 2, 1].forEach(function (z) { bands[z] = map.querySelector(".band.z" + z); });
+    (s.dots || []).forEach(function (d) {
+      var el = dotEls[d.name];
+      if (!el) { el = document.createElement("div"); el.className = "dot"; el.title = d.name; dotEls[d.name] = el; }
+      var band = bands[d.zone] || bands[4];
+      if (el.parentNode !== band) band.appendChild(el);
+      el.classList.toggle("z1", d.zone === 1);
+      var x = STOP_X[d.stop] || 0.18;
+      if (d.stop === "start") x = 0.08 + hashRow(d.name + "x") * 0.9;   // the untouched spread across the zone
+      el.style.left = (100 * x) + "%";
+      el.style.top = (100 * hashRow(d.name)) + "%";
+    });
+    if (!(s.dots || []).length) Object.keys(dotEls).forEach(function (k) { if (dotEls[k].parentNode) dotEls[k].parentNode.removeChild(dotEls[k]); dotEls = {}; });
   }
   function renderOut(s) {
     var rows = s.out || [], show = outAll ? rows : rows.slice(0, 3);
@@ -237,6 +328,8 @@
         + '<span class="status ' + a.status + '"><span class="sd"></span>' + a.status + "</span>"
         + '<button class="stop" type="button" data-agent="' + a.name + '"' + (s.running && a.status !== "stopped" && a.status !== "done" ? "" : " disabled") + ">Stop</button></li>";
     }).join("");
+    $("stripinfo").textContent = $("runline").textContent;
+    renderMap(s);
     $("zones").innerHTML = (s.zones || []).map(function (z) {
       return '<div class="zone z' + z.zone + '"><div class="zn">Zone ' + z.zone + '</div><div class="zc">' + z.count + '</div><div class="zl">' + esc(z.name) + "</div></div>";
     }).join("");
