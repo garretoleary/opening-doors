@@ -45,3 +45,15 @@ def test_untouched_accounts_stay_in_zone_four():
     out = Desk(ask=fake_ask).run(["acc-05", "acc-09"])
     assert all(v["zone"] == 4 for v in out["state"].values())
     assert "awaiting reply" not in "\n".join(out["log"]) or "T1 given" in "\n".join(out["log"])
+
+
+def test_committee_line_follows_each_mutual_plan_at_once():
+    out = Desk(ask=fake_ask).run()
+    log = out["log"]
+    for i, line in enumerate(log):
+        if "Qualifier  mutual plan drafted" in line and " ok" in line:
+            name = line.split("mutual plan drafted  ")[1].split("  ok")[0]
+            pid = next(k for k, v in out["state"].items() if v["name"] == name)
+            if out["state"][pid]["zone"] == 1:                   # the book says the committee is in
+                assert "buying committee accepted the ask, invented  " + name in log[i + 1], name
+    assert sum("buying committee accepted" in l for l in log) == 3

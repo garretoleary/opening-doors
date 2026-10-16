@@ -155,15 +155,23 @@ class Desk:
                 detail, zone, stop = f"T{given} given, awaiting reply", (3 if given >= 3 else 4), f"T{given} given, awaiting reply"
             self.gov.log.record("desk", "book position, invented", self.state[pid]["name"], "ok", detail)
             self.state[pid].update(zone=zone, stop=stop)
+        # As each account's mutual plan lands, it moves to Zone 2; if the book says the buyer accepts the
+        # ask, the committee line follows at once and it moves to Zone 1. Live, account by account.
+        name_to_pid = {v["name"]: k for k, v in self.state.items()}
+        def on_entry(e):
+            if e.who == "Qualifier" and e.what == "mutual plan drafted" and e.outcome == "ok":
+                pid = name_to_pid.get(e.on_what)
+                if pid is None:
+                    return
+                self.state[pid].update(zone=2, stop="Problem identified, value defined")
+                if positions.get(pid, {}).get("committee"):
+                    self.gov.log.record("desk", "buying committee accepted the ask, invented", e.on_what, "ok",
+                                        "boss and committee booked, Zone 1")
+                    self.state[pid].update(zone=1, stop="Buying committee")
+        self.gov.log.subscribe(on_entry)
         qualified = (self._stage(self.qualifier, lambda: self.qualifier.run(self.cadence.handoffs, call_notes()), {})
                      if self.cadence.handoffs else {})
         self.results["qualified"] = qualified
-        for pid in qualified:
-            self.state[pid].update(zone=2, stop="Problem identified, value defined")
-            if positions.get(pid, {}).get("committee"):
-                self.gov.log.record("desk", "buying committee accepted the ask, invented", self.state[pid]["name"], "ok",
-                                    "boss and committee booked, Zone 1")
-                self.state[pid].update(zone=1, stop="Buying committee")
 
         # The governance check every run makes: no agent may send. Refused and logged, never skipped.
         checker = self.writer if "agent-4" not in self.stopped else self.planner
