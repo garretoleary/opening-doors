@@ -112,7 +112,7 @@ def build(review_dir: Optional[Path] = None) -> Dict:
         {"question": "Where are my agents?", "answer": f"{len(AGENTS)} registered: " + ", ".join(n for _, n in AGENTS), "receipts": [{"run": r, "line": n} for r in runs[:1] for n, e in enumerate(audits[r], 1) if e.get("what") == "registered"]},
         {"question": "What can they do?", "answer": "A permission list per agent, enforced in code; shown on each agent's line.", "receipts": []},
         {"question": "What are they doing?", "answer": f"This report: {len(runs)} runs read, every number with its audit lines.", "receipts": run_receipts},
-        {"question": "How do I stop one?", "answer": "A Stop per agent revokes its token mid-run. " + ", ".join(f"{a['name']} {a['stop_state']}" for a in agents), "receipts": stop_receipts},
+        {"question": "How do I respond?", "answer": "A Stop per agent revokes its token mid-run. " + ", ".join(f"{a['name']} {a['stop_state']}" for a in agents), "receipts": stop_receipts},
     ]
     return {
         "ready": True, "review": summary.get("review"), "review_dir": review_dir.name, "runs_read": runs,

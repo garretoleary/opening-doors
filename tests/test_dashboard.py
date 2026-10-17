@@ -56,3 +56,11 @@ def test_receipts_rule_catches_a_number_without_one():
 
 def test_no_review_yet_is_said_plainly():
     assert review_report.build() == {"ready": False, "message": "No night review yet. Press Run night review."}
+
+
+def test_the_four_questions_use_the_alliance_wording_exactly():
+    """The fourth is 'How do I respond?', never 'How do I stop one?'. The answers stay Registered, Permitted, Logged, Stoppable."""
+    make_run("20261017T010000000Z", [line("desk", "run started", "25 accounts"), line("desk", "run finished")])
+    nr.NightlyReview(ask=words_ask, today=date(2026, 10, 17)).run()
+    dash = review_report.build()
+    assert [q["question"] for q in dash["alliance"]] == ["Where are my agents?", "What can they do?", "What are they doing?", "How do I respond?"]
