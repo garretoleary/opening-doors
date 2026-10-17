@@ -54,13 +54,14 @@ class Governor:
 
     # The gate. Questions 1 to 4, in order, on every action.
     def act(self, agent_id: str, token: str, action: str, on_what: str, fn: Callable[[], Any],
-            what: Optional[str] = None, detail_of: Optional[Callable[[Any], str]] = None) -> Any:
+            what: Optional[str] = None, detail_of: Optional[Callable[[Any], str]] = None, tag: str = "") -> Any:
         """Run fn on the agent's behalf if, and only if, governance allows it.
 
         agent_id: who is acting. token: the credential it was issued at registration.
         action: the permission name, e.g. "read_book". on_what: the account or thing.
         what: the plain-English phrase for the log; defaults to the action with spaces.
         detail_of: optional, turns the result into a short clause for the log line.
+        tag: optional word appended to the log line, e.g. deliberate_check for a refusal the desk asks for on purpose.
         """
         phrase = what or action.replace("_", " ")
         record = self.registry.get(agent_id)               # Registered, or NotRegistered
@@ -73,7 +74,7 @@ class Governor:
             check_permission(agent_id, action)              # Permitted
             self.lights["permitted"] = True
         except PermissionDenied:
-            self.log.record(record.name, phrase, on_what, "denied", "not permitted")
+            self.log.record(record.name, phrase, on_what, "denied", "not permitted" + (f", {tag}" if tag else ""))
             raise
         try:
             result = fn()

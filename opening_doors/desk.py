@@ -181,7 +181,7 @@ class Desk:
         checker = self.writer if "agent-4" not in self.stopped else self.planner
         target = ranked[0]["name"] if ranked else ""
         try:
-            checker.act("send_email", target, lambda: None, what="send email")
+            checker.act("send_email", target, lambda: None, what="send email", tag="deliberate_check")
         except (PermissionDenied, Stopped):
             pass
 

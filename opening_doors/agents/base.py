@@ -37,9 +37,9 @@ class Agent:
         return self.record.token
 
     def act(self, action: str, on_what: str, fn: Callable[[], Any], what: Optional[str] = None,
-            detail_of: Optional[Callable[[Any], str]] = None) -> Any:
+            detail_of: Optional[Callable[[Any], str]] = None, tag: str = "") -> Any:
         """Do one thing on the AE's behalf. Refused and logged if governance says no."""
-        return self.gov.act(self.agent_id, self.token, action, on_what, fn, what, detail_of)
+        return self.gov.act(self.agent_id, self.token, action, on_what, fn, what, detail_of, tag)
 
     def set_status(self, status: str) -> None:
         self.gov.set_status(self.agent_id, status)
