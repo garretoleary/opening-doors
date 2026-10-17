@@ -38,10 +38,11 @@ class Governor:
         self.lights: Dict[str, bool] = {"registered": False, "permitted": False, "logged": False, "stoppable": False}
 
     # Question 1
-    def register(self, agent_id: str, name: str, purpose: str, colour: str = "") -> AgentRecord:
+    def register(self, agent_id: str, name: str, purpose: str, colour: str = "", rules: str = "") -> AgentRecord:
         record = self.registry.register(agent_id, name, self.owner, purpose, colour)
         self.lights["registered"] = True
-        self.log.record("desk", "registered", name, "ok", f"owner {self.owner}")
+        detail = f"owner {self.owner}" + (f", rules {rules}" if rules else "")
+        self.log.record("desk", "registered", name, "ok", detail)
         return record
 
     # Question 4

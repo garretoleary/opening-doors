@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Dict, List
 
-from .base import INVENTED, Agent
+from .base import Agent
 
 NOTE_SCHEMA = {
     "type": "object",
@@ -36,14 +36,7 @@ class Researcher(Agent):
     name = "Researcher"
     purpose = "Reads the book of 25 accounts and their signals; writes nothing, sends nothing"
     colour = "#E69F00"
-    system_prompt = (
-        f"{INVENTED}\nYou are the Researcher on a sales desk. For each account, read its signals and its "
-        "identity set-up today, then write a research note. Plain English, short sentences, no jargon. "
-        "strongest_signal: the one trigger that matters most and its date. why_now: one sentence on why "
-        "this quarter. identity_gap: the one thing about their logins and access that a buyer would want fixed. "
-        "likely_buyer: the named person most likely to own the problem, with role. Keep every field under 30 words. "
-        "Return one note for every account id you are given, in the same order."
-    )
+    rules_key = "researcher"
 
     def run(self, book: dict) -> List[Dict]:
         self.set_status("running")

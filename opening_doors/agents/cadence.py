@@ -28,9 +28,10 @@ class Cadence(Agent):
     name = "Cadence"
     purpose = "Schedules the five touches, enforces the rest rule and the no-repeat rule, hands replies to the Qualifier; never sends"
     colour = "#D55E00"
+    rules_key = "cadence"
 
-    def __init__(self, gov, ask):
-        super().__init__(gov, ask)
+    def __init__(self, gov, ask, rules=None):
+        super().__init__(gov, ask, rules)
         self.schedule: Dict[str, Dict] = {}            # account id -> stage, next touch, touches
         self.given: Set[Tuple[str, int]] = set()       # (account id, touch) already given
         self.given_content: Set[Tuple[str, str]] = set()   # (account id, hash of body) already given

@@ -18,6 +18,7 @@ from .agents import Cadence, Planner, Qualifier, Researcher, Scorer, Writer
 from .book import call_notes, journey, load_book
 from .claude import AskFn, Spend, SpendCapReached, make_ask
 from .governance import Governor, PermissionDenied, Stopped
+from .rules import keep_copies, load_all
 
 ZONES = {4: "Open the door", 3: "Earn the call", 2: "Frame the value", 1: "Commit"}
 
@@ -26,6 +27,7 @@ class Desk:
     def __init__(self, ask: Optional[AskFn] = None, run_dir: Optional[Path] = None):
         self.run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f")[:-3] + "Z"   # unique to the millisecond
         self.run_dir = run_dir or (config.RUNS_DIR / self.run_id)
+        self.rules = load_all()                 # all six rules files, or RulesMissing: the run refuses to start
         self.spend = Spend(ledger_path=config.STATE_DIR / "spend.json")
         self.gov = Governor(owner=config.AE["id"], log_path=self.run_dir / "audit.jsonl")
         # Each agent asks its own model (config.model_for); a stand-in ask serves every agent in tests.
@@ -38,12 +40,13 @@ class Desk:
                 asks[m] = make_ask(self.spend, m)
             return asks[m]
         self.ask = ask
-        self.researcher = Researcher(self.gov, ask_for("agent-1"))
-        self.scorer = Scorer(self.gov, ask_for("agent-2"))
-        self.planner = Planner(self.gov, ask_for("agent-3"))
-        self.writer = Writer(self.gov, ask_for("agent-4"))
-        self.cadence = Cadence(self.gov, ask_for("agent-5"))
-        self.qualifier = Qualifier(self.gov, ask_for("agent-6"))
+        r = self.rules
+        self.researcher = Researcher(self.gov, ask_for("agent-1"), r["researcher"])
+        self.scorer = Scorer(self.gov, ask_for("agent-2"), r["scorer"])
+        self.planner = Planner(self.gov, ask_for("agent-3"), r["planner"])
+        self.writer = Writer(self.gov, ask_for("agent-4"), r["writer"])
+        self.cadence = Cadence(self.gov, ask_for("agent-5"), r["cadence"])
+        self.qualifier = Qualifier(self.gov, ask_for("agent-6"), r["qualifier"])
         self.models = {a.agent_id: config.model_for(a.agent_id) for a in (self.researcher, self.scorer, self.planner, self.writer, self.cadence, self.qualifier)}
         self.agents = [self.researcher, self.scorer, self.planner, self.writer, self.cadence, self.qualifier]
         self.state: Dict[str, Dict] = {}     # account id -> zone, stop
@@ -95,6 +98,7 @@ class Desk:
 
         for agent in self.agents:                               # Question 1: registered first
             agent.register()
+        keep_copies(self.rules, self.run_dir)                   # the rules this run used, locked with the run
         self.gov.log.record("desk", "run started", f"{len(book['accounts'])} accounts", "ok", config.INVENTED_DATA_NOTICE)
 
         notes = self._stage(self.researcher, lambda: self.researcher.run(book), [])
@@ -185,6 +189,7 @@ class Desk:
                             f"£{self.spend.gbp_this_run:.2f} this run, {self.spend.calls} model calls")
         self.out = {
             "run_id": self.run_id, "notice": config.INVENTED_DATA_NOTICE, "models": self.models,
+            "rules": {k: v.label for k, v in self.rules.items()},
             "notes": notes, "ranked": ranked, "plans": plans, "drafts": drafts, "schedule": schedule, "qualified": qualified, "stopped": self.stopped, "state": self.state,
             "lights": self.gov.lights, "agents": self.gov.registry.as_rows(),
             "spend": {"gbp": round(self.spend.gbp_this_run, 4), "calls": self.spend.calls,

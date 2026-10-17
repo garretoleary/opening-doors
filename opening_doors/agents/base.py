@@ -7,6 +7,7 @@ from typing import Any, Callable, Dict, Iterable, Optional, Tuple
 from .. import config
 from ..claude import AskFn
 from ..governance import Governor, Stopped
+from ..rules import Rules, load as load_rules
 
 
 class Agent:
@@ -14,15 +15,20 @@ class Agent:
     name: str = ""
     purpose: str = ""
     colour: str = ""        # Okabe-Ito hex, as on the visual
-    system_prompt: str = ""
+    rules_key: str = ""     # rules/<rules_key>.v<N>.md holds this agent's instructions
 
-    def __init__(self, gov: Governor, ask: AskFn):
+    def __init__(self, gov: Governor, ask: AskFn, rules: Optional[Rules] = None):
         self.gov = gov
         self.ask = ask
         self.record = None
+        self.rules = rules or load_rules(self.rules_key)       # RulesMissing if the file is absent
+
+    @property
+    def system_prompt(self) -> str:
+        return self.rules.instructions
 
     def register(self) -> None:
-        self.record = self.gov.register(self.agent_id, self.name, self.purpose, self.colour)
+        self.record = self.gov.register(self.agent_id, self.name, self.purpose, self.colour, rules=self.rules.label)
 
     @property
     def token(self) -> str:

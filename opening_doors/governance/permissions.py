@@ -16,6 +16,7 @@ class PermissionDenied(Exception):
 NEVER_PERMITTED: FrozenSet[str] = frozenset({
     "send_email", "send_linkedin", "send", "place_call",            # no agent may send
     "rewrite_log", "edit_run_file", "delete_run_file",              # rule zero: run files are never changed
+    "write_rules", "edit_rules", "delete_rules",                    # rules are versioned files; no agent writes them
 })
 
 PERMISSIONS: Dict[str, FrozenSet[str]] = {

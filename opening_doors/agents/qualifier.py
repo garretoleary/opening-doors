@@ -13,7 +13,7 @@ import json
 from datetime import date
 from typing import Dict, List, Optional
 
-from .base import INVENTED, Agent
+from .base import Agent
 
 QUAL_SCHEMA = {
     "type": "object",
@@ -81,19 +81,7 @@ class Qualifier(Agent):
     name = "Qualifier"
     purpose = "After the first call: light MEDDPICC, the problem and value framed and sized, the mutual plan with the ask to bring the boss and the committee in; never sees the raw book, never sends"
     colour = "#CC79A7"
-    system_prompt = (
-        f"{INVENTED}\nYou are the Qualifier on a sales desk. You work only from the seller's note of the first "
-        "call. Write three things in plain English, short sentences, no jargon, no product names, no vendor names. "
-        "1. qualification, a light MEDDPICC: one line each for metrics, economic buyer, decision criteria, decision "
-        "process, paper process, identified pain, champion, competition; and gaps: what the call did not establish. "
-        "Where the note is silent, say 'not yet known', never invent. Do not write a technical lead line. "
-        "2. value_frame: problem_identified, the cost or risk in the buyer's words; value_defined, what changes if it "
-        "is fixed; value_sized, a number with its basis, marked as an estimate from the call; how_value_is_realised, "
-        "how it is measured after go-live. Describe the method only as value identified, value framed, value realised. "
-        "3. mutual_plan: goal, one sentence; steps, four to seven, each 'who' is exactly 'You' (the buyer) or 'I' "
-        "(the seller), 'what' is one action, 'by' is a date; the_ask, the explicit request to bring the boss and the "
-        "buying committee into the next meeting, naming who, in two sentences. Dates run from today."
-    )
+    rules_key = "qualifier"
 
     def run(self, handoffs: List[Dict], call_notes: Dict[str, str], today: Optional[date] = None) -> Dict[str, Dict]:
         self.set_status("running")

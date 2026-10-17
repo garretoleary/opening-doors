@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Dict, List
 
-from .base import INVENTED, Agent
+from .base import Agent
 
 SCORE_SCHEMA = {
     "type": "object",
@@ -35,13 +35,7 @@ class Scorer(Agent):
     name = "Scorer"
     purpose = "Ranks the 25 against the ideal client profile; says why each was selected and how it was found"
     colour = "#56B4E9"
-    system_prompt = (
-        f"{INVENTED}\nYou are the Scorer on a sales desk. Score every account from 0 to 100 against the ideal "
-        "client profile. Higher means a stronger reason to open the door this quarter. why_selected: one plain "
-        "sentence a sales leader would accept, naming the trigger and the gap. how_found: which signal surfaced "
-        "it, in a few words, e.g. 'new COO, 1 September' or 'three identity roles posted'. Use the whole range; "
-        "do not bunch scores. Return a score for every account id, in the same order."
-    )
+    rules_key = "scorer"
 
     def run(self, notes: List[Dict], icp: dict) -> List[Dict]:
         self.set_status("running")

@@ -6,7 +6,7 @@ from __future__ import annotations
 import json
 from typing import Dict, List
 
-from .base import INVENTED, Agent
+from .base import Agent
 
 PLAN_SCHEMA = {
     "type": "object",
@@ -28,14 +28,7 @@ class Planner(Agent):
     name = "Planner"
     purpose = "Drafts the account plan for each of the top ten"
     colour = "#F0E442"
-    system_prompt = (
-        f"{INVENTED}\nYou are the Planner on a sales desk. Write a one-page account plan for one account, "
-        "in plain English a busy sales leader reads in a minute. business_problem: the cost or risk the trigger "
-        "creates, in two sentences. economic_buyer: the named person with role and why they own the budget. "
-        "first_meeting_point_of_view: the one insight to open with, two sentences, no product names. "
-        "one_metric_to_agree: a single number the buyer and seller would agree to move, with a plausible "
-        "starting value and target. Under 120 words in all."
-    )
+    rules_key = "planner"
 
     def run(self, ranked: List[Dict], notes: List[Dict], book: dict) -> Dict[str, Dict]:
         self.set_status("running")
