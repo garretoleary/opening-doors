@@ -184,3 +184,36 @@ def test_nothing_new_reads_the_latest_again_and_says_so():
     assert first["reread"] is False and second["reread"] is True and second["runs_read"] == first["runs_read"]
     report = sorted(p for p in config.REPORTS_DIR.iterdir() if p.is_file() and "night-review" in p.name)[-1].read_text()
     assert "No new runs since the last review; the latest were read again." in report
+
+
+def test_three_identical_hedged_reasons_across_three_runs_make_one_proposal_with_three_run_ids():
+    """Acceptance test 4, Night Review brief Part 6."""
+    why = "A new CISO who might own the budget, possibly this quarter."
+    for r in ("20261017T010000000Z", "20261017T020000000Z", "20261017T030000000Z"):
+        make_run(r, [line("desk", "run started", "25 accounts"), line("Scorer", "ranked 25", "", "ok", "top: Quillon Health")],
+                 {"ranked": [{"name": "Quillon Health", "rank": 1, "score": 90, "why_selected": why}]})
+    s = nr.NightlyReview(ask=words_ask, today=date(2026, 10, 17)).run()
+    assert s["run_count"] == 3 and s["findings"] == 1 and len(s["proposals"]) == 1
+    text = Path(s["proposals"][0]).read_text()
+    assert "family: hedged reason" in text and "run count: 3" in text
+    for r in ("20261017T010000000Z", "20261017T020000000Z", "20261017T030000000Z"):
+        assert f"{r}: lines 2" in text
+    assert len(list(config.PROPOSALS_DIR.glob("*-nr-*.md"))) == 1
+
+
+def test_stop_pressed_mid_run_refuses_night_reviews_next_action_and_writes_nothing():
+    """Acceptance test 6, Night Review brief Part 6: Stop mid-run, the next action refused and logged, no proposal or state written."""
+    from opening_doors.governance import Stopped
+    make_run("20261017T010000000Z", [line("desk", "run started", "25 accounts"), line("Writer", "send email", "Dunwold Civil", "denied", "not permitted")])
+    review = nr.NightlyReview(ask=words_ask, today=date(2026, 10, 17))
+    def press_stop(entry):
+        if entry.what == "read audit log":                       # mid-run: the first run's log has just been read
+            review.gov.stop("agent-7")
+    review.gov.log.subscribe(press_stop)
+    with pytest.raises(Stopped):
+        review.run()
+    lines = [l.split("  ", 1)[1] for l in review.gov.log.lines()]                 # drop the clock
+    stop_at = lines.index("Night Review  STOPPED by AE  STOPPED  token revoked")
+    assert lines[-1].startswith("Night Review  read ") and lines[-1].endswith("STOPPED  token revoked") and stop_at < len(lines) - 1
+    assert all(l.endswith("STOPPED  token revoked") for l in lines[stop_at + 1:])   # nothing after the press succeeds
+    assert list(config.PROPOSALS_DIR.glob("*-nr-*.md")) == [] and not review.state_path.exists()
