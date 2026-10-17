@@ -327,3 +327,14 @@ def test_demo_proposal_button_is_absent_without_the_staging_variable(monkeypatch
     assert "staging-only" in (config.ROOT / "web" / "index.html").read_text()     # the markers the server cuts on
     assert 'OPENING_DOORS_STAGING = "1"' in (config.ROOT / "fly.v2.toml").read_text()
     assert "STAGING" not in (config.ROOT / "fly.toml").read_text()                 # never on the live app
+
+
+def test_live_log_caption_sits_under_the_heading_in_both_views():
+    """Fresh-eyes test 9, 17 October: the live log was unclear; one 12-point caption under the heading, the heading unchanged."""
+    from opening_doors import config
+    html = (config.ROOT / "web" / "index.html").read_text()
+    i = html.index("<h2>LIVE LOG <span>&middot; who, what, on which account, outcome</span></h2>")
+    after = html[i:i + 400]
+    assert '<p class="credit logcap">Every action, as it happens, and whether the gate allowed it. A red line is a refusal: the governance working.</p>' in after
+    assert html.count("LIVE LOG") == 1                       # one log card serves the phone and the desktop
+    assert ".credit { margin: 0 0 10px; color: var(--muted); font-size: 12px;" in html
