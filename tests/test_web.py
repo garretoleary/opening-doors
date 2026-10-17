@@ -305,3 +305,25 @@ def test_review_tab_caption_footer_and_two_decimal_costs():
     from opening_doors import review_report
     import inspect
     assert ":.4f" not in inspect.getsource(review_report)
+
+
+def test_demo_proposal_button_is_absent_without_the_staging_variable(monkeypatch):
+    from opening_doors import config
+    from web import server
+    from web.server import Handler
+    class Fake(Handler):
+        def __init__(self, path):
+            self.path = path; self.sent = []; self.headers = {}
+        def _send(self, code, body, ctype): self.sent.append((code, body, ctype))
+    monkeypatch.setattr(config, "STAGING", False)
+    h = Fake("/"); h.do_GET()
+    body = h.sent[0][1].decode()
+    assert h.sent[0][0] == 200 and "Demo proposal" not in body and "demoprop" not in body and "staging-only" not in body
+    h = Fake("/proposals/demo"); h.do_POST()
+    assert h.sent[0][0] == 404
+    monkeypatch.setattr(config, "STAGING", True)
+    h = Fake("/"); h.do_GET()
+    assert 'id="demoprop"' in h.sent[0][1].decode()
+    assert "staging-only" in (config.ROOT / "web" / "index.html").read_text()     # the markers the server cuts on
+    assert 'OPENING_DOORS_STAGING = "1"' in (config.ROOT / "fly.v2.toml").read_text()
+    assert "STAGING" not in (config.ROOT / "fly.toml").read_text()                 # never on the live app

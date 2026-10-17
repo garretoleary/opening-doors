@@ -217,3 +217,41 @@ def test_stop_pressed_mid_run_refuses_night_reviews_next_action_and_writes_nothi
     assert lines[-1].startswith("Night Review  read ") and lines[-1].endswith("STOPPED  token revoked") and stop_at < len(lines) - 1
     assert all(l.endswith("STOPPED  token revoked") for l in lines[stop_at + 1:])   # nothing after the press succeeds
     assert list(config.PROPOSALS_DIR.glob("*-nr-*.md")) == [] and not review.state_path.exists()
+
+
+LABEL = "Demo proposal, invented, for testing Approve and Roll back"
+
+
+def test_demo_proposal_is_written_through_the_gate_and_labelled_in_every_field():
+    from opening_doors import proposals as pr
+    make_run("20261017T010000000Z", [line("desk", "run started", "25 accounts"), line("Writer", "read plans", "10 plans"), line("Writer", "drafted T1 to T5", "Dunwold Civil")])
+    make_run("20261017T020000000Z", [line("desk", "run started", "25 accounts"), line("Writer", "read plans", "10 plans"), line("Writer", "drafted T1 to T5", "Quillon Health"), line("desk", "run finished")])
+    rules_before = {p.name: p.read_text() for p in config.ROOT.joinpath("rules").iterdir()}
+    review = nr.NightlyReview(ask=words_ask, today=date(2026, 10, 17))
+    path = review.demo()
+    assert path.parent == config.PROPOSALS_DIR and "-demo-2026-10-17-01-demo-proposal" in path.name
+    p = pr.parse(path)
+    assert p["id"] == "DEMO-2026-10-17-01" and p["family"] == "demo" and p["agents_list"] == ["Writer"]
+    assert p["evidence_map"] == {"20261017T020000000Z": [2, 3]}                       # the Writer's lines in the latest run
+    for field in ("proposed_change", "risk_if_applied", "risk_if_ignored", "reasoning"):
+        assert LABEL in p[field], field
+    assert f"# Proposal DEMO-2026-10-17-01. {LABEL}" in path.read_text()
+    assert "add one plain sentence to the Writer rules file" in p["proposed_change"]
+    assert [x["id"] for x in pr.pending()] == ["DEMO-2026-10-17-01"]                    # in the panel like any other
+    gate = [l.split("  ", 1)[1] for l in review.gov.log.lines()]
+    assert any(l.startswith("Night Review  wrote proposal  DEMO-2026-10-17-01") and l.endswith("ok  " + path.name) for l in gate), gate
+    assert all(not l.startswith("Night Review  write rules") for l in gate)
+    assert {p.name: p.read_text() for p in config.ROOT.joinpath("rules").iterdir()} == rules_before   # proposes, never applies
+    assert nr.NightlyReview(ask=words_ask, today=date(2026, 10, 17)).demo().name != path.name
+    assert [x["id"] for x in pr.pending()] == ["DEMO-2026-10-17-02", "DEMO-2026-10-17-01"]   # ids unique for the day
+
+
+def test_demo_proposal_is_refused_by_the_gate_when_night_review_is_stopped():
+    from opening_doors.governance import Stopped
+    make_run("20261017T010000000Z", [line("desk", "run started", "25 accounts"), line("Writer", "drafted T1 to T5", "Dunwold Civil")])
+    review = nr.NightlyReview(ask=words_ask, today=date(2026, 10, 17))
+    review.gov.log.subscribe(lambda e: review.gov.stop("agent-7") if e.what == "read audit log" else None)
+    with pytest.raises(Stopped):
+        review.demo()
+    assert not list(config.PROPOSALS_DIR.glob("*.md")) if config.PROPOSALS_DIR.exists() else True
+    assert review.gov.log.lines()[-1].split("  ", 1)[1] == "Night Review  wrote proposal  DEMO-2026-10-17-01 " + LABEL + "  STOPPED  token revoked"

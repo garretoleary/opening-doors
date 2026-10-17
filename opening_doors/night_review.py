@@ -331,6 +331,50 @@ class NightlyReview:
         ])
         return self.agent.propose(pid, text)
 
+    DEMO_LABEL = "Demo proposal, invented, for testing Approve and Roll back"
+
+    def demo(self) -> Path:
+        """Staging only. One proposal, family demo, written through Night Review's own gate like any other,
+        labelled in its title and every field. Evidence: the Writer's lines in the latest real run. No model call."""
+        self.agent.register()
+        self.agent.set_status("running")
+        runs = self.agent.list_runs()
+        if not runs:
+            raise RuntimeError("no runs yet; the demo proposal needs a real run to point at")
+        latest = max(runs)
+        audit = self.agent.read_audit(latest)
+        lines = [n for n, e in enumerate(audit, start=1) if e.get("who") == "Writer"] or [len(audit)]
+        d = config.PROPOSALS_DIR
+        prefix = f"demo-{self.today.isoformat()}-"
+        nums = [int(m.group(1)) for q in (d.glob(f"*-{prefix}*.md") if d.exists() else []) for m in [re.search(rf"-{prefix}(\d+)", q.name)] if m]
+        pid = f"DEMO-{self.today.isoformat()}-{(max(nums) + 1) if nums else 1:02d}"
+        L = self.DEMO_LABEL
+        text = "\n".join([
+            f"# Proposal {pid}. {L}",
+            "",
+            f"id: {pid}",
+            f"date: {self.today.isoformat()}",
+            "family: demo",
+            f"key: demo | {latest}",
+            "agents: Writer",
+            f"evidence: {latest}: lines {', '.join(map(str, lines))}",
+            "run count: 1",
+            f"proposed change: {L}: add one plain sentence to the Writer rules file: 'Every draft is for a person to send or discard.'",
+            f"risk if applied: {L}: none; one sentence of plain English joins the Writer rules, and Roll back removes it.",
+            f"risk if ignored: {L}: none; nothing is lost.",
+            f"expiry: {(self.today + timedelta(days=EXPIRY_DAYS)).isoformat()}",
+            "",
+            "## Reasoning in full",
+            "",
+            f"{L}. This proposal exists so that Approve and Roll back can be tried on the staging app. The evidence lines are the Writer's "
+            f"real lines in run {latest}; the change is one plain sentence; nothing here comes from a finding.",
+            "",
+            "Night Review proposes and never applies. A person decides.",
+        ])
+        path = self.agent.propose(f"{pid} {L}", text)
+        self.agent.set_status("done")
+        return path
+
     @staticmethod
     def _report_text(summary: Dict, findings: List[Dict]) -> str:
         lines = [f"# Night review {summary['review']}", "",

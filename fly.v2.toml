@@ -9,6 +9,7 @@ primary_region = "lhr"
   OPENING_DOORS_DATA_DIR = "/data"
   OPENING_DOORS_HOST = "0.0.0.0"
   PORT = "8765"
+  OPENING_DOORS_STAGING = "1"
 
 [[mounts]]
   source = "data"

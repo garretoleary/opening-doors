@@ -112,3 +112,20 @@ def test_superseded_proposals_leave_the_pending_list_with_a_reason_and_a_log_lin
     assert logs.count("superseded proposal") == 1 and "duplicate before unique-id fix" in logs
     assert proposals.supersede("20261017T120100-nr-2026-10-17-01.md", "again") == {"ok": False, "error": "not pending"}
     assert rules.load("writer").version == 1
+
+
+def test_demo_proposal_is_approved_and_rolled_back_like_any_other(own_rules, monkeypatch):
+    from datetime import date
+    from opening_doors import night_review as nr
+    from tests.test_nightly import make_run, line, words_ask
+    make_run("20261017T010000000Z", [line("desk", "run started", "25 accounts"), line("Writer", "drafted T1 to T5", "Dunwold Civil")])
+    nr.NightlyReview(ask=words_ask, today=date(2026, 10, 17)).demo()
+    assert rules.load("writer").version == 1
+    result = proposals.approve("DEMO-2026-10-17-01")
+    assert result["ok"] and result["rules_written"][0]["label"] == "writer.v2"
+    v2 = rules.load("writer")
+    assert v2.version == 2 and "approved proposal DEMO-2026-10-17-01" in v2.text and "Demo proposal, invented" in v2.text
+    assert proposals.rollback("DEMO-2026-10-17-01")["ok"] and rules.load("writer").version == 3
+    logs = "".join(p.read_text() for p in (config.REPORTS_DIR / "page-actions").glob("*.jsonl"))
+    assert '"what": "approved proposal", "on_what": "DEMO-2026-10-17-01"' in logs and "DEMO-2026-10-17-01" in logs.split("approved proposal", 1)[1]
+    assert logs.count("DEMO-2026-10-17-01") >= 2 and ("rolled back" in logs or "roll back" in logs), logs

@@ -129,8 +129,8 @@
   .prop .reason { width: 100%; min-height: 44px; margin-top: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font: 15px Inter, -apple-system, sans-serif; }
   .decided { color: var(--muted); font-size: 14px; margin-top: 10px; }
   .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-bottom: 10px; }
-  .tile { border: 1px solid var(--line); border-radius: 8px; padding: 8px 2px 6px; text-align: center; background: #fff; cursor: pointer; min-height: 44px; }
-  .tile .tv { font-size: 17px; font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
+  .tile { border: 1px solid var(--line); border-radius: 8px; padding: 8px 1px 6px; text-align: center; background: #fff; cursor: pointer; min-height: 44px; min-width: 0; overflow: hidden; }
+  .tile .tv { font-size: 17px; font-weight: 600; line-height: 1.2; white-space: nowrap; overflow: hidden; }   /* fitTiles() shrinks the number to its tile */
   .tile .tl { font-size: 12px; color: var(--muted); }
   .rline { font-size: 15px; padding: 8px 0; border-top: 1px solid var(--line); }
   .rline:first-child { border-top: 0; }
@@ -254,6 +254,15 @@
     </section>
     <section class="card" aria-label="Proposals">
       <h2>PROPOSALS <span>&middot; pending, newest first, at most five</span></h2>
+      <!-- staging-only -->
+      <style>.demoprop { display: inline-block; min-height: 44px; padding: 0 14px; border: 1px solid var(--ink); border-radius: 10px; background: #fff; color: var(--ink); font: 600 15px Inter, -apple-system, sans-serif; cursor: pointer; margin: 0 0 10px; }</style>
+      <button class="demoprop" id="demoprop" type="button">Demo proposal</button>
+      <p class="credit">Staging only. Writes one proposal labelled Demo proposal, invented, for testing Approve and Roll back, through Night Review's own gate.</p>
+      <script>document.addEventListener("DOMContentLoaded", function () {
+        var b = document.getElementById("demoprop");
+        b.addEventListener("click", function () { b.disabled = true; fetch("/proposals/demo", { method: "POST" }).then(function () { b.disabled = false; window.refreshProposals(); }); });
+      });</script>
+      <!-- /staging-only -->
       <p class="empty" id="propempty">No pending proposals. Night Review writes them after it reads the runs.</p>
       <div id="props"></div>
       <div class="decided" id="decided"></div>
@@ -568,6 +577,7 @@
       var T = d.tiles;
       $("tiles").innerHTML = [["runs", "runs", T.runs.value], ["model_calls", "model calls", T.model_calls.value], ["cost_gbp", "cost", "£" + Number(T.cost_gbp.value).toFixed(2)], ["denials", "denials", T.denials.value], ["stops", "stops", T.stops.value]]
         .map(function (x) { return '<div class="tile" data-r="tile:' + x[0] + '"><div class="tv">' + esc(x[2]) + '</div><div class="tl">' + x[1] + "</div></div>"; }).join("");
+      fitTiles();
       $("dashagents").innerHTML = d.agents.map(function (a, i) {
         return '<div class="rline">' + esc(a.words).replace(/acted (\d+) times/, 'acted ' + num(a.actions, a.name + " actions", "agent:" + i + ":actions") + ' times').replace(/(\d+) refused/, num(a.denials, a.name + " refused", "agent:" + i + ":denials") + ' refused').replace(/(\d+) stopped/, num(a.stops, a.name + " stopped", "agent:" + i + ":stops") + ' stopped')
           + ' <span class="perm">Permitted: ' + esc(a.permitted.join(", ")) + ". Stop: " + esc(a.stop_state) + ".</span></div>";
@@ -579,6 +589,15 @@
       $("dashown").innerHTML = esc(d.night_review.words).replace(/(\d+) refused/, num(d.night_review.denials, "Night Review refused", "own:denials") + " refused");
     }).catch(function (e) { console.error("review failed:", e); });
   }
+  function fitTiles() {                                     // the number scales down to its tile, never overflows, never wraps
+    document.querySelectorAll(".tile .tv").forEach(function (el) {
+      var size = 17; el.style.fontSize = size + "px";
+      while (el.scrollWidth > el.clientWidth && size > 9) { size -= 1; el.style.fontSize = size + "px"; }
+    });
+  }
+  window.addEventListener("resize", fitTiles);
+  window.refreshProposals = loadProposals;                 // the staging block calls this after its write
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTiles);
   function receiptsFor(key) {
     var d = dashData, parts = key.split(":");
     if (parts[0] === "tile") return [d.tiles[parts[1]].receipts, parts[1]];

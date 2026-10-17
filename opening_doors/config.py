@@ -34,7 +34,8 @@ PARALLEL_CALLS = int(os.environ.get("OPENING_DOORS_PARALLEL_CALLS", "5"))   # pe
 
 # Caps. Garret's API key pays. Both are estimates until measured.
 SPEND_CAP_GBP = float(os.environ.get("OPENING_DOORS_SPEND_CAP_GBP", "30"))
-RUNS_PER_DAY = int(os.environ.get("OPENING_DOORS_RUNS_PER_DAY", "10"))   # a public button; a run costs about £0.49
+RUNS_PER_DAY = int(os.environ.get("OPENING_DOORS_RUNS_PER_DAY", "10"))
+STAGING = os.environ.get("OPENING_DOORS_STAGING", "") == "1"   # staging app only: shows the Demo proposal button; never set on the live app   # a public button; a run costs about £0.49
 USD_PER_GBP = 1.30                  # estimate, used only to show spend in pounds
 
 # Price per million tokens, US dollars, from the Claude API price list 2026-10-06.

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import threading
 import time
@@ -361,6 +362,15 @@ class App:
 
 APP = App()
 
+STAGING_BLOCK = re.compile(r"<!-- staging-only -->.*?<!-- /staging-only -->", re.S)
+
+
+def page_html() -> str:
+    """The page. The staging-only block (the Demo proposal button) is cut out unless OPENING_DOORS_STAGING=1,
+    so the live app never serves it."""
+    html = (HERE / "index.html").read_text(encoding="utf-8")
+    return html if config.STAGING else STAGING_BLOCK.sub("", html)
+
 
 class Handler(BaseHTTPRequestHandler):
     def _send(self, code: int, body: bytes, ctype: str) -> None:
@@ -374,7 +384,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         self.path = self.path.split("?", 1)[0]              # a query string never changes what is served
         if self.path in ("/", "/index.html"):
-            self._send(200, (HERE / "index.html").read_bytes(), "text/html; charset=utf-8")
+            self._send(200, page_html().encode("utf-8"), "text/html; charset=utf-8")
         elif self.path == "/state":
             self._send(200, json.dumps(APP.snapshot()).encode(), "application/json")
         elif self.path == "/review":
@@ -416,6 +426,16 @@ class Handler(BaseHTTPRequestHandler):
             ok = APP.start_replay(run_id)
         elif self.path.startswith("/stop/"):
             ok = APP.stop_agent(self.path.split("/stop/", 1)[1])
+        elif self.path == "/proposals/demo":                  # staging only: one labelled demo proposal through Night Review's gate
+            if not config.STAGING:
+                self._send(404, b"not found", "text/plain"); return
+            try:
+                from opening_doors.night_review import NightlyReview
+                path = NightlyReview().demo()
+                result = {"ok": True, "file": path.name}
+            except Exception as exc:
+                result = {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
+            self._send(200 if result.get("ok") else 409, json.dumps(result).encode(), "application/json"); return
         elif self.path.startswith("/proposals/"):
             parts = self.path.split("/")                      # /proposals/<id>/approve | reject | rollback
             pid, verb = parts[2], parts[3] if len(parts) > 3 else ""
