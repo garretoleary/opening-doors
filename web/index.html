@@ -97,6 +97,43 @@
   .limit { background: #fff4f4; border-color: var(--red); color: var(--red); text-align: left; margin-top: 10px; }
   footer { color: var(--muted); font-size: 13px; margin-top: 8px; }
   .desktop-only { display: none; }
+  .tabs { display: flex; gap: 8px; margin: 0 0 16px; }
+  .tab { min-height: 44px; padding: 0 18px; border: 1.5px solid var(--line); border-radius: 22px; background: #fff; color: var(--ink); font: 600 15px Inter, -apple-system, sans-serif; cursor: pointer; }
+  .tab[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .review { max-width: 680px; }
+  .prop { border-top: 1px solid var(--line); padding: 12px 0; }
+  .prop:first-child { border-top: 0; }
+  .prop .pid { font-size: 13px; color: var(--muted); }
+  .prop .pfam { font-weight: 600; font-size: 16px; margin: 2px 0 6px; }
+  .prop p { margin: 0 0 6px; font-size: 15px; }
+  .prop .k { color: var(--muted); }
+  .prop .acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .prop .acts button { min-height: 44px; padding: 0 16px; border-radius: 22px; font: 600 15px Inter, -apple-system, sans-serif; cursor: pointer; border: 1.5px solid var(--line); background: #fff; color: var(--ink); }
+  .prop .acts .approve { background: var(--green); border-color: var(--green); color: #fff; }
+  .prop .acts .reject { border-color: var(--red); color: var(--red); }
+  .prop .acts .rollback { border-color: var(--amber); color: #8a5a00; }
+  .prop .ev { margin-top: 8px; font-size: 14px; }
+  .prop .ev li { padding: 4px 0; border-top: 1px solid #eee; }
+  .prop .ev li.red { color: var(--red); }
+  .prop .reason { width: 100%; min-height: 44px; margin-top: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font: 15px Inter, -apple-system, sans-serif; }
+  .decided { color: var(--muted); font-size: 14px; margin-top: 10px; }
+  .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-bottom: 10px; }
+  .tile { border: 1px solid var(--line); border-radius: 8px; padding: 8px 2px 6px; text-align: center; background: #fff; cursor: pointer; min-height: 44px; }
+  .tile .tv { font-size: 22px; font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; }
+  .tile .tl { font-size: 12px; color: var(--muted); }
+  .rline { font-size: 15px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .rline:first-child { border-top: 0; }
+  .rline .n { color: var(--blue); font-weight: 600; cursor: pointer; text-decoration: underline dotted; }
+  .rline .perm { color: var(--muted); font-size: 13px; }
+  .rbox { font-size: 14px; margin: 6px 0 0; }
+  .rbox li { padding: 3px 0; border-top: 1px solid #eee; list-style: none; }
+  .rbox li.red { color: var(--red); }
+  .thin { color: #8a5a00; font-size: 15px; margin: 0 0 8px; }
+  .runreview { display: block; width: 100%; min-height: 48px; border: 0; border-radius: 10px; background: var(--ink); color: #fff; font: 600 17px Inter, -apple-system, sans-serif; cursor: pointer; margin: 0 0 14px; }
+  .runreview:disabled { opacity: .55; }
+  body.review-mode .hunt { display: none; }
+  body:not(.review-mode) .reviewpane { display: none; }
+  @media (min-width: 1200px) { body.review-mode main { display: block; height: auto; overflow: auto; } body.review-mode { overflow: auto; } }
 
   /* ---- Desktop, 1200 px and up: one screen, no page scroll. Phone styles above are untouched. ---- */
   @media (min-width: 1200px) {
@@ -166,7 +203,34 @@
 </head>
 <body>
 <main>
-  <div class="head">
+  <div class="tabs" role="tablist">
+    <button class="tab" id="tab-hunt" role="tab" type="button" aria-selected="true">Hunt</button>
+    <button class="tab" id="tab-review" role="tab" type="button" aria-selected="false">Review</button>
+  </div>
+  <section class="reviewpane review" aria-label="Review">
+    <button class="runreview" id="runreview" type="button">&#9654;&nbsp; Run night review</button>
+    <section class="card" aria-label="Night review dashboard">
+      <h2>NIGHT REVIEW <span id="dashwhen">&middot; no review yet</span></h2>
+      <p class="thin" id="thin" hidden></p>
+      <div class="tiles" id="tiles"></div>
+      <div id="dashagents"></div>
+      <h2 style="margin-top:14px">FINDINGS</h2>
+      <div id="dashfindings"></div>
+      <h2 style="margin-top:14px">PROPOSALS <span id="dashprops"></span></h2>
+      <h2 style="margin-top:14px">THE FOUR QUESTIONS</h2>
+      <div id="dashalliance"></div>
+      <p class="rline" id="dashown"></p>
+      <div class="rbox" id="receipts" hidden></div>
+    </section>
+    <section class="card" aria-label="Proposals">
+      <h2>PROPOSALS <span>&middot; pending, newest first, at most five</span></h2>
+      <p class="empty" id="propempty">No pending proposals. Night Review writes them after it reads the runs.</p>
+      <div id="props"></div>
+      <div class="decided" id="decided"></div>
+    </section>
+    <footer>Night Review proposes and never applies. A person decides, one proposal at a time. All data invented.</footer>
+  </section>
+  <div class="head hunt">
     <div>
       <h1>Opening Doors</h1>
       <p class="desc">Six AI Agents hunting 25 named accounts, on the AE's behalf, under governance.</p>
@@ -181,7 +245,7 @@
     </div>
   </div>
 
-  <section class="card gov" aria-label="Governance">
+  <section class="hunt card gov" aria-label="Governance">
     <h2>GOVERNANCE <span>&middot; in order</span></h2>
     <div class="govmid">
       <div class="lights">
@@ -195,12 +259,12 @@
     <div class="stripinfo desktop-only" id="stripinfo"></div>
   </section>
 
-  <section class="card agentscard" aria-label="Agents">
+  <section class="hunt card agentscard" aria-label="Agents">
     <h2>AGENTS <span>&middot; every one acts on the AE's behalf</span></h2>
     <ul class="agents" id="agents"></ul>
   </section>
 
-  <section class="card bookcard" aria-label="The book">
+  <section class="hunt card bookcard" aria-label="The book">
     <h2>THE BOOK <span>&middot; where the 25 sit</span></h2>
     <div class="zones" id="zones"></div>
     <div class="map desktop-only" id="map" aria-hidden="true">
@@ -221,21 +285,21 @@
     </div>
   </section>
 
-  <section class="card outcard" aria-label="OUT">
+  <section class="hunt card outcard" aria-label="OUT">
     <h2>OUT <span>&middot; top targets, tap for the plan</span></h2>
     <p class="empty" id="outempty">Ten targets, ranked, each with its reason, once the Scorer has run.</p>
     <ul class="out" id="out"></ul>
     <button class="expand" id="outexpand" type="button" hidden>see all 10</button>
   </section>
 
-  <section class="card logcard" aria-label="Live log">
+  <section class="hunt card logcard" aria-label="Live log">
     <h2>LIVE LOG <span>&middot; who, what, on which account, outcome</span></h2>
     <p class="empty" id="logempty">Nothing yet. Press Run the hunt.</p>
     <ul class="log" id="log"></ul>
     <button class="expand" id="expand" type="button" hidden>see all</button>
   </section>
 
-  <footer>Every agent acts on the AE's behalf. No agent is permitted to send. Times are UK. Built by <b>Garret O'Leary</b> with <b>Claude Code</b> on the Claude API.</footer>
+  <footer class="hunt">Every agent acts on the AE's behalf. No agent is permitted to send. Times are UK. Built by <b>Garret O'Leary</b> with <b>Claude Code</b> on the Claude API.</footer>
 </main>
 <script>
 (function () {
@@ -387,6 +451,7 @@
     $("limitcard").hidden = !s.limit;
     if (s.limit) { $("limitcard").className = "card limit"; $("limitcard").textContent = s.limit; }
   }
+  setInterval(function () { if (reviewMode && dashData && dashData.review_running) { loadDashboard(); loadProposals(); } }, 3000);
   function poll() {
     fetch("/state", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (s) {
       try { render(s); } catch (e) { console.error("render failed:", e && e.stack ? e.stack : e); }   // never hide a fault, never stop polling
@@ -401,6 +466,116 @@
     var t = ev.target.closest("button.target");
     if (t) { var id = t.getAttribute("data-id"); openId = openId === id ? null : id; delete detail[id]; outKey = ""; history.replaceState(null, "", openId ? "#" + openId : location.pathname); if (state) renderOut(state); }
   });
+  // ---- Review tab: proposals. Nothing changes without a tap. ----
+  var reviewMode = location.hash === "#review", openEv = {};
+  function setTab(review) {
+    reviewMode = review; document.body.classList.toggle("review-mode", review);
+    $("tab-hunt").setAttribute("aria-selected", String(!review)); $("tab-review").setAttribute("aria-selected", String(review));
+    if (review) { loadDashboard(); loadProposals(); }
+  }
+  function receipt(list, label) {
+    var box = $("receipts");
+    if (!list || !list.length) { box.innerHTML = "<p class=\"notyet\">" + esc(label) + ": nothing to count, so no lines.</p>"; box.hidden = false; return; }
+    var byRun = {}; list.forEach(function (r) { if (r.line) (byRun[r.run] = byRun[r.run] || []).push(r.line); });
+    var runs = Object.keys(byRun);
+    Promise.all(runs.map(function (run) { return fetch("/audit/" + encodeURIComponent(run) + "/" + byRun[run].join(",")).then(function (r) { return r.json(); }); }))
+      .then(function (parts) {
+        var lines = [].concat.apply([], parts);
+        box.innerHTML = "<p><b>" + esc(label) + "</b> &middot; " + lines.length + " audit line" + (lines.length === 1 ? "" : "s") + "</p><ul>" + lines.map(function (l) {
+          var red = l.outcome === "denied" || l.outcome === "stopped";
+          return '<li class="' + (red ? "red" : "") + '">' + esc(l.run) + " line " + l.line + " &middot; " + esc(l.time) + " " + esc(l.who) + " " + esc(l.what) + " " + esc(l.on_what || "") + " " + (String(l.outcome) === "ok" ? "ok" : esc(String(l.outcome).toUpperCase())) + (l.detail ? " " + esc(l.detail) : "") + "</li>";
+        }).join("") + "</ul>";
+        box.hidden = false;
+      });
+  }
+  var dashData = null;
+  function num(n, label, key) { return '<span class="n" data-r="' + esc(key) + '" title="' + esc(label) + '">' + esc(n.value) + "</span>"; }
+  function loadDashboard() {
+    fetch("/review", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
+      dashData = d;
+      $("runreview").disabled = !!d.review_running;
+      $("runreview").innerHTML = d.review_running ? "Night review running&hellip;" : "&#9654;&nbsp; Run night review";
+      if (!d.ready) { $("dashwhen").textContent = "· " + d.message; $("tiles").innerHTML = ""; $("dashagents").innerHTML = ""; $("dashfindings").innerHTML = ""; $("dashalliance").innerHTML = ""; $("dashown").textContent = ""; $("dashprops").textContent = ""; return; }
+      $("dashwhen").textContent = "· review " + d.review + (d.reread ? " · " + d.reread_message : "");
+      $("thin").hidden = !d.thin; $("thin").textContent = d.thin_message;
+      var T = d.tiles;
+      $("tiles").innerHTML = [["runs", "runs", T.runs.value], ["model_calls", "model calls", T.model_calls.value], ["cost_gbp", "cost", "£" + Number(T.cost_gbp.value).toFixed(2)], ["denials", "denials", T.denials.value], ["stops", "stops", T.stops.value]]
+        .map(function (x) { return '<div class="tile" data-r="tile:' + x[0] + '"><div class="tv">' + esc(x[2]) + '</div><div class="tl">' + x[1] + "</div></div>"; }).join("");
+      $("dashagents").innerHTML = d.agents.map(function (a, i) {
+        return '<div class="rline">' + esc(a.words).replace(/acted (\d+) times/, 'acted ' + num(a.actions, a.name + " actions", "agent:" + i + ":actions") + ' times').replace(/(\d+) refused/, num(a.denials, a.name + " refused", "agent:" + i + ":denials") + ' refused').replace(/(\d+) stopped/, num(a.stops, a.name + " stopped", "agent:" + i + ":stops") + ' stopped')
+          + ' <span class="perm">Permitted: ' + esc(a.permitted.join(", ")) + ". Stop: " + esc(a.stop_state) + ".</span></div>";
+      }).join("");
+      $("dashfindings").innerHTML = (d.findings.length ? d.findings.map(function (f, i) { return '<div class="rline">' + esc(f.family) + ": " + esc(f.summary) + ' <span class="n" data-r="finding:' + i + '">' + f.runs + " run" + (f.runs === 1 ? "" : "s") + "</span></div>"; }).join("") : '<div class="rline">None in these runs.</div>')
+        + '<div class="rline">Governance check passed: <span class="n" data-r="checks">' + d.checks_passed.value + "</span> lines" + (d.checks_passed.note ? " (" + esc(d.checks_passed.note) + ")" : "") + ".</div>";
+      $("dashprops").textContent = "· " + Object.keys(d.proposals).map(function (k) { return k + " " + d.proposals[k]; }).join(", ");
+      $("dashalliance").innerHTML = d.alliance.map(function (q, i) { return '<div class="rline"><b>' + esc(q.question) + "</b> " + esc(q.answer) + (q.receipts.length ? ' <span class="n" data-r="alliance:' + i + '">lines</span>' : "") + "</div>"; }).join("");
+      $("dashown").innerHTML = esc(d.night_review.words).replace(/(\d+) refused/, num(d.night_review.denials, "Night Review refused", "own:denials") + " refused");
+    }).catch(function (e) { console.error("review failed:", e); });
+  }
+  function receiptsFor(key) {
+    var d = dashData, parts = key.split(":");
+    if (parts[0] === "tile") return [d.tiles[parts[1]].receipts, parts[1]];
+    if (parts[0] === "agent") return [d.agents[+parts[1]][parts[2]].receipts, d.agents[+parts[1]].name + " " + parts[2]];
+    if (parts[0] === "finding") return [d.findings[+parts[1]].receipts, d.findings[+parts[1]].summary];
+    if (parts[0] === "checks") return [d.checks_passed.receipts, "governance check passed"];
+    if (parts[0] === "alliance") return [d.alliance[+parts[1]].receipts, d.alliance[+parts[1]].question];
+    if (parts[0] === "own") return [d.night_review.denials.receipts, "Night Review refused"];
+    return [[], key];
+  }
+  document.addEventListener("click", function (ev) {
+    var el = ev.target.closest("[data-r]"); if (!el || !dashData) return;
+    var rr = receiptsFor(el.getAttribute("data-r")); receipt(rr[0], rr[1]);
+  });
+  $("runreview").addEventListener("click", function () { $("runreview").disabled = true; fetch("/review/run", { method: "POST" }).then(function () { setTimeout(function () { loadDashboard(); loadProposals(); }, 1500); }); });
+  function loadProposals() {
+    fetch("/proposals", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
+      var list = d.pending || [];
+      $("propempty").hidden = list.length > 0;
+      $("props").innerHTML = list.map(function (p) {
+        return '<div class="prop" data-id="' + esc(p.id) + '"><div class="pid">' + esc(p.id) + ' &middot; ' + esc(p.date) + ' &middot; expires ' + esc(p.expiry) + '</div>'
+          + '<div class="pfam">' + esc(p.family) + ' &middot; ' + esc(p.agents) + ' &middot; ' + esc(p.run_count) + ' run' + (p.run_count === "1" ? "" : "s") + '</div>'
+          + '<p><span class="k">Proposed change.</span> ' + esc(p.proposed_change) + '</p>'
+          + '<p><span class="k">Risk if applied.</span> ' + esc(p.risk_if_applied) + '</p>'
+          + '<p><span class="k">Risk if ignored.</span> ' + esc(p.risk_if_ignored) + '</p>'
+          + '<div class="acts"><button class="approve" type="button" data-act="approve">Approve</button><button class="reject" type="button" data-act="reject">Reject</button><button type="button" data-act="ask">Ask</button></div>'
+          + '<div class="ev" id="ev-' + esc(p.id) + '" hidden></div></div>';
+      }).join("");
+      var dec = d.decided || [];
+      $("decided").innerHTML = dec.length ? "Decided: " + dec.map(function (x) {
+        var rb = x.status === "approved" ? ' <button class="rollback" type="button" data-rb="' + esc(x.id) + '">Roll back</button>' : "";
+        return esc(x.id) + " " + esc(x.status) + (x.decision && x.decision.reason ? " (" + esc(x.decision.reason) + ")" : "") + rb;
+      }).join(" &middot; ") : "";
+    }).catch(function (e) { console.error("proposals failed:", e); });
+  }
+  function act(id, verb, body) {
+    fetch("/proposals/" + encodeURIComponent(id) + "/" + verb, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) })
+      .then(function () { loadProposals(); });
+  }
+  $("tab-hunt").addEventListener("click", function () { history.replaceState(null, "", location.pathname); setTab(false); });
+  $("tab-review").addEventListener("click", function () { history.replaceState(null, "", "#review"); setTab(true); });
+  $("props").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button"); if (!b) return;
+    var card = b.closest(".prop"), id = card.getAttribute("data-id"), verb = b.getAttribute("data-act");
+    if (verb === "approve") { act(id, "approve"); }
+    else if (verb === "ask") {
+      var box = $("ev-" + id);
+      if (!box.hidden) { box.hidden = true; return; }
+      fetch("/proposals/" + encodeURIComponent(id) + "/evidence").then(function (r) { return r.json(); }).then(function (lines) {
+        box.innerHTML = lines.length ? "<ul class=\"ev\">" + lines.map(function (l) {
+          var red = l.outcome === "denied" || l.outcome === "stopped";
+          return '<li class="' + (red ? "red" : "") + '">' + esc(l.run) + " line " + l.line + " &middot; " + esc(l.time) + " " + esc(l.who) + " " + esc(l.what) + " " + esc(l.on_what || "") + " " + esc(String(l.outcome).toUpperCase() === "OK" ? "ok" : String(l.outcome).toUpperCase()) + (l.detail ? " " + esc(l.detail) : "") + "</li>";
+        }).join("") + "</ul>" : '<p class="notyet">No audit lines on this disk for the cited runs.</p>';
+        box.hidden = false;
+      });
+    }
+    else if (verb === "reject") {
+      if (card.querySelector(".reason")) { var r = card.querySelector(".reason").value; act(id, "reject", { reason: r }); return; }
+      var ta = document.createElement("textarea"); ta.className = "reason"; ta.placeholder = "One line: why not. Then tap Reject again.";
+      card.querySelector(".acts").after(ta); ta.focus();
+    }
+  });
+  $("decided").addEventListener("click", function (ev) { var b = ev.target.closest("button[data-rb]"); if (b) act(b.getAttribute("data-rb"), "rollback"); });
+  if (reviewMode) setTab(true);
   $("agents").addEventListener("click", function (ev) {
     var b = ev.target.closest("button.stop");
     if (b && !b.disabled) { b.disabled = true; fetch("/stop/" + encodeURIComponent(b.getAttribute("data-agent")), { method: "POST" }); }

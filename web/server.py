@@ -20,6 +20,7 @@ from zoneinfo import ZoneInfo
 
 from opening_doors import config
 from opening_doors.book import load_book
+from opening_doors import proposals, review_report
 from opening_doors.claude import Spend, SpendCapReached
 
 UK = ZoneInfo("Europe/London")
@@ -49,6 +50,7 @@ class App:
         self.limit: Optional[str] = None
         self.desk = None
         self.replay_stopped: set = set()     # agents stopped by the AE during a replay
+        self.review_running = False          # the Run night review button
         self.data: Dict = {}                 # the run's results: ranked, plans, drafts, schedule, qualified
         self.zones: Dict[str, int] = {}      # account name -> zone 4..1, moved by the log as the run goes
         self.stops: Dict[str, str] = {}      # account name -> last stop reached, for the map's dots
@@ -230,6 +232,24 @@ class App:
         with self.lock:
             self.running, self.finished = False, time.time()
 
+    def start_review(self) -> bool:
+        """The Run night review button. Night Review reads the runs since its last review and writes its files."""
+        with self.lock:
+            if self.review_running:
+                return False
+            self.review_running = True
+        def go():
+            try:
+                from opening_doors.night_review import NightlyReview
+                NightlyReview().run()
+            except Exception as exc:
+                print("night review failed:", type(exc).__name__, exc)
+            finally:
+                with self.lock:
+                    self.review_running = False
+        threading.Thread(target=go, daemon=True).start()
+        return True
+
     def stop_agent(self, name: str) -> bool:
         """The Stop button on the page. A real run: the desk's Stop, token revoked, next call refused.
         A replay: the press is logged, the row goes red, and that agent's later lines play as refused."""
@@ -314,6 +334,28 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, (HERE / "index.html").read_bytes(), "text/html; charset=utf-8")
         elif self.path == "/state":
             self._send(200, json.dumps(APP.snapshot()).encode(), "application/json")
+        elif self.path == "/review":
+            d = review_report.build()
+            d["review_running"] = APP.review_running
+            self._send(200, json.dumps(d).encode(), "application/json")
+        elif self.path.startswith("/audit/"):
+            parts = self.path.split("/")                        # /audit/<run>/<n,n,n>   or /audit/review/<n>
+            run_id, nums = parts[2], [int(x) for x in parts[3].split(",") if x.isdigit()] if len(parts) > 3 else []
+            if run_id == "review":
+                folder = review_report.latest_review_dir()
+                entries = review_report._review_audit(folder) if folder else []
+            else:
+                entries = review_report._audit(run_id)
+            out = [{"run": run_id, "line": n, "time": e.get("time", "")[11:19], "who": e.get("who"), "what": e.get("what"), "on_what": e.get("on_what"),
+                    "outcome": e.get("outcome"), "detail": e.get("detail")} for n in nums for e in [entries[n - 1]] if 1 <= n <= len(entries)]
+            self._send(200, json.dumps(out).encode(), "application/json")
+        elif self.path == "/proposals":
+            body = {"pending": [{k: v for k, v in p.items() if k not in ("path",)} for p in proposals.pending()],
+                    "decided": [{"id": p["id"], "status": p["status"], "decision": p["decision"]} for p in proposals.all_proposals() if p["status"] != "pending"][:10]}
+            self._send(200, json.dumps(body).encode(), "application/json")
+        elif self.path.startswith("/proposals/") and self.path.endswith("/evidence"):
+            pid = self.path.split("/")[2]
+            self._send(200, json.dumps(proposals.evidence_lines(pid)).encode(), "application/json")
         elif self.path.startswith("/target/"):
             t = APP.target(self.path.split("/target/", 1)[1])
             self._send(200 if t else 404, json.dumps(t or {"error": "not ready"}).encode(), "application/json")
@@ -324,11 +366,31 @@ class Handler(BaseHTTPRequestHandler):
         self.path = self.path.split("?", 1)[0]
         if self.path == "/run":
             ok = APP.start_run()
+        elif self.path == "/review/run":
+            ok = APP.start_review()
         elif self.path.startswith("/replay"):
             run_id = self.path.split("/replay/", 1)[1] if "/replay/" in self.path else None
             ok = APP.start_replay(run_id)
         elif self.path.startswith("/stop/"):
             ok = APP.stop_agent(self.path.split("/stop/", 1)[1])
+        elif self.path.startswith("/proposals/"):
+            parts = self.path.split("/")                      # /proposals/<id>/approve | reject | rollback
+            pid, verb = parts[2], parts[3] if len(parts) > 3 else ""
+            length = int(self.headers.get("Content-Length") or 0)
+            raw = self.rfile.read(length).decode("utf-8") if length else ""
+            try:
+                payload = json.loads(raw) if raw else {}
+            except ValueError:
+                payload = {}
+            if verb == "approve":
+                result = proposals.approve(pid)
+            elif verb == "reject":
+                result = proposals.reject(pid, payload.get("reason", ""))
+            elif verb == "rollback":
+                result = proposals.rollback(pid)
+            else:
+                self._send(404, b"not found", "text/plain"); return
+            self._send(200 if result.get("ok") else 409, json.dumps(result).encode(), "application/json"); return
         else:
             self._send(404, b"not found", "text/plain"); return
         self._send(200 if ok else 409, json.dumps({"ok": ok}).encode(), "application/json")
