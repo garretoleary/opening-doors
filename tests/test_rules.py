@@ -82,7 +82,8 @@ def test_no_agent_may_write_edit_or_delete_rules():
             e = gov.log.entries[-1]
             assert e.who == a.name and e.outcome == "denied" and e.is_red
     from opening_doors.governance.permissions import PERMISSIONS
-    assert not any("rules" in p for perms in PERMISSIONS.values() for p in perms)
+    assert not any(p in ("write_rules", "edit_rules", "delete_rules") for perms in PERMISSIONS.values() for p in perms)
+    assert not any(p.startswith(("write_", "edit_", "delete_")) and "rules" in p for perms in PERMISSIONS.values() for p in perms)
 
 
 def test_the_registry_is_the_only_source_of_permissions_rules_files_are_display_copies(tmp_path, monkeypatch):

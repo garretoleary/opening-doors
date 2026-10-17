@@ -15,7 +15,7 @@ from . import config
 
 AGENT_KEYS = ["researcher", "scorer", "planner", "writer", "cadence", "qualifier"]
 RULES_DIR = config.ROOT / "rules"
-_NAME = re.compile(r"^(?P<key>[a-z]+)\.v(?P<n>\d+)\.md$")
+_NAME = re.compile(r"^(?P<key>[a-z_]+)\.v(?P<n>\d+)\.md$")
 
 
 class RulesMissing(Exception):

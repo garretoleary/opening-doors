@@ -12,6 +12,8 @@ DATA_DIR = Path(os.environ.get("OPENING_DOORS_DATA_DIR", str(ROOT)))   # on the 
 RUNS_DIR = DATA_DIR / "runs"        # per-run audit logs and outputs, git-ignored, never edited after a run
 STATE_DIR = DATA_DIR / "state"      # the spend ledger, git-ignored, updated on every call
 SEED_RUN_DIR = ROOT / "web" / "seed_run"   # one saved run shipped with the page, replayed when no run exists yet
+PROPOSALS_DIR = DATA_DIR / "proposals"     # Night Review writes here, and to reports, nowhere else
+REPORTS_DIR = DATA_DIR / "reports"
 
 # The Claude model the agents use, and per-agent overrides. One line to change an agent's model.
 MODEL = os.environ.get("OPENING_DOORS_MODEL", "claude-opus-5-5")

@@ -27,6 +27,8 @@ PERMISSIONS: Dict[str, FrozenSet[str]] = {
     "agent-5": frozenset({"read_drafts", "write_schedule", "write_log"}),      # Cadence: not send
     "agent-6": frozenset({"read_call_notes", "write_qualification",           # Qualifier
                           "write_value_frame", "write_mutual_plan"}),
+    "agent-7": frozenset({"read_runs", "read_audit", "read_rules",             # Night Review: reads runs, the log, the rules
+                          "write_proposals", "write_reports"}),                # writes only proposals and reports; never applies
 }
 
 
