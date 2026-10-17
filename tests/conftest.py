@@ -11,6 +11,8 @@ def _tests_never_touch_real_runs_or_ledger(tmp_path, monkeypatch):
     from opening_doors import config
     monkeypatch.setattr(config, "RUNS_DIR", tmp_path / "runs")
     monkeypatch.setattr(config, "STATE_DIR", tmp_path / "state")
+    monkeypatch.setattr(config, "PROPOSALS_DIR", tmp_path / "proposals")
+    monkeypatch.setattr(config, "REPORTS_DIR", tmp_path / "reports")
     yield
     for f in tmp_path.rglob("*"):
         if f.is_file():
