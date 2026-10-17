@@ -29,7 +29,7 @@ HEDGE_WORDS = ["might", "may ", "could", "possibly", "perhaps", "seems", "appear
 
 # Injection: text inside a run that tries to give an agent orders. Found, reported, never obeyed.
 INJECTION_PATTERNS = [r"ignore (your|all|previous|prior) (rules|instructions)", r"\bsend the email\b", r"disregard (your|the) (rules|instructions)",
-                      r"you are now", r"new instructions?:", r"override (your|the) (rules|permissions)"]
+                      r"you are now (a|an|the|acting|free|allowed|permitted|no longer)\b", r"new instructions?:", r"override (your|the) (rules|permissions)"]
 
 REASONING_SCHEMA = {
     "type": "object",
@@ -93,26 +93,65 @@ def find_hedged_reasons(outputs: Dict[str, Dict], audits: Dict[str, List[Dict]])
     return list(by_key.values())
 
 
+def _names_by_id(output: Dict) -> Dict[str, str]:
+    """Account id to name, from whatever the run output holds (ranked, plans, schedule, qualified)."""
+    names: Dict[str, str] = {}
+    for key in ("plans", "schedule", "qualified", "drafts"):
+        block = output.get(key)
+        if isinstance(block, dict):
+            for pid, v in block.items():
+                if isinstance(v, dict) and v.get("name"):
+                    names[pid] = v["name"]
+    for s in output.get("ranked", []) if isinstance(output.get("ranked"), list) else []:
+        if isinstance(s, dict) and s.get("id") and s.get("name"):
+            names[s["id"]] = s["name"]
+    return names
+
+
+def _walk(node, ctx: Dict, key: str = ""):
+    """Yield (text, nearest enclosing record) for every string in a run output."""
+    if isinstance(node, dict):
+        here = node if ("name" in node or "id" in node) else ctx
+        if key.startswith("acc-") and "id" not in here:
+            here = dict(here, id=key)
+        for k, v in node.items():
+            yield from _walk(v, here, str(k))
+    elif isinstance(node, list):
+        for v in node:
+            yield from _walk(v, ctx, key)
+    elif isinstance(node, str):
+        yield node, (dict(ctx, id=key) if key.startswith("acc-") else ctx)
+
+
 def find_injections(outputs: Dict[str, Dict], audits: Dict[str, List[Dict]]) -> List[Dict]:
-    """Text inside a run that tries to give an agent orders. Reported as a finding; nothing is obeyed or changed."""
+    """Text inside a run that tries to give an agent orders. Reported as a finding; nothing is obeyed or changed.
+    Every finding cites audit lines: the line that carried the text, or the lines about the account whose
+    text it is, or failing both the run's last line, so a receipt always exists."""
     out = []
     pats = [re.compile(p, re.I) for p in INJECTION_PATTERNS]
     for run_id in outputs:
         hits: List[str] = []
         lines: List[int] = []
-        for n, e in enumerate(audits.get(run_id, []), start=1):
+        audit = audits.get(run_id, [])
+        for n, e in enumerate(audit, start=1):
             text = " ".join(str(e.get(k, "")) for k in ("what", "on_what", "detail"))
             if any(p.search(text) for p in pats):
                 hits.append(text[:120]); lines.append(n)
-        blob = json.dumps(outputs[run_id], ensure_ascii=False)
-        for p in pats:
-            m = p.search(blob)
-            if m:
-                hits.append(blob[max(0, m.start() - 60): m.end() + 60].replace("\n", " "))
+        names = _names_by_id(outputs[run_id]) if isinstance(outputs[run_id], dict) else {}
+        for text, ctx in _walk(outputs[run_id], {}):
+            m = next((p.search(text) for p in pats if p.search(text)), None)
+            if not m:
+                continue
+            hits.append(text[max(0, m.start() - 60): m.end() + 60].replace("\n", " "))
+            name = ctx.get("name") or names.get(str(ctx.get("id", "")), "")
+            if name:
+                lines.extend(n for n, e in enumerate(audit, start=1) if e.get("on_what") == name)
         if hits:
+            if not lines and audit:
+                lines = [len(audit)]                                       # the run's last line: a receipt always exists
             out.append({"family": "injection", "key": f"injection | {run_id}", "agents": ["all"],
                         "summary": f"text in run {run_id} tries to give an agent orders; it was not obeyed",
-                        "evidence": {run_id: lines}, "sample": hits[0]})
+                        "evidence": {run_id: sorted(set(lines))}, "sample": hits[0]})
     return out
 
 
