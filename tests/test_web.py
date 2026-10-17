@@ -292,3 +292,16 @@ def test_chain_counts_match_the_state_and_each_links_to_audit_lines():
 
 def test_live_cost_is_zero_before_a_run():
     assert App().snapshot()["cost_live_gbp"] == 0.0 and App().snapshot()["chain"] == []
+
+
+def test_review_tab_caption_footer_and_two_decimal_costs():
+    """Three phone fixes, 17 October: cost to two decimals everywhere, the Hunt footer line on the Review tab, a caption under the button."""
+    from opening_doors import config
+    html = (config.ROOT / "web" / "index.html").read_text()
+    assert "Night Review reads every run, finds repeated mistakes and proposes rule changes. A person approves each one. Nothing applies on its own." in html
+    review_footer = html[html.index('<section class="reviewpane'):html.index('<div class="head hunt">')]
+    assert "Every agent acts on the AE's behalf. No agent is permitted to send. Times are UK. Built by <b>Garret O'Leary</b> with <b>Claude Code</b> on the Claude API." in review_footer
+    assert 'Number(T.cost_gbp.value).toFixed(2)' in html and ".4f" not in html
+    from opening_doors import review_report
+    import inspect
+    assert ":.4f" not in inspect.getsource(review_report)

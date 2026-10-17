@@ -106,7 +106,7 @@ def build(review_dir: Optional[Path] = None) -> Dict:
     nr_den = [{"run": "review", "line": n} for n, e in enumerate(review_audit, 1) if e.get("outcome") == "denied"]
     own = {"seconds": summary.get("seconds"), "cost_gbp": summary.get("gbp"), "model_calls": summary.get("model_calls"),
            "denials": _num(len(nr_den), nr_den), "review": summary.get("review"),
-           "words": f"Night Review's own run: {summary.get('seconds')} s, £{float(summary.get('gbp') or 0):.4f} over {summary.get('model_calls')} model calls, {len(nr_den)} refused."}
+           "words": f"Night Review's own run: {summary.get('seconds')} s, £{float(summary.get('gbp') or 0):.2f} over {summary.get('model_calls')} model calls, {len(nr_den)} refused."}
 
     alliance = [
         {"question": "Where are my agents?", "answer": f"{len(AGENTS)} registered: " + ", ".join(n for _, n in AGENTS), "receipts": [{"run": r, "line": n} for r in runs[:1] for n, e in enumerate(audits[r], 1) if e.get("what") == "registered"]},
