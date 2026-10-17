@@ -105,3 +105,29 @@ def test_the_registry_is_the_only_source_of_permissions_rules_files_are_display_
         assert gov.log.entries[-1].outcome == "denied"
     w.act("write_drafts", "Harrowgate Lumen", lambda: 1)           # and still yes to what the registry allows
     assert gov.log.entries[-1].outcome == "ok"
+
+
+def test_rules_live_on_the_data_volume_and_survive_a_simulated_redeploy(tmp_path, monkeypatch):
+    """The image copy is the seed, read once onto an empty volume. Approve and Roll back write only the volume copy.
+    A redeploy (new image, same volume) keeps writer.v2 and v3."""
+    from opening_doors import proposals
+    from tests.test_proposals import write_proposal
+    volume = tmp_path / "data" / "rules"                                   # empty, as on a first start
+    monkeypatch.setattr(rules, "RULES_DIR", volume)
+    assert rules.RULES_DIR != rules.SEED_RULES_DIR
+    copied = rules.seed_if_absent()
+    assert sorted(p.name for p in copied) == sorted(p.name for p in rules.SEED_RULES_DIR.iterdir() if p.name.endswith(".md"))
+    assert rules.load("writer").version == 1 and rules.load("writer").path.parent == volume
+    write_proposal("20261017T120000", "NR-2026-10-17-01")
+    assert proposals.approve("NR-2026-10-17-01")["rules_written"][0]["label"] == "writer.v2"
+    assert proposals.rollback("NR-2026-10-17-01")["ok"]
+    assert sorted(p.name for p in volume.glob("writer.*")) == ["writer.v1.md", "writer.v2.md", "writer.v3.md"]
+    assert not (rules.SEED_RULES_DIR / "writer.v2.md").exists()           # the image copy is untouched
+    # a redeploy: the code (and its seed) arrive fresh, the volume stays; nothing is overwritten
+    assert rules.seed_if_absent() == []
+    assert rules.load("writer").version == 3 and sorted(p.name for p in volume.glob("writer.*")) == ["writer.v1.md", "writer.v2.md", "writer.v3.md"]
+    assert rules.load_all()["writer"].label == "writer.v3"
+    # tamper check: a seed file with the same name is never copied over a volume file
+    (volume / "scorer.v1.md").write_text((volume / "scorer.v1.md").read_text() + "\n- kept\n")
+    rules.seed_if_absent()
+    assert (volume / "scorer.v1.md").read_text().endswith("- kept\n")

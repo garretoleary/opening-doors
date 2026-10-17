@@ -133,7 +133,7 @@ def _write_version(key: str, text: str, changelog_line: str) -> str:
     n = _next_version(key)
     text = re.sub(r"^(# .*?, rules )v\d+", rf"\g<1>v{n}", text, count=1, flags=re.M)
     text = text.rstrip("\n") + "\n" + changelog_line + "\n"
-    path = rules_mod.RULES_DIR / f"{key}.v{n}.md"
+    path = rules_mod.rules_dir() / f"{key}.v{n}.md"
     path.write_text(text, encoding="utf-8")
     return f"{key}.v{n}"
 
@@ -167,7 +167,7 @@ def rollback(pid: str, who: str = "AE via the page") -> Dict:
     restored = []
     for w in s.get("rules_written", []):
         key = w["label"].rsplit(".v", 1)[0]
-        prev = rules_mod.RULES_DIR / f"{w['previous']}.md"
+        prev = rules_mod.rules_dir() / f"{w['previous']}.md"
         if not prev.exists():
             continue
         label = _write_version(key, prev.read_text(encoding="utf-8"), f"- v{_next_version(key)}, {when[:10]}: rolled back {w['label']} to {w['previous']} by {who} at {when}; proposal {pid}.")

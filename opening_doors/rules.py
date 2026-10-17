@@ -14,7 +14,8 @@ from typing import Dict, List, Optional
 from . import config
 
 AGENT_KEYS = ["researcher", "scorer", "planner", "writer", "cadence", "qualifier"]
-RULES_DIR = config.ROOT / "rules"
+SEED_RULES_DIR = config.ROOT / "rules"      # shipped with the code (in the image on Fly): the seed, read once
+RULES_DIR = config.DATA_DIR / "rules"       # the live copy on the data volume: the loader, Approve, Reject and Roll back use only this
 _NAME = re.compile(r"^(?P<key>[a-z_]+)\.v(?P<n>\d+)\.md$")
 
 
@@ -35,9 +36,34 @@ class Rules:
         return f"{self.key}.v{self.version}"
 
 
+def seed_if_absent(rules_dir: Optional[Path] = None) -> List[Path]:
+    """First start on a fresh volume: copy the shipped rules files in. A file already there is never touched,
+    so approved and rolled-back versions survive a redeploy. Returns the files copied."""
+    rules_dir = rules_dir or RULES_DIR
+    if rules_dir.resolve() == SEED_RULES_DIR.resolve() or not SEED_RULES_DIR.exists():
+        return []
+    rules_dir.mkdir(parents=True, exist_ok=True)
+    if any(_NAME.match(p.name) for p in rules_dir.iterdir()):
+        return []                                       # the volume already holds rules; the seed is not consulted
+    copied = []
+    for src in sorted(SEED_RULES_DIR.iterdir()):
+        if _NAME.match(src.name):
+            dest = rules_dir / src.name
+            dest.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+            copied.append(dest)
+    return copied
+
+
+def rules_dir() -> Path:
+    """The live rules folder, seeded on first use."""
+    seed_if_absent(RULES_DIR)
+    return RULES_DIR
+
+
 def current_path(key: str, rules_dir: Optional[Path] = None) -> Optional[Path]:
     """The highest-numbered rules file for an agent, or None."""
     rules_dir = rules_dir or RULES_DIR                 # resolved now, so a test can point elsewhere
+    seed_if_absent(rules_dir)
     best, best_n = None, -1
     if rules_dir.exists():
         for p in rules_dir.iterdir():
