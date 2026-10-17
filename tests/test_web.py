@@ -261,3 +261,34 @@ def test_a_query_string_does_not_hide_the_page():
     assert h.sent[0][0] == 200 and "text/html" in h.sent[0][1]
     h = Fake("/state?x=1"); h.do_GET()
     assert h.sent[0][0] == 200 and "json" in h.sent[0][1]
+
+
+def test_chain_counts_match_the_state_and_each_links_to_audit_lines():
+    from opening_doors.desk import Desk
+    from tests.test_agents import fake_ask
+    desk = Desk(ask=fake_ask)
+    out = desk.run()
+    entries = [json.loads(l) for l in (desk.run_dir / "audit.jsonl").read_text().splitlines()]
+    app = App()
+    app._reset("replay")
+    for e in entries:
+        app._entry(e["time"], e["who"], e["what"], e["on_what"], e["outcome"], e["detail"])
+    snap = app.snapshot()
+    chain = {c["key"]: c for c in snap["chain"]}
+    zones = {z: sum(1 for v in out["state"].values() if v["zone"] == z) for z in (4, 3, 2, 1)}
+    assert chain["researched"]["count"] == 25 and chain["planned"]["count"] == len(out["plans"]) == 10
+    assert [chain[k]["count"] for k in ("zone4", "zone3", "zone2", "zone1")] == [zones[4], zones[3], zones[2], zones[1]]
+    assert [c["label"] for c in snap["chain"]] == ["researched", "planned", "Find", "Open", "Qualify", "Agree"]
+    assert [chain[k]["count"] for k in ("zone4", "zone3", "zone2", "zone1")] == [z["count"] for z in snap["zones"]]   # one source
+    log = snap["log"]
+    assert log[chain["researched"]["lines"][0] - 1]["what"] == "read signals"
+    assert len(chain["planned"]["lines"]) == 10 and all(log[n - 1]["what"] == "account plan" for n in chain["planned"]["lines"])
+    assert len(chain["zone2"]["lines"]) == zones[2] and all(log[n - 1]["what"] == "mutual plan drafted" for n in chain["zone2"]["lines"])
+    assert len(chain["zone1"]["lines"]) == zones[1] and all(log[n - 1]["what"].startswith("buying committee") for n in chain["zone1"]["lines"])
+    assert len(chain["zone3"]["lines"]) == zones[3]                                                      # one receipt per account sitting there
+    assert chain["zone4"]["lines"] and log[chain["zone4"]["lines"][0] - 1]["what"] == "read signals"
+    assert snap["cost_live_gbp"] == 0.0                                                                    # the stand-in spends nothing
+
+
+def test_live_cost_is_zero_before_a_run():
+    assert App().snapshot()["cost_live_gbp"] == 0.0 and App().snapshot()["chain"] == []

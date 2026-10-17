@@ -18,7 +18,10 @@
   h1 { font-size: 34px; line-height: 1.1; margin: 0 0 12px; letter-spacing: -0.01em; }
   .desc { margin: 0 0 6px; color: var(--muted); }
   .notice { margin: 0 0 4px; color: var(--muted); font-size: 15px; }
-  .credit { margin: 0 0 20px; color: var(--muted); font-size: 12px; font-family: inherit; }
+  .credit { margin: 0 0 10px; color: var(--muted); font-size: 12px; font-family: inherit; }
+  .headline { margin: 4px 0 2px; font-size: 30px; line-height: 1.1; font-weight: 400; letter-spacing: -0.02em; }
+  .headline .cost { color: var(--muted); font-size: 13px; white-space: nowrap; font-weight: 400; letter-spacing: 0; }
+  .outbound { margin: 0 0 18px; color: var(--muted); font-size: 12px; }
   button.run { display: block; width: 100%; min-height: 56px; border: 0; border-radius: 10px; background: var(--blue); color: #fff;
     font: 600 21px/1 Inter, -apple-system, sans-serif; cursor: pointer; }
   button.run:disabled { opacity: .55; cursor: default; }
@@ -62,6 +65,13 @@
   .zone .zn { font-size: 14px; font-weight: 600; white-space: nowrap; }
   .zone .zc { font-size: 26px; font-weight: 600; line-height: 1.2; margin: 2px 0; font-variant-numeric: tabular-nums; }
   .zone .zl { font-size: 13px; color: var(--muted); line-height: 1.15; }
+  .chain { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; margin-top: 12px; font-size: 15px; }
+  .chain .link { white-space: nowrap; }
+  .chain .link button { border: 0; background: none; padding: 0; min-height: 32px; font: 600 16px Inter, -apple-system, sans-serif; color: var(--blue); text-decoration: underline dotted; cursor: pointer; }
+  .chain .arrow { color: var(--muted); }
+  .chainlines { margin-top: 8px; font-size: 14px; }
+  .chainlines li { list-style: none; padding: 3px 0; border-top: 1px solid #eee; }
+  .chainlines li.red { color: var(--red); }
   .out { list-style: none; margin: 0; padding: 0; }
   .out li { border-top: 1px solid var(--line); }
   .out li:first-child { border-top: 0; }
@@ -98,6 +108,7 @@
   footer { color: var(--muted); font-size: 13px; margin-top: 8px; }
   .desktop-only { display: none; }
   .tabs { display: flex; gap: 8px; margin: 0 0 16px; }
+  .desktop-tabs { display: none; }
   .tab { min-height: 44px; padding: 0 18px; border: 1.5px solid var(--line); border-radius: 22px; background: #fff; color: var(--ink); font: 600 15px Inter, -apple-system, sans-serif; cursor: pointer; }
   .tab[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
   .review { max-width: 680px; }
@@ -132,14 +143,15 @@
   .runreview { display: block; width: 100%; min-height: 48px; border: 0; border-radius: 10px; background: var(--ink); color: #fff; font: 600 17px Inter, -apple-system, sans-serif; cursor: pointer; margin: 0 0 14px; }
   .runreview:disabled { opacity: .55; }
   body.review-mode .hunt { display: none; }
+  body.review-mode .phone-tabs { display: flex; }
   body:not(.review-mode) .reviewpane { display: none; }
-  @media (min-width: 1200px) { body.review-mode main { display: block; height: auto; overflow: auto; } body.review-mode { overflow: auto; } }
+  @media (min-width: 1200px) { body.review-mode main { display: block; height: auto; overflow: auto; } body.review-mode { overflow: auto; } body.review-mode .reviewpane { margin: 0 auto; } body.review-mode .phone-tabs { display: flex; max-width: 680px; margin: 0 auto 16px; } }
 
   /* ---- Desktop, 1200 px and up: one screen, no page scroll. Phone styles above are untouched. ---- */
   @media (min-width: 1200px) {
     html, body { height: 100%; }
     body { overflow: hidden; }
-    main { max-width: none; height: 100vh; padding: 14px 28px; display: grid; gap: 12px;
+    main { max-width: none; height: 100vh; padding: 10px 28px 8px; display: grid; gap: 10px;
       grid-template-columns: 1fr 1.2fr; grid-template-rows: auto auto auto minmax(0, 1fr) auto;
       grid-template-areas: "head head" "gov gov" "agents book" "log out" "foot foot"; }
     footer { grid-area: foot; display: block; margin: 0; font-size: 12px; line-height: 1.2; }
@@ -147,17 +159,15 @@
     .head { grid-area: head; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
     .head h1 { font-size: 28px; margin: 0 0 2px; }
     button.run { min-height: 48px; font-size: 19px; }
-    .head .desc, .head .notice { margin: 0; display: inline; }
-    .head .notice { margin-left: 12px; }
-    .head .credit { margin: 2px 0 0; display: block; }
+    .head .desc { margin: 0; }
     .runbox { text-align: right; flex: 0 0 300px; }
     button.run { width: 300px; }
     .runbox .runline { display: none; }          /* on desktop the timer and spend live in the governance strip */
     .address { font-size: 14px; color: var(--muted); margin-top: 6px; }
     .runbox .limit { display: none; }                    /* on desktop the limit message takes the strip's timer slot */
     .card.gov .stripinfo.limit { background: none; border: 0; color: var(--red); padding: 0; margin: 0; text-align: right; }
-    .card.gov { grid-area: gov; display: grid; grid-template-columns: 180px 1fr 220px; align-items: center; margin: 0; padding: 8px 20px; }
-    .card.gov .light .dot { width: 42px; height: 42px; font-size: 17px; margin-bottom: 4px; }
+    .card.gov { grid-area: gov; display: grid; grid-template-columns: 180px 1fr 220px; align-items: center; margin: 0; padding: 6px 20px; }
+    .card.gov .light .dot { width: 38px; height: 38px; font-size: 16px; margin-bottom: 3px; }
     .card.gov .light .label { font-size: 14px; white-space: nowrap; }
     .card.gov .lights { gap: 24px; max-width: 560px; margin: 0 auto; }
     .card.gov .govline { text-align: center; margin: 6px auto 0; max-width: 720px; }
@@ -166,7 +176,7 @@
     .card.gov .stripinfo { text-align: right; font-size: 15px; color: var(--muted); }
     .card.agentscard { grid-area: agents; margin: 0; overflow: auto; padding: 12px 16px; }
     .card.agentscard h2 { margin-bottom: 8px; }
-    .card.agentscard .agents li { min-height: 40px; }
+    .card.agentscard .agents li { min-height: 38px; }
     .card.agentscard .stop { min-height: 32px; }
     .card.bookcard { grid-area: book; margin: 0; display: flex; flex-direction: column; min-height: 0; padding: 12px 16px; }
     .card.bookcard h2 { margin-bottom: 8px; }
@@ -191,7 +201,25 @@
     .map .bh { grid-row: 1; text-align: center; padding-bottom: 6px; }
     .map .bh b { display: block; font-size: 15px; }
     .map .bh span { font-size: 14px; color: var(--muted); }
-    .map .bc { grid-row: 3; text-align: center; font-size: 14px; color: var(--muted); padding-top: 6px; }
+    .map .bc { display: none; }                        /* on desktop the chain carries the counts */
+    .card.bookcard .phone-chain { display: none; }
+    .card.bookcard #chain-desktop { margin-top: 6px; font-size: 14px; }
+    .card.bookcard #chain-desktop .link button { font-size: 15px; min-height: 24px; }
+    .card.bookcard .chainlines { max-height: 0; overflow: auto; }
+    .card.bookcard .chainlines:not([hidden]) { max-height: 90px; }
+    .phone-tabs { display: none; }
+    .desktop-tabs { display: inline-flex; gap: 6px; margin-left: 14px; vertical-align: middle; }
+    .desktop-tabs .tab { min-height: 28px; padding: 0 12px; font-size: 13px; }
+    .address { display: flex; justify-content: flex-end; align-items: center; }
+    .head .desc { display: block; }
+    .head .notice, .head .credit { display: inline; margin: 0; }
+    .head .credit { margin-left: 12px; }
+    .head .headline { margin: 2px 0 0; font-size: 28px; line-height: 1.1; display: block; }
+    .head .headline .cost { font-size: 14px; }
+    .head .outbound { margin: 0; display: block; font-size: 12px; }
+    .head h1 { font-size: 26px; margin: 0; }
+    button.run { min-height: 44px; font-size: 18px; }
+    .runbox { flex: 0 0 300px; }
     .map .pound { grid-column: 5; grid-row: 2; align-self: center; width: 56px; height: 56px; border-radius: 50%; border: 4px solid #111; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; }
     .map .pound-label { grid-column: 5; grid-row: 1; font-size: 12px; color: var(--muted); text-align: center; align-self: end; padding-bottom: 6px; }
     .map .dotsline { position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid #9a9a9a; }
@@ -203,7 +231,7 @@
 </head>
 <body>
 <main>
-  <div class="tabs" role="tablist">
+  <div class="tabs phone-tabs" role="tablist">
     <button class="tab" id="tab-hunt" role="tab" type="button" aria-selected="true">Hunt</button>
     <button class="tab" id="tab-review" role="tab" type="button" aria-selected="false">Review</button>
   </div>
@@ -233,14 +261,18 @@
   <div class="head hunt">
     <div>
       <h1>Opening Doors</h1>
-      <p class="desc">Six AI Agents hunting 25 named accounts, on the AE's behalf, under governance.</p>
+      <p class="desc">Six AI agents hunting 25 named accounts, and a seventh reviewing them nightly, under governance.</p>
       <p class="notice">All data invented.</p>
       <p class="credit">Built by <b>Garret O'Leary</b> with <b>Claude Code</b> on the Claude API.</p>
+      <p class="headline">No agent may send. <span class="cost" id="lastcost"></span></p>
+      <p class="outbound">Outbound only by design; inbound is the seller's own voice.</p>
     </div>
     <div class="runbox">
       <button class="run" id="run" type="button">&#9654;&nbsp; Run the hunt</button>
       <div class="runline" id="runline"></div>
-      <div class="address desktop-only">openingdoors.builtbygarret.com</div>
+      <div class="address desktop-only">openingdoors.builtbygarret.com
+        <span class="tabs desktop-tabs" role="tablist"><button class="tab" id="tab-hunt-d" type="button" aria-selected="true">Hunt</button><button class="tab" id="tab-review-d" type="button" aria-selected="false">Review</button></span>
+      </div>
       <section class="card" id="limitcard" hidden></section>
     </div>
   </div>
@@ -267,11 +299,13 @@
   <section class="hunt card bookcard" aria-label="The book">
     <h2>THE BOOK <span>&middot; where the 25 sit</span></h2>
     <div class="zones" id="zones"></div>
+    <div class="chain phone-chain" id="chain-phone" aria-label="Funnel chain"></div>
+    <div class="chainlines" id="chainlines-phone" hidden></div>
     <div class="map desktop-only" id="map" aria-hidden="true">
-      <div class="bh" style="grid-column:1"><b>ZONE 4</b><span>Open the door</span></div>
-      <div class="bh" style="grid-column:2"><b>ZONE 3</b><span>Earn the call</span></div>
-      <div class="bh" style="grid-column:3"><b>ZONE 2</b><span>Frame the value</span></div>
-      <div class="bh" style="grid-column:4"><b>ZONE 1</b><span>Commit</span></div>
+      <div class="bh" style="grid-column:1"><b>FIND</b><span>Zone 4 · Open the door</span></div>
+      <div class="bh" style="grid-column:2"><b>OPEN</b><span>Zone 3 · Earn the call</span></div>
+      <div class="bh" style="grid-column:3"><b>QUALIFY</b><span>Zone 2 · Frame the value</span></div>
+      <div class="bh" style="grid-column:4"><b>AGREE</b><span>Zone 1 · Commit</span></div>
       <div class="pound-label">Plan signed</div>
       <div class="band z4" style="grid-column:1"><div class="dotsline"></div></div>
       <div class="band z3" style="grid-column:2"><div class="dotsline"></div></div>
@@ -283,6 +317,8 @@
       <div class="bc" id="bc2" style="grid-column:3"></div>
       <div class="bc" id="bc1" style="grid-column:4"></div>
     </div>
+    <div class="chain desktop-only" id="chain-desktop" aria-label="Funnel chain"></div>
+    <div class="chainlines desktop-only" id="chainlines-desktop" hidden></div>
   </section>
 
   <section class="hunt card outcard" aria-label="OUT">
@@ -373,6 +409,30 @@
     });
   }
   var DESKTOP = window.matchMedia("(min-width: 1200px)");
+  var chainState = null, chainOpen = {};
+  function renderChain(s) {
+    chainState = s;
+    var links = s.chain || [];
+    ["phone", "desktop"].forEach(function (where) {
+      var el = $("chain-" + where); if (!el) return;
+      if (!links.length) { el.innerHTML = ""; return; }
+      el.innerHTML = links.map(function (l, i) {
+        var label = l.key === "researched" || l.key === "planned" ? l.label : l.label.toLowerCase();
+        return (i ? '<span class="arrow">&rarr;</span> ' : "") + '<span class="link"><button type="button" data-chain="' + i + '" data-where="' + where + '" title="' + esc(l.journey || "") + '">' + l.count + "</button> " + esc(label) + "</span>";
+      }).join(" ");
+    });
+  }
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-chain]"); if (!b || !chainState) return;
+    var i = +b.getAttribute("data-chain"), where = b.getAttribute("data-where"), box = $("chainlines-" + where), link = chainState.chain[i];
+    var key = where + ":" + i;
+    if (chainOpen[where] === key) { box.hidden = true; chainOpen[where] = null; return; }
+    chainOpen[where] = key;
+    var lines = (link.lines || []).map(function (n) { return chainState.log[n - 1] ? { n: n, e: chainState.log[n - 1] } : null; }).filter(Boolean);
+    box.innerHTML = "<p><b>" + link.count + " " + esc(link.label) + (link.journey ? " · " + esc(link.journey) : "") + "</b> · " + lines.length + " audit line" + (lines.length === 1 ? "" : "s") + (lines.length ? "" : ": nothing to count") + "</p><ul>"
+      + lines.map(function (x) { return '<li class="' + (x.e.red ? "red" : "") + '">line ' + x.n + ' · <span class="t">' + esc(x.e.time) + "</span> " + esc(x.e.line) + "</li>"; }).join("") + "</ul>";
+    box.hidden = false;
+  });
   function renderOut(s) {
     var rows = s.out || [], show = (outAll || DESKTOP.matches) ? rows : rows.slice(0, 3);
     $("outempty").hidden = rows.length > 0;
@@ -434,9 +494,13 @@
     $("stripinfo").textContent = s.limit ? s.limit : $("runline").textContent;
     $("stripinfo").className = "stripinfo desktop-only" + (s.limit ? " limit" : "");
     renderMap(s);
+    var VERB = { 4: "Find", 3: "Open", 2: "Qualify", 1: "Agree" };
     $("zones").innerHTML = (s.zones || []).map(function (z) {
-      return '<div class="zone z' + z.zone + '"><div class="zn">Zone ' + z.zone + '</div><div class="zc">' + z.count + '</div><div class="zl">' + esc(z.name) + "</div></div>";
+      return '<div class="zone z' + z.zone + '"><div class="zn">' + VERB[z.zone] + '</div><div class="zc">' + z.count + '</div><div class="zl">' + esc(z.name) + "</div></div>";
     }).join("");
+    renderChain(s);
+    $("lastcost").textContent = (s.running && s.mode === "run") ? "£" + Number(s.cost_live_gbp || 0).toFixed(2) + " so far"
+      : (s.log && s.log.length ? "£" + Number(s.cost_live_gbp || 0).toFixed(2) + (s.mode === "replay" ? " that run" : " last run") : "");
     renderOut(s);
     var lines = s.log, show = expanded ? lines : lines.slice(-3);
     $("logempty").hidden = lines.length > 0;
@@ -470,7 +534,8 @@
   var reviewMode = location.hash === "#review", openEv = {};
   function setTab(review) {
     reviewMode = review; document.body.classList.toggle("review-mode", review);
-    $("tab-hunt").setAttribute("aria-selected", String(!review)); $("tab-review").setAttribute("aria-selected", String(review));
+    ["tab-hunt", "tab-hunt-d"].forEach(function (id) { var e = $(id); if (e) e.setAttribute("aria-selected", String(!review)); });
+    ["tab-review", "tab-review-d"].forEach(function (id) { var e = $(id); if (e) e.setAttribute("aria-selected", String(review)); });
     if (review) { loadDashboard(); loadProposals(); }
   }
   function receipt(list, label) {
@@ -551,8 +616,8 @@
     fetch("/proposals/" + encodeURIComponent(id) + "/" + verb, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) })
       .then(function () { loadProposals(); });
   }
-  $("tab-hunt").addEventListener("click", function () { history.replaceState(null, "", location.pathname); setTab(false); });
-  $("tab-review").addEventListener("click", function () { history.replaceState(null, "", "#review"); setTab(true); });
+  ["tab-hunt", "tab-hunt-d"].forEach(function (id) { var e = $(id); if (e) e.addEventListener("click", function () { history.replaceState(null, "", location.pathname); setTab(false); }); });
+  ["tab-review", "tab-review-d"].forEach(function (id) { var e = $(id); if (e) e.addEventListener("click", function () { history.replaceState(null, "", "#review"); setTab(true); }); });
   $("props").addEventListener("click", function (ev) {
     var b = ev.target.closest("button"); if (!b) return;
     var card = b.closest(".prop"), id = card.getAttribute("data-id"), verb = b.getAttribute("data-act");

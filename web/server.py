@@ -53,6 +53,9 @@ class App:
         self.review_running = False          # the Run night review button
         self.data: Dict = {}                 # the run's results: ranked, plans, drafts, schedule, qualified
         self.zones: Dict[str, int] = {}      # account name -> zone 4..1, moved by the log as the run goes
+        self.zone_lines: Dict[str, int] = {}  # account name -> the log line (1-based) that last moved it
+        self.researched: Dict = {"count": 0, "line": 0}
+        self.planned_lines: List[int] = []
         self.stops: Dict[str, str] = {}      # account name -> last stop reached, for the map's dots
         self.book_size = 0
         self.book_names: List[str] = [a["name"] for a in load_book()["accounts"]]
@@ -98,12 +101,36 @@ class App:
         counts = {4: z4, 3: moved[3], 2: moved[2], 1: moved[1]}
         return [{"zone": z, "name": names[z], "count": counts[z] if self.book_size else 0} for z in (4, 3, 2, 1)]
 
+    def _chain(self) -> List[Dict]:
+        """25 researched, 10 planned, then the zone counts: each count with the log lines it was counted from."""
+        if not self.book_size:
+            return []
+        counts = {z["zone"]: z["count"] for z in self._zone_counts()}
+        by_zone = {z: sorted(ln for n, ln in self.zone_lines.items() if self.zones.get(n) == z) for z in (3, 2, 1)}
+        start = [self.researched["line"]] if self.researched["line"] else []
+        return [
+            {"key": "researched", "label": "researched", "count": self.researched["count"], "lines": [self.researched["line"]] if self.researched["line"] else []},
+            {"key": "planned", "label": "planned", "count": len(self.planned_lines), "lines": list(self.planned_lines)},
+            {"key": "zone4", "label": "Find", "journey": "Zone 4 · Open the door", "count": counts[4], "lines": start},
+            {"key": "zone3", "label": "Open", "journey": "Zone 3 · Earn the call", "count": counts[3], "lines": by_zone[3]},
+            {"key": "zone2", "label": "Qualify", "journey": "Zone 2 · Frame the value", "count": counts[2], "lines": by_zone[2]},
+            {"key": "zone1", "label": "Agree", "journey": "Zone 1 · Commit", "count": counts[1], "lines": by_zone[1]},
+        ]
+
     def snapshot(self) -> Dict:
         with self.lock:
             now = time.time()
             elapsed = int(((self.finished or now) - self.started)) if self.started else 0
+            live = self.spend_gbp
+            if self.running and self.mode == "run" and self.desk is not None:
+                try:
+                    live = self.desk.spend.gbp_this_run                     # the cost so far, while it runs
+                except Exception:
+                    pass
             return {
                 "zones": self._zone_counts(),
+                "chain": self._chain(),
+                "cost_live_gbp": round(live, 2),
                 "dots": [{"name": n, "zone": self.zones.get(n, 4), "stop": self.stops.get(n, "start")} for n in self.book_names] if self.book_size else [],
                 "out": self._out(),
                 "notice": config.INVENTED_DATA_NOTICE,
@@ -144,6 +171,15 @@ class App:
                     self.book_size = int(on_what.split()[0])
                 except (ValueError, IndexError):
                     self.book_size = 0
+                self.researched = {"count": self.book_size, "line": len(self.log)}
+            n_line = len(self.log)                                # this entry's line number, 1-based
+            if who == "Researcher" and what == "read signals" and outcome == "ok":
+                try:
+                    self.researched = {"count": int(on_what.split()[0]), "line": n_line}
+                except (ValueError, IndexError):
+                    pass
+            if who == "Planner" and what == "account plan" and outcome == "ok":
+                self.planned_lines.append(n_line)
             if outcome == "ok" and on_what:                       # the journey: where each account sits
                 if who == "Planner" and what == "account plan":
                     self.stops[on_what] = "planned"
@@ -151,6 +187,7 @@ class App:
                     self.stops[on_what] = what
                 elif who == "Cadence" and what == "T3 given":
                     self.zones[on_what] = 3                       # Zone 3, Earn the call
+                    self.zone_lines[on_what] = n_line
                     self.stops[on_what] = what
                 elif who == "Cadence" and what in ("T4 given", "T5 given"):
                     self.stops[on_what] = what
@@ -167,14 +204,19 @@ class App:
                     else:
                         self.zones[on_what] = 3 if given >= 3 else 4
                         self.stops[on_what] = f"awaiting T{given} given"
+                    if self.zones.get(on_what) != 4:
+                        self.zone_lines[on_what] = n_line
                 elif who == "Cadence" and what.startswith("reply received"):
                     self.zones[on_what] = 3                       # First call, still Zone 3
+                    self.zone_lines[on_what] = n_line
                     self.stops[on_what] = "first call"
                 elif who == "Qualifier" and what == "mutual plan drafted":
                     self.zones[on_what] = 2                       # Zone 2, Frame the value
+                    self.zone_lines[on_what] = n_line
                     self.stops[on_what] = "qualified"
                 elif who == "desk" and what.startswith("buying committee accepted"):
                     self.zones[on_what] = 1                       # Zone 1, Commit
+                    self.zone_lines[on_what] = n_line
                     self.stops[on_what] = "committee"
             if outcome == "ok":                                   # what OUT may now show
                 if who == "Scorer" and what.startswith("ranked"):
@@ -199,6 +241,7 @@ class App:
             self.replay_stopped = set()
             self.data, self.revealed = {}, set()
             self.zones, self.stops, self.book_size = {}, {}, 0
+            self.zone_lines, self.researched, self.planned_lines = {}, {"count": 0, "line": 0}, []
 
     # ---- a real run ----------------------------------------------------------------------------
     def start_run(self) -> bool:
