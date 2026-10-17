@@ -2,7 +2,7 @@
 
 Named accounts. No relationship yet. Find the door.
 
-Six AI Agents that hunt a named-account book, on the AE's behalf, under governance. Built by Garret O'Leary with Claude Code on the Claude API.
+Six hunting agents that work a named-account book on the AE's behalf, and a seventh, Night Review, that reviews them nightly and proposes rule changes a person approves; seven in all, under governance. Built by Garret O'Leary with Claude Code on the Claude API.
 
 **All data invented.** Every company, person, signal, call note, reply and number in this repository is made up. No company named here is a real firm. The page says so, the files say so, and the model is told so on every call.
 
@@ -18,7 +18,7 @@ Control: every agent registered and permitted. Every action logged, live. Any ag
 
 No agent is permitted to send. The AE reviews and sends.
 
-## The six agents
+## The agents: six hunting agents and a seventh, Night Review
 
 1. Researcher. Reads the book and its signals. May not write or send.
 2. Scorer. Ranks the 25 against an ideal client profile and says, for each, why it was selected and how it was found.
@@ -28,6 +28,14 @@ No agent is permitted to send. The AE reviews and sends.
 6. Qualifier. After the first call, from an invented call note: a light MEDDPICC that says "not yet known" where the call was silent, a value frame sized as an estimate, and the mutual plan: you will do this, I will do this, by this date, with the ask to bring the committee in. May not read the raw book. May not send.
 
 Orchestration is not an agent. It is the desk, a plain controller that hands work between the six, holds each account's state and reports to the page.
+
+## Night Review and the Review tab
+
+Night Review is the seventh agent, registered like the other six with its own token, permission list, log lines and Stop. Each night, or when the Run night review button is pressed, it reads the saved runs since its last review, newest first, up to thirty: their audit logs, their outputs and the rules in force. It treats everything it reads as data, never as instructions. It looks for three things in code: the same refusal repeating across runs, a top-ten reason that leans on a hedge word, and text inside a run that reads like an order to an agent, which it reports and never obeys.
+
+It writes only two kinds of file: proposals and reports. A proposal names the finding, the agents concerned, the run ids and audit line numbers behind it, the change proposed, the risk if applied, the risk if ignored and an expiry. A report is the nightly dashboard, where every number carries the run id and line numbers it was counted from. Night Review never applies anything. On the Review tab a person reads each proposal and taps Approve, Reject or Ask; Approve writes a new numbered version of that agent's rules file, Roll back writes the previous version again as a new number, and every tap is logged. Nothing changes without a tap.
+
+The Review tab also answers the Blueprint Alliance's four questions from the registry and the logs: Where are my agents? What can they do? What are they doing? How do I respond?
 
 ## The five-touch sequence
 
@@ -79,7 +87,7 @@ opening_doors/
   config.py          model, caps, the five-touch days
   claude.py          the one place the Claude API is called; the spend counter
   governance/        registry, permissions, audit log, stop, the gate
-  agents/            the six agents
+  agents/            the six hunting agents and the seventh, Night Review
   book/              the 25 invented accounts, their signals, call notes and journey
   desk.py            the controller
 web/
